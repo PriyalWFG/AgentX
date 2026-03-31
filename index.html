@@ -2,15 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WFG AgentX">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#080c14">
-<meta property="og:title" content="WFG AgentX by ATS">
-<meta property="og:description" content="Your personalized Executive Summit 2026 companion. Tap to explore.">
-<meta property="og:type" content="website">
 <title>WFG AgentX by ATS</title>
 <style>
 :root{
@@ -18,50 +14,37 @@
   --b:rgba(255,255,255,.09);--ba:rgba(99,160,255,.65);
   --t:#f0f4ff;--m:rgba(240,244,255,.45);
   --ac:#4f8ef7;--ac2:#7c6af7;--teal:#0d9488;--amber:#d97706;--rose:#e11d48;
+  --gold:#f59e0b;--green:#22c55e;
   --glow:rgba(79,142,247,.22);--sel:rgba(79,142,247,.11);
   --r:14px;--tr:.27s cubic-bezier(.4,0,.2,1);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bot: env(safe-area-inset-bottom, 0px);
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%;height:-webkit-fill-available}
-body{
-  height:100%;height:-webkit-fill-available;
-  width:100%;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-  background:var(--bg);color:var(--t);
-  overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  -webkit-text-size-adjust:100%;
-  touch-action:manipulation;
-}
+body{height:100%;height:-webkit-fill-available;width:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
 .o1{width:400px;height:400px;background:radial-gradient(circle,rgba(79,142,247,.11) 0%,transparent 70%);top:-100px;left:-80px}
 .o2{width:350px;height:350px;background:radial-gradient(circle,rgba(124,106,247,.09) 0%,transparent 70%);bottom:-80px;right:-60px}
 
-#app{
-  position:relative;z-index:1;
-  height:100%;height:-webkit-fill-available;
-  width:100%;max-width:430px;
-  margin:0 auto;
-  display:flex;flex-direction:column;
-  padding:0 18px;
-  padding-top:var(--safe-top);
-  padding-bottom:var(--safe-bot);
-}
+#app{position:relative;z-index:1;height:100%;height:-webkit-fill-available;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;padding:0 18px;padding-top:var(--sat);padding-bottom:var(--sab)}
 
 /* TOP BAR */
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;flex-shrink:0;min-height:44px}
-.logo-wrap{display:flex;flex-direction:column;line-height:1.15}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:13px 0 0;flex-shrink:0;min-height:46px;gap:8px}
+.logo-wrap{display:flex;flex-direction:column;line-height:1.15;flex-shrink:0}
 .logo{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
-.exp-name{font-size:14px;font-weight:800;letter-spacing:.01em;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.exp-name{font-size:14px;font-weight:800;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pts-pill{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;transition:all .2s}
+.pts-pill:active{transform:scale(.95)}
+.scan-btn{width:34px;height:34px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;transition:all .2s}
+.scan-btn:active{transform:scale(.92);background:rgba(79,142,247,.22)}
 .ai-pill{display:flex;align-items:center;gap:5px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.22);border-radius:20px;padding:5px 10px;font-size:10px;font-weight:600;color:var(--ac);opacity:0;transition:opacity .5s;white-space:nowrap}
 .ai-pill.vis{opacity:1}
 .ai-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:pdot 2s infinite;flex-shrink:0}
 @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 
 /* PROGRESS */
-.progress-bar{display:flex;gap:5px;padding:10px 0 0;flex-shrink:0;opacity:0;transition:opacity .4s}
+.progress-bar{display:flex;gap:5px;padding:9px 0 0;flex-shrink:0;opacity:0;transition:opacity .4s}
 .progress-bar.vis{opacity:1}
 .pd{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.09);transition:background .4s}
 .pd.act{background:var(--ac)}.pd.dn{background:rgba(79,142,247,.32)}
@@ -84,20 +67,22 @@ body{
 
 /* TYPE */
 .lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:10px}
-.lbl.teal{color:var(--teal)}.lbl.amber{color:var(--amber)}.lbl.purple{color:var(--ac2)}.lbl.rose{color:var(--rose)}.lbl.green{color:#22c55e}
+.lbl.teal{color:var(--teal)}.lbl.amber{color:var(--amber)}.lbl.purple{color:var(--ac2)}.lbl.rose{color:var(--rose)}.lbl.green{color:var(--green)}.lbl.gold{color:var(--gold)}
 h1{font-size:clamp(26px,7vw,34px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:8px}
 h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-bottom:7px}
 .sub{font-size:14px;color:var(--m);line-height:1.6;margin-bottom:22px}
 
-/* BUTTONS — min 44px touch targets */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--r);padding:17px 28px;cursor:pointer;box-shadow:0 0 26px var(--glow);animation:pbtn 2.5s infinite;transition:transform .12s;width:100%;min-height:54px}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:15px;font-weight:700;border:none;border-radius:var(--r);padding:16px 28px;cursor:pointer;box-shadow:0 0 26px var(--glow);animation:pbtn 2.5s infinite;transition:transform .12s;width:100%;min-height:52px}
 .btn:active{transform:scale(.97)}
-.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:13px;padding:13px;min-height:46px}
+.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:13px;padding:12px;min-height:46px}
 .btn.ghost:active{background:var(--sh);color:var(--t)}
 .btn.teal-btn{background:linear-gradient(135deg,var(--teal),#0f766e);animation:none}
+.btn.gold-btn{background:linear-gradient(135deg,var(--gold),#d97706);animation:none;box-shadow:0 0 20px rgba(245,158,11,.25)}
+.btn.sm{font-size:13px;padding:12px 18px;min-height:44px}
 @keyframes pbtn{0%,100%{box-shadow:0 0 26px var(--glow)}50%{box-shadow:0 0 44px rgba(79,142,247,.38)}}
 
-/* TAP CARDS — 44px min height */
+/* CARDS */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:20px 12px;cursor:pointer;text-align:center;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .tc:active{transform:scale(.95);background:var(--sh)}
@@ -106,9 +91,8 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 
 /* PAIN */
 .pgrid{display:flex;flex-direction:column;gap:8px}
-.pc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:52px}
-.pc:active{transform:scale(.98);background:var(--sh)}
-.pc.sel{background:var(--sel);border-color:var(--ba)}
+.pc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none;min-height:52px;transition:background var(--tr),border-color var(--tr),transform .12s}
+.pc:active{transform:scale(.98)}.pc.sel{background:var(--sel);border-color:var(--ba)}
 .pi{font-size:18px;flex-shrink:0}.pl{font-size:13.5px;font-weight:600}
 .pck{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;font-size:10px}
 .pc.sel .pck{background:var(--ac);border-color:var(--ac)}
@@ -132,16 +116,17 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 
 /* ACTION LIST */
 .alist{display:flex;flex-direction:column;gap:9px}
-.ab{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),transform .12s;text-align:left;width:100%;color:var(--t);min-height:58px}
+.ab{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),transform .12s;text-align:left;width:100%;color:var(--t);min-height:58px}
 .ab:active{background:var(--sh);transform:scale(.98)}
 .ai-icon{width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
-.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}
-.at strong{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}.at span{font-size:11.5px;color:var(--m)}
+.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}.igd{background:rgba(245,158,11,.14)}
+.at strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px}.at span{font-size:11px;color:var(--m)}
 .arr{margin-left:auto;color:var(--m);font-size:16px;flex-shrink:0}
+.pts-tag{font-size:9.5px;font-weight:700;background:rgba(245,158,11,.14);color:var(--gold);border-radius:5px;padding:2px 7px;margin-left:auto;flex-shrink:0;letter-spacing:.04em}
 
 /* LIVE FEED */
 .feed-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
-.fi{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 14px;display:flex;align-items:center;gap:10px;animation:fup .35s ease both}
+.fi{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;animation:fup .35s ease both}
 .fi:nth-child(2){animation-delay:.07s}.fi:nth-child(3){animation-delay:.14s}.fi:nth-child(4){animation-delay:.21s}
 .fi-ico{font-size:17px;flex-shrink:0}.fi-body{flex:1}
 .fi-body strong{display:block;font-size:12.5px;font-weight:700;margin-bottom:1px}.fi-body span{font-size:11.5px;color:var(--m)}
@@ -156,21 +141,21 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 .msg.ai{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.09));border:1px solid rgba(79,142,247,.18);align-self:flex-start}
 .msg.user{background:rgba(255,255,255,.06);border:1px solid var(--b);align-self:flex-end;text-align:right}
 .prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.pb{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 11px;font-size:11.5px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;transition:background .15s;line-height:1.35;min-height:44px;display:flex;align-items:center}
+.pb{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:11px 11px;font-size:11.5px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;line-height:1.35;min-height:44px;display:flex;align-items:center;transition:background .15s}
 .pb:active{background:var(--sh)}
 
 /* QR */
-.qr-loc{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.07));border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px}
+.qr-loc{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.07));border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:16px;text-align:center;margin-bottom:12px}
 .qr-loc-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:4px}
 .qr-loc-name{font-size:20px;font-weight:700}.qr-loc-sub{font-size:12px;color:var(--m);margin-top:3px}
-.qr-insight{background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:9px;padding:12px 13px;margin-bottom:12px;font-size:12px;line-height:1.55;color:var(--m)}
+.qr-insight{background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:9px;padding:11px 13px;margin-bottom:12px;font-size:12px;line-height:1.55;color:var(--m)}
 .qr-insight strong{color:var(--t);display:block;margin-bottom:3px;font-size:13px}
 
 /* PROBLEMS */
 .prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:8px}
 .prob-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;user-select:none;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .prob-card:active{transform:scale(.96)}.prob-card.sel{background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.45)}
-.prob-icon{font-size:22px;margin-bottom:7px}.prob-label{font-size:12.5px;font-weight:700;line-height:1.3}
+.prob-icon{font-size:22px;margin-bottom:7px}.prob-label{font-size:12px;font-weight:700;line-height:1.3}
 .solution-panel{background:var(--s);border:1px solid rgba(124,106,247,.28);border-radius:var(--r);padding:16px;margin-top:4px;animation:fup .3s ease}
 .sol-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac2);margin-bottom:10px}
 .sol-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
@@ -179,10 +164,10 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 .sol-block h5.cur{color:var(--m)}.sol-block h5.aih{color:var(--ac)}
 .sol-block ul{padding-left:14px;display:flex;flex-direction:column;gap:4px}
 .sol-block li{font-size:11.5px;color:var(--m);line-height:1.4}
-.proto-badge{background:linear-gradient(135deg,rgba(124,106,247,.13),rgba(79,142,247,.09));border:1px solid rgba(124,106,247,.25);border-radius:8px;padding:10px 13px;display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700}
+.proto-badge{background:linear-gradient(135deg,rgba(124,106,247,.13),rgba(79,142,247,.09));border:1px solid rgba(124,106,247,.25);border-radius:8px;padding:9px 13px;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
 .proto-arr{font-size:15px;color:var(--ac2)}
 
-/* INITIATIVES & TOOLS & BRIEFS */
+/* INITIATIVES / TOOLS / BRIEFS */
 .init-card,.tool-card,.brief-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;cursor:pointer;margin-bottom:9px;transition:background var(--tr)}
 .init-card:active,.tool-card:active,.brief-card:active{background:var(--sh)}
 .init-header,.tool-header{display:flex;align-items:center;gap:11px}
@@ -215,11 +200,11 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 .intel-stat span{font-size:10.5px;color:var(--m);line-height:1.4;display:block;margin-top:4px}
 
 /* DASHBOARD */
-.dash-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(79,142,247,.09);border:1px solid rgba(79,142,247,.18);border-radius:20px;padding:5px 11px;font-size:11.5px;font-weight:700;color:var(--ac);margin:0 4px 6px 0}
+.dash-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(79,142,247,.09);border:1px solid rgba(79,142,247,.18);border-radius:20px;padding:5px 11px;font-size:11px;font-weight:700;color:var(--ac);margin:0 4px 6px 0}
 .ds{margin-bottom:14px}
 .ds h4{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:7px}
 .dash-row{display:flex;flex-wrap:wrap}
-.nit{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;width:100%;min-height:44px}
+.nit{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;width:100%;min-height:44px}
 .ni-ico{font-size:15px;flex-shrink:0}
 .social-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
 .social-card{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:11px 8px;text-align:center}
@@ -228,38 +213,191 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 
 /* EXPLORE HUB */
 .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
-.hub-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hub-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .hub-card:active{background:var(--sh);transform:scale(.96)}
-.hub-icon{font-size:24px;margin-bottom:7px}.hub-label{font-size:13.5px;font-weight:700;margin-bottom:3px}.hub-sub{font-size:11px;color:var(--m)}
+.hub-icon{font-size:22px;margin-bottom:7px}.hub-label{font-size:13px;font-weight:700;margin-bottom:3px}.hub-sub{font-size:11px;color:var(--m)}
+.hub-pts{font-size:9.5px;font-weight:700;color:var(--gold);margin-top:3px}
+
+/* TREASURE HUNT */
+.clue-card{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.08));border:1px solid rgba(79,142,247,.3);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.clue-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:5px}
+.clue-text{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:8px;font-style:italic}
+.clue-hint{font-size:12px;color:var(--m);line-height:1.5}
+.hunt-progress{display:flex;gap:6px;margin-bottom:14px}
+.hunt-step{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.09);transition:background .4s}
+.hunt-step.done{background:var(--gold)}.hunt-step.act{background:var(--ac)}
+.hunt-complete{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(217,119,6,.1));border:1px solid rgba(245,158,11,.35);border-radius:var(--r);padding:22px;text-align:center;animation:fup .4s ease}
+.hunt-complete .trophy{font-size:44px;margin-bottom:10px}
+.hunt-complete h3{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.hunt-complete p{font-size:13px;color:var(--m);line-height:1.5}
+
+/* AVATAR STUDIO */
+.avatar-preview{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,rgba(79,142,247,.2),rgba(124,106,247,.15));border:2px solid rgba(79,142,247,.3);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;transition:all .4s}
+.avatar-preview .style-label{position:absolute;bottom:-8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:9px;font-weight:700;border-radius:20px;padding:3px 9px;white-space:nowrap}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.style-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 11px;cursor:pointer;text-align:center;font-size:12.5px;font-weight:700;transition:background var(--tr),border-color var(--tr),transform .12s;min-height:46px;display:flex;align-items:center;justify-content:center}
+.style-card:active{transform:scale(.96)}.style-card.sel{background:var(--sel);border-color:var(--ba)}
+.gen-progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin:10px 0}
+.gen-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;width:0%;transition:width .1s linear}
+
+/* GAMES */
+.game-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;margin-bottom:9px;transition:background var(--tr)}
+.game-card:active{background:var(--sh)}
+.game-header{display:flex;align-items:center;gap:12px;margin-bottom:0}
+.game-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.game-title{font-size:13.5px;font-weight:700}.game-sub{font-size:11.5px;color:var(--m);margin-top:2px}
+.game-expand{background:rgba(124,106,247,.07);border:1px solid rgba(124,106,247,.2);border-radius:9px;padding:13px;margin-top:11px;animation:fup .25s ease}
+.game-expand p{font-size:12px;color:var(--m);line-height:1.55;margin-bottom:10px}
+.game-btns{display:flex;gap:8px}
+.game-btn{flex:1;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;border-radius:9px;padding:11px;font-size:12.5px;font-weight:700;cursor:pointer;min-height:42px;transition:transform .12s}
+.game-btn:active{transform:scale(.96)}
+.game-done-tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(34,197,94,.12);color:var(--green);border-radius:5px;padding:3px 8px;margin-left:auto;flex-shrink:0}
+
+/* BEST PROMPTS */
+.prompt-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;margin-bottom:9px;cursor:pointer;transition:background var(--tr)}
+.prompt-card:active{background:var(--sh)}
+.prompt-cat{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.prompt-text{font-size:13px;font-weight:600;line-height:1.45;margin-bottom:8px;font-style:italic}
+.prompt-actions{display:flex;gap:7px}
+.prompt-btn{font-size:11.5px;font-weight:700;padding:7px 13px;border-radius:8px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:36px;transition:background .15s}
+.prompt-btn:active{background:var(--sh)}
+.prompt-btn.highlight{border-color:rgba(79,142,247,.4);color:var(--ac);background:rgba(79,142,247,.08)}
+.top-prompt-banner{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.08));border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.top-prompt-label{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+
+/* GOLDEN POINTS */
+.team-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;margin-bottom:9px;cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.team-card.scanned{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.06)}
+.team-card:active{background:var(--sh)}
+.team-header{display:flex;align-items:center;gap:12px}
+.team-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.team-name{font-size:14px;font-weight:700}.team-role{font-size:11.5px;color:var(--m);margin-top:2px}
+.team-pts{font-size:13px;font-weight:800;color:var(--gold);margin-left:auto;flex-shrink:0}
+.qr-placeholder{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.15);border-radius:9px;padding:14px;text-align:center;margin-top:11px;font-size:12px;color:var(--m);line-height:1.5}
+.scan-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;border-radius:5px;padding:3px 8px;margin-left:8px}
+.scan-tag.done{background:rgba(34,197,94,.12);color:var(--green)}
+.scan-tag.todo{background:rgba(255,255,255,.07);color:var(--m)}
+
+/* TOUCHPOINT TRACKER */
+.tp-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.tp-card.visited{border-color:rgba(13,148,136,.4);background:rgba(13,148,136,.06)}
+.tp-card:active{background:var(--sh)}
+.tp-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.tp-name{font-size:13px;font-weight:700}.tp-sub{font-size:11px;color:var(--m);margin-top:1px}
+.tp-pts{font-size:12px;font-weight:700;color:var(--teal);margin-left:auto;flex-shrink:0;white-space:nowrap}
+.tp-check{font-size:16px;flex-shrink:0;margin-left:4px}
+
+/* BOOK SESSION */
+.session-step{display:none}.session-step.active{display:block}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.option-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 12px;cursor:pointer;text-align:center;font-size:13px;font-weight:700;line-height:1.3;transition:background var(--tr),border-color var(--tr),transform .12s;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.option-card:active{transform:scale(.96)}.option-card.sel{background:var(--sel);border-color:var(--ba)}
+.option-icon{font-size:20px}
+.time-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.time-slot{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:12px 8px;text-align:center;cursor:pointer;font-size:12.5px;font-weight:700;transition:background var(--tr),border-color var(--tr);min-height:44px;display:flex;align-items:center;justify-content:center}
+.time-slot:active{transform:scale(.96)}.time-slot.sel{background:var(--sel);border-color:var(--ba)}
+.booking-confirm{background:linear-gradient(135deg,rgba(13,148,136,.12),rgba(15,118,110,.08));border:1px solid rgba(13,148,136,.3);border-radius:var(--r);padding:22px;text-align:center;animation:fup .4s ease}
+.booking-confirm .check{font-size:44px;margin-bottom:10px}
+.booking-confirm h3{font-size:18px;font-weight:800;color:var(--teal);margin-bottom:6px}
+.booking-confirm p{font-size:13px;color:var(--m);line-height:1.5}
+
+/* POINTS MODAL */
+.pts-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.pts-modal.open{opacity:1;pointer-events:all}
+.pts-sheet{background:#0d1220;border:1px solid var(--b);border-radius:20px 20px 0 0;padding:22px 20px 32px;width:100%;max-width:430px;transform:translateY(30px);transition:transform .3s;max-height:85vh;overflow-y:auto}
+.pts-modal.open .pts-sheet{transform:translateY(0)}
+.pts-total{text-align:center;margin-bottom:20px}
+.pts-total .big-num{font-size:52px;font-weight:800;background:linear-gradient(135deg,var(--gold),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.pts-total .pts-sub{font-size:13px;color:var(--m);margin-top:4px}
+.act-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.act-row:last-child{border-bottom:none}
+.act-name{font-size:13px;font-weight:600}
+.act-pts{font-size:13px;font-weight:700;color:var(--gold)}
+.act-status{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:700}
+.done-tag{background:rgba(34,197,94,.12);color:var(--green)}
+.todo-tag{background:rgba(255,255,255,.07);color:var(--m)}
+.lb-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.lb-rank{font-size:14px;font-weight:800;width:24px;color:var(--m)}.lb-rank.top{color:var(--gold)}
+.lb-name{font-size:13px;font-weight:600;flex:1}
+.lb-score{font-size:13px;font-weight:700;color:var(--gold)}
+.lb-you{font-size:9px;background:rgba(79,142,247,.15);color:var(--ac);border-radius:5px;padding:2px 6px;font-weight:700;margin-left:6px}
+.sheet-handle{width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 18px}
+
+/* BOT FLOATING */
+.bot-fab{position:fixed;bottom:calc(90px + var(--sab));right:14px;width:46px;height:46px;background:linear-gradient(135deg,rgba(79,142,247,.2),rgba(124,106,247,.15));border:1px solid rgba(79,142,247,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:50;box-shadow:0 4px 16px rgba(79,142,247,.2);transition:transform .2s,box-shadow .2s;flex-shrink:0}
+.bot-fab:active{transform:scale(.9)}
+.bot-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.bot-modal.open{opacity:1;pointer-events:all}
+.bot-sheet{background:#0d1220;border:1px solid rgba(79,142,247,.2);border-radius:20px;padding:28px 22px;width:100%;max-width:360px;text-align:center;transform:scale(.92);transition:transform .3s}
+.bot-modal.open .bot-sheet{transform:scale(1)}
+.bot-icon-lg{font-size:44px;margin-bottom:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(100px + var(--sab));left:50%;transform:translateX(-50%) translateY(20px);background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.35);border-radius:20px;padding:8px 18px;font-size:12.5px;font-weight:700;color:var(--gold);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* NAVBAR */
-.navbar{display:none;flex-shrink:0;border-top:1px solid var(--b);padding:8px 0;justify-content:space-around;padding-bottom:calc(8px + var(--safe-bot))}
+.navbar{display:none;flex-shrink:0;border-top:1px solid var(--b);padding:7px 0;justify-content:space-around;padding-bottom:calc(7px + var(--sab))}
 .navbar.vis{display:flex}
-.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;transition:color .2s;min-width:52px;min-height:44px;justify-content:center}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;transition:color .2s;min-width:48px;min-height:44px;justify-content:center}
 .nav-btn.cur{color:var(--ac)}
-.nav-btn .ni{font-size:20px}
+.nav-btn .ni{font-size:19px}
 
 /* FOOTER */
-.global-footer{flex-shrink:0;text-align:center;padding:6px 0 8px;border-top:1px solid rgba(255,255,255,.05)}
-.global-footer a{font-size:11px;font-weight:600;color:rgba(240,244,255,.28);text-decoration:none;letter-spacing:.04em;padding:6px 16px;display:inline-block;min-height:32px;line-height:20px}
-
-/* OFFLINE BANNER */
-.offline-banner{display:none;background:rgba(217,119,6,.1);border-bottom:1px solid rgba(217,119,6,.2);padding:7px 18px;font-size:11px;color:var(--amber);text-align:center;font-weight:600;flex-shrink:0}
-.offline-banner.vis{display:block}
+.global-footer{flex-shrink:0;padding:8px 0 10px;border-top:1px solid rgba(255,255,255,.05)}
+.footer-link{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(79,142,247,.07);border:1px solid rgba(79,142,247,.18);border-radius:10px;padding:10px 16px;text-decoration:none;cursor:pointer;transition:background .2s}
+.footer-link:active{background:rgba(79,142,247,.13)}
+.footer-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);animation:pdot 2s infinite;flex-shrink:0}
+.footer-text{font-size:12px;font-weight:700;color:var(--ac);letter-spacing:.03em}
+.footer-arr{font-size:13px;color:rgba(79,142,247,.5)}
 </style>
 </head>
 <body>
 <div class="orb o1"></div><div class="orb o2"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- POINTS MODAL -->
+<div class="pts-modal" id="ptsModal" onclick="closePtsModal(event)">
+  <div class="pts-sheet">
+    <div class="sheet-handle"></div>
+    <div class="pts-total">
+      <div class="big-num" id="modalPts">0</div>
+      <div class="pts-sub">Total Points Earned</div>
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:10px">Activity Progress</div>
+    <div id="actList"></div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin:14px 0 10px">Leaderboard</div>
+    <div id="lbList"></div>
+  </div>
+</div>
+
+<!-- BOT MODAL -->
+<div class="bot-modal" id="botModal" onclick="closeBotModal(event)">
+  <div class="bot-sheet">
+    <div class="bot-icon-lg">🤖</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:8px">DiscoveryBot</h3>
+    <p style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:18px">ATS Bot integration coming soon.<br>DiscoveryBot will live here — your always-on AI assistant for the summit experience.</p>
+    <button class="btn sm" onclick="closeBotModal()">Got It</button>
+  </div>
+</div>
+
+<!-- BOT FAB -->
+<div class="bot-fab" onclick="document.getElementById('botModal').classList.add('open')">🤖</div>
+
 <div id="app">
-
-  <div class="offline-banner" id="offlineBanner">📴 You're offline — all content works without internet</div>
-
+  <!-- TOP BAR -->
   <div class="topbar">
     <div class="logo-wrap">
       <div class="logo">WFG · ATS</div>
       <div class="exp-name">AgentX</div>
     </div>
-    <div class="ai-pill" id="aiPill"><div class="ai-dot"></div><span id="pillTxt">Tailoring Your Experience</span></div>
+    <div class="topbar-right">
+      <div class="pts-pill" id="ptsPill" onclick="openPtsModal()" style="display:none">⭐ <span id="ptsDisplay">0</span> pts</div>
+      <div class="ai-pill" id="aiPill"><div class="ai-dot"></div><span id="pillTxt">Tailoring Your Experience</span></div>
+      <div class="scan-btn" onclick="navTo('s-qr')" title="Scan QR">📷</div>
+    </div>
   </div>
 
   <div class="progress-bar" id="progressBar">
@@ -274,10 +412,10 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
 
     <!-- S1 WELCOME -->
     <div class="screen active" id="s-welcome">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:13px">Executive Summit 2026</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:12px">Executive Summit 2026</div>
       <h1>Welcome to<br>WFG AgentX<br>by ATS</h1>
-      <p class="sub">Your personalized summit<br>companion. A few taps to start.</p>
-      <button class="btn" onclick="goTo('s-role')">Get Started <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <p class="sub">Your gamified summit companion.<br>Explore, earn points, and unlock rewards.</p>
+      <button class="btn" onclick="goTo('s-role')">Get Started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </div>
 
     <!-- S2 ROLE -->
@@ -327,16 +465,22 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
     <!-- S6 ACTION GATEWAY -->
     <div class="screen" id="s-action">
       <h2 style="margin-bottom:4px">What would you<br>like to explore?</h2>
-      <p class="sub" style="margin-bottom:12px">Choose where to go next.</p>
+      <p class="sub" style="margin-bottom:10px">Choose where to go next.</p>
       <div class="scrollable">
         <div class="alist">
-          <button class="ab" onclick="navTo('s-feed')"><div class="ai-icon ibl">📡</div><div class="at"><strong>Live Event Feed</strong><span>See what's happening right now</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-feed')"><div class="ai-icon ibl">📡</div><div class="at"><strong>Live Event Feed</strong><span>See what's happening now</span></div><div class="arr">›</div></button>
           <button class="ab" onclick="navTo('s-explore')"><div class="ai-icon ign">🔭</div><div class="at"><strong>Explore ATS</strong><span>Initiatives, tools &amp; intelligence</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-hunt')"><div class="ai-icon igd">🗺</div><div class="at"><strong>Treasure Hunt</strong><span>Solve clues, earn points</span></div><div class="pts-tag">+150 pts</div></button>
+          <button class="ab" onclick="navTo('s-avatar')"><div class="ai-icon ipu">🎭</div><div class="at"><strong>AgentX Avatar Studio</strong><span>Create your summit avatar</span></div><div class="pts-tag">+75 pts</div></button>
+          <button class="ab" onclick="navTo('s-games')"><div class="ai-icon irs">🎮</div><div class="at"><strong>AgentX Games</strong><span>Title-themed games &amp; puzzles</span></div><div class="pts-tag">+50 pts</div></button>
+          <button class="ab" onclick="navTo('s-prompts')"><div class="ai-icon itl">💡</div><div class="at"><strong>Best Prompts</strong><span>Top AI prompts for your role</span></div><div class="pts-tag">+100 pts</div></button>
+          <button class="ab" onclick="navTo('s-golden')"><div class="ai-icon igd">⭐</div><div class="at"><strong>Golden Points</strong><span>Scan ATS team QR codes</span></div><div class="pts-tag">+200 pts</div></button>
+          <button class="ab" onclick="navTo('s-touchpoints')"><div class="ai-icon itl">📍</div><div class="at"><strong>Touchpoint Tracker</strong><span>Check in across the venue</span></div><div class="pts-tag">+25 pts ea</div></button>
+          <button class="ab" onclick="navTo('s-book')"><div class="ai-icon ign">📅</div><div class="at"><strong>Book with ATS</strong><span>20-min MVP strategy session</span></div><div class="pts-tag">+125 pts</div></button>
           <button class="ab" onclick="navTo('s-concierge')"><div class="ai-icon ipu">🤖</div><div class="at"><strong>AI Concierge</strong><span>Get personalized guidance</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-problems')"><div class="ai-icon irs">🧪</div><div class="at"><strong>Try a Real Problem</strong><span>See how we solve real challenges</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-problems')"><div class="ai-icon irs">🧪</div><div class="at"><strong>Try a Real Problem</strong><span>See how we solve challenges</span></div><div class="arr">›</div></button>
           <button class="ab" onclick="navTo('s-intel')"><div class="ai-icon iam">📈</div><div class="at"><strong>Summit Intelligence</strong><span>Live insights across the event</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-qr')"><div class="ai-icon itl">📍</div><div class="at"><strong>Scan a QR Code</strong><span>Connect to a venue touchpoint</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-dash')"><div class="ai-icon ipu">👤</div><div class="at"><strong>My Insights Dashboard</strong><span>Your personalized summary</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-dash')"><div class="ai-icon ipu">👤</div><div class="at"><strong>My AgentX Dashboard</strong><span>Points, progress &amp; profile</span></div><div class="arr">›</div></button>
         </div>
       </div>
     </div>
@@ -354,17 +498,22 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
       <div class="lbl green">Explore ATS</div>
       <h2>ATS Innovation Hub</h2>
       <div class="scrollable">
-        <div style="margin-bottom:14px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Choose an area</div>
-          <div class="hub-grid">
-            <div class="hub-card" onclick="navTo('s-initiatives')"><div class="hub-icon">🚀</div><div class="hub-label">ATS Initiatives</div><div class="hub-sub">Tools &amp; programs</div></div>
-            <div class="hub-card" onclick="navTo('s-tools')"><div class="hub-icon">🧰</div><div class="hub-label">AI Tools Library</div><div class="hub-sub">Featured resources</div></div>
-            <div class="hub-card" onclick="navTo('s-briefs')"><div class="hub-icon">📰</div><div class="hub-label">Intelligence Briefs</div><div class="hub-sub">ATS Brief series</div></div>
-            <div class="hub-card" onclick="navTo('s-problems')"><div class="hub-icon">🧪</div><div class="hub-label">Real Problems</div><div class="hub-sub">Live demo scenarios</div></div>
-          </div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">ATS Content</div>
+        <div class="hub-grid" style="margin-bottom:14px">
+          <div class="hub-card" onclick="navTo('s-initiatives')"><div class="hub-icon">🚀</div><div class="hub-label">Initiatives</div><div class="hub-sub">Tools &amp; programs</div></div>
+          <div class="hub-card" onclick="navTo('s-tools')"><div class="hub-icon">🧰</div><div class="hub-label">AI Tools</div><div class="hub-sub">Featured resources</div></div>
+          <div class="hub-card" onclick="navTo('s-briefs')"><div class="hub-icon">📰</div><div class="hub-label">Briefs</div><div class="hub-sub">Intelligence series</div></div>
+          <div class="hub-card" onclick="navTo('s-problems')"><div class="hub-icon">🧪</div><div class="hub-label">Real Problems</div><div class="hub-sub">Live demo scenarios</div></div>
         </div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:8px">Recommended for You</div>
-        <div class="alist" id="exploreRecs"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Summit Activities</div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="navTo('s-hunt')"><div class="hub-icon">🗺</div><div class="hub-label">Treasure Hunt</div><div class="hub-pts">+150 pts</div></div>
+          <div class="hub-card" onclick="navTo('s-avatar')"><div class="hub-icon">🎭</div><div class="hub-label">Avatar Studio</div><div class="hub-pts">+75 pts</div></div>
+          <div class="hub-card" onclick="navTo('s-games')"><div class="hub-icon">🎮</div><div class="hub-label">Games</div><div class="hub-pts">+50 pts ea</div></div>
+          <div class="hub-card" onclick="navTo('s-prompts')"><div class="hub-icon">💡</div><div class="hub-label">Best Prompts</div><div class="hub-pts">+100 pts</div></div>
+          <div class="hub-card" onclick="navTo('s-golden')"><div class="hub-icon">⭐</div><div class="hub-label">Golden Points</div><div class="hub-pts">+200 pts ea</div></div>
+          <div class="hub-card" onclick="navTo('s-touchpoints')"><div class="hub-icon">📍</div><div class="hub-label">Touchpoints</div><div class="hub-pts">+25 pts ea</div></div>
+        </div>
       </div>
     </div>
 
@@ -395,8 +544,8 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
       <h2>How can I help you?</h2>
       <div class="chat-area" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div></div>
       <div class="prompt-grid">
-        <div class="pb" onclick="askC(this,'Where should I go next?')">📍 Where to go next?</div>
-        <div class="pb" onclick="askC(this,'Show me something relevant')">✨ Show me relevant</div>
+        <div class="pb" onclick="askC(this,'Where should I go next?')">📍 Where to go?</div>
+        <div class="pb" onclick="askC(this,'Show me something relevant')">✨ Show relevant</div>
         <div class="pb" onclick="askC(this,'What are others exploring?')">👥 What others do</div>
         <div class="pb" onclick="askC(this,'Find sessions for my role')">🎯 My sessions</div>
         <div class="pb" onclick="askC(this,'Show me ATS tools for my role')">🧰 ATS tools</div>
@@ -424,10 +573,10 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
         <div class="intel-section"><h4>Top Challenges Today</h4><div class="intel-bar-row" id="intelBars"></div></div>
         <div class="intel-section"><h4>Attendance Snapshot</h4>
           <div class="intel-stat-row">
-            <div class="intel-stat"><strong>312</strong><span>Attendees checked in</span></div>
-            <div class="intel-stat"><strong>47</strong><span>Active in Demo Zone</span></div>
-            <div class="intel-stat"><strong>4</strong><span>Sessions in progress</span></div>
-            <div class="intel-stat"><strong>89%</strong><span>Completed onboarding</span></div>
+            <div class="intel-stat"><strong>312</strong><span>Checked in</span></div>
+            <div class="intel-stat"><strong>47</strong><span>In Demo Zone</span></div>
+            <div class="intel-stat"><strong>4</strong><span>Sessions live</span></div>
+            <div class="intel-stat"><strong>89%</strong><span>Onboarded</span></div>
           </div>
         </div>
         <div class="intel-section"><h4>Most Visited Areas</h4><div class="intel-bar-row" id="visitBars"></div></div>
@@ -447,21 +596,79 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
       <div class="alist" id="qrActions"></div>
     </div>
 
-    <!-- S16 DASHBOARD -->
+    <!-- S16 TREASURE HUNT -->
+    <div class="screen" id="s-hunt">
+      <div class="lbl gold">Treasure Hunt</div>
+      <h2>Follow the Clues.<br>Earn the Reward.</h2>
+      <div class="scrollable" id="huntContent"></div>
+    </div>
+
+    <!-- S17 AVATAR STUDIO -->
+    <div class="screen" id="s-avatar">
+      <div class="lbl purple">AgentX Avatar Studio</div>
+      <h2>Create Your<br>Summit Avatar</h2>
+      <div class="scrollable" id="avatarContent"></div>
+    </div>
+
+    <!-- S18 GAMES -->
+    <div class="screen" id="s-games">
+      <div class="lbl rose">AgentX Games</div>
+      <h2>Title-Themed<br>Games &amp; Puzzles</h2>
+      <div class="scrollable" id="gamesList"></div>
+    </div>
+
+    <!-- S19 BEST PROMPTS -->
+    <div class="screen" id="s-prompts">
+      <div class="lbl teal">Best Prompts</div>
+      <h2>Top AI Prompts<br>for Your Role</h2>
+      <div class="scrollable" id="promptsList"></div>
+    </div>
+
+    <!-- S20 GOLDEN POINTS -->
+    <div class="screen" id="s-golden">
+      <div class="lbl gold">Golden Points</div>
+      <h2>Scan ATS Team<br>QR Codes</h2>
+      <p class="sub" style="margin-bottom:14px">Find an ATS team member, scan their code, and earn exclusive Golden Points.</p>
+      <div class="scrollable" id="goldenList"></div>
+    </div>
+
+    <!-- S21 TOUCHPOINT TRACKER -->
+    <div class="screen" id="s-touchpoints">
+      <div class="lbl teal">Touchpoint Tracker</div>
+      <h2>Venue Check-Ins</h2>
+      <p class="sub" style="margin-bottom:12px">Visit touchpoints across the venue to earn points.</p>
+      <div class="scrollable" id="touchpointList"></div>
+    </div>
+
+    <!-- S22 BOOK SESSION -->
+    <div class="screen" id="s-book">
+      <div class="lbl green">Book with ATS</div>
+      <h2>MVP Strategy<br>Session</h2>
+      <div class="scrollable" id="bookContent"></div>
+    </div>
+
+    <!-- S23 DASHBOARD -->
     <div class="screen" id="s-dash">
-      <div class="lbl amber">My Insights Dashboard</div>
-      <h2>Your Summary</h2>
+      <div class="lbl amber">My AgentX Dashboard</div>
+      <h2>My Progress</h2>
       <div class="scrollable">
+        <!-- Points hero -->
+        <div style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.08));border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px">
+          <div style="font-size:42px;font-weight:800;background:linear-gradient(135deg,var(--gold),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1" id="d-pts-hero">0</div>
+          <div style="font-size:12px;color:var(--m);margin-top:4px">Total Points Earned</div>
+          <button onclick="openPtsModal()" style="margin-top:10px;font-size:11.5px;font-weight:700;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);border-radius:8px;padding:7px 16px;cursor:pointer;min-height:36px">View Leaderboard &amp; Activities</button>
+        </div>
         <div class="ds"><h4>Your Profile</h4>
           <div class="dash-row"><div class="dash-chip">👤 <span id="d-role">—</span></div></div>
           <div class="dash-row" id="d-pains"></div>
         </div>
+        <div class="ds"><h4>Summit Progress</h4><div id="d-progress"></div></div>
         <div class="ds"><h4>People Like You Are Doing</h4><div class="social-row" id="d-social"></div></div>
         <div class="ds"><h4>Recommended for You</h4><div id="d-recs"></div></div>
         <div class="ds"><h4>Recommended ATS Initiatives</h4><div id="d-inits"></div></div>
-        <div class="ds"><h4>Suggested AI Tools</h4><div id="d-tools"></div></div>
+        <div class="ds"><h4>Suggested AI Tools</h4><div id="d-tools-dash"></div></div>
         <div class="ds"><h4>Next Steps</h4><div id="d-nexts"></div></div>
-        <button class="btn teal-btn" id="bookBtn" onclick="bookSession()" style="margin-bottom:10px">Book a Follow-Up Session</button>
+        <button class="btn teal-btn" onclick="navTo('s-book')" style="margin-bottom:10px">Book a Follow-Up Session</button>
         <button class="btn ghost" onclick="navTo('s-action')">Continue Exploring</button>
       </div>
     </div>
@@ -477,21 +684,100 @@ h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-he
     <button class="nav-btn" onclick="navTo('s-dash')" id="nb-dash"><div class="ni">👤</div>Mine</button>
   </div>
 
+  <!-- FOOTER -->
   <footer class="global-footer">
-    <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">Explore more from ATS ↗</a>
+    <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer" class="footer-link">
+      <div class="footer-dot"></div>
+      <span class="footer-text">Explore the ATS Innovation Hub</span>
+      <span class="footer-arr">↗</span>
+    </a>
   </footer>
-
 </div>
+
 <script>
-// ── STATE ──
-const P={role:null,pains:[],suggestions:[],visited:new Set(),actions:[]};
-const EXPLORE_SCREENS=['s-feed','s-explore','s-concierge','s-problems','s-intel','s-qr','s-dash'];
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const P={role:null,pains:[],suggestions:[],visited:new Set(),actions:[],
+  points:0,
+  acts:{onboarding:false,qr_scanned:false,hunt_complete:false,avatar_created:false,
+        game_played:false,prompt_saved:false,booked:false,
+        team_ryan:false,team_vedant:false,team_priyal:false,team_anish:false},
+  hunt_step:0,tp_visited:{},avatar_style:null,book_state:{type:null,member:null,time:null}
+};
+const EXPLORE_SCREENS=['s-feed','s-explore','s-concierge','s-problems','s-intel','s-qr','s-dash','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-touchpoints','s-book'];
 
-// Offline detection
-window.addEventListener('online',()=>document.getElementById('offlineBanner').classList.remove('vis'));
-window.addEventListener('offline',()=>document.getElementById('offlineBanner').classList.add('vis'));
-if(!navigator.onLine)document.getElementById('offlineBanner').classList.add('vis');
+// ── POINTS SYSTEM ──
+const PT_VALS={onboarding:50,qr_scanned:25,hunt_complete:150,avatar_created:75,
+  game_played:50,prompt_saved:100,booked:125,
+  team_ryan:200,team_vedant:200,team_priyal:200,team_anish:200};
 
+const LEADERBOARD=[
+  {name:'Sarah M.',score:720,you:false},{name:'James T.',score:615,you:false},
+  {name:'You',score:0,you:true},{name:'Marcus R.',score:480,you:false},{name:'Lisa K.',score:355,you:false}
+];
+
+function addPoints(key,label){
+  if(P.acts[key])return;
+  P.acts[key]=true;
+  const val=PT_VALS[key]||0;
+  P.points+=val;
+  document.getElementById('ptsDisplay').textContent=P.points;
+  document.getElementById('d-pts-hero').textContent=P.points;
+  showToast(`+${val} pts — ${label}`);
+  _logFull('points:'+key+':+'+val);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function openPtsModal(){
+  LEADERBOARD[2].score=P.points;
+  document.getElementById('modalPts').textContent=P.points;
+  const acts=[
+    {name:'Onboarding Complete',pts:50,key:'onboarding'},
+    {name:'QR Touchpoint Scanned',pts:25,key:'qr_scanned'},
+    {name:'Treasure Hunt Complete',pts:150,key:'hunt_complete'},
+    {name:'Avatar Created',pts:75,key:'avatar_created'},
+    {name:'Game Played',pts:50,key:'game_played'},
+    {name:'Prompt Saved',pts:100,key:'prompt_saved'},
+    {name:'ATS Session Booked',pts:125,key:'booked'},
+    {name:'Scanned Ryan\'s QR',pts:200,key:'team_ryan'},
+    {name:'Scanned Vedant\'s QR',pts:200,key:'team_vedant'},
+    {name:'Scanned Priyal\'s QR',pts:200,key:'team_priyal'},
+    {name:'Scanned Anish\'s QR',pts:200,key:'team_anish'},
+  ];
+  document.getElementById('actList').innerHTML=acts.map(a=>`
+    <div class="act-row">
+      <div class="act-name">${a.name}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="act-pts">+${a.pts}</div>
+        <div class="act-status ${P.acts[a.key]?'done-tag':'todo-tag'}">${P.acts[a.key]?'Done':'To Do'}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('lbList').innerHTML=LEADERBOARD.map((p,i)=>`
+    <div class="lb-row">
+      <div class="lb-rank ${i<3?'top'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="lb-name">${p.name}${p.you?'<span class="lb-you">You</span>':''}</div>
+      <div class="lb-score">${p.you?P.points:p.score}</div>
+    </div>`).join('');
+  document.getElementById('ptsModal').classList.add('open');
+}
+function closePtsModal(e){
+  if(!e||e.target===document.getElementById('ptsModal'))
+    document.getElementById('ptsModal').classList.remove('open');
+}
+function closeBotModal(e){
+  if(!e||e.target===document.getElementById('botModal'))
+    document.getElementById('botModal').classList.remove('open');
+}
+
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
 const SUGG={
   'Manual work':{icon:'⚡',text:'Automate repetitive tasks in your workflow'},
   'Delays':{icon:'🚀',text:'Reduce turnaround time with AI-assisted tools'},
@@ -499,11 +785,51 @@ const SUGG={
   'Communication':{icon:'🔗',text:'Close communication gaps with AI-powered routing'},
   'Compliance':{icon:'🛡️',text:'Strengthen compliance with automated monitoring'},
 };
-const DEFS=[
-  {icon:'⚡',text:'Automate repetitive tasks in your workflow'},
-  {icon:'📊',text:'Improve visibility across your processes'},
-  {icon:'🚀',text:'Reduce turnaround time using AI-assisted tools'},
+const DEFS=[{icon:'⚡',text:'Automate repetitive tasks'},{icon:'📊',text:'Improve process visibility'},{icon:'🚀',text:'Reduce turnaround time'}];
+
+const CLUES=[
+  {num:'Clue 1 of 5',text:'"Where data becomes decision — seek the wall where risk becomes intelligence."',hint:'Hint: Think about where ATS showcases its innovation work.'},
+  {num:'Clue 2 of 5',text:'"Find the station where workflows move faster than paper ever could."',hint:'Hint: Head to the area where live prototypes are built.'},
+  {num:'Clue 3 of 5',text:'"Go to the place where underwriters meet AI, and complexity becomes clarity."',hint:'Hint: Look for the breakout space dedicated to risk tools.'},
+  {num:'Clue 4 of 5',text:'"Seek the lounge where deals are born — and conversations lead to solutions."',hint:'Hint: Where agents and innovators connect over ideas.'},
+  {num:'Clue 5 of 5',text:'"Return to the source — where the journey began and the ATS team awaits."',hint:'Hint: The registration and welcome area where it all started.'},
 ];
+
+const GAMES=[
+  {icon:'📝',color:'ibl',title:'Title Terms Word Search',sub:'Find 20 title industry terms hidden in the grid',desc:'From "escrow" to "encumbrance" — how fast can you find all 20 terms used daily in title workflows?',pts:50,done:false},
+  {icon:'🔍',color:'irs',title:'Fraud Flags Crossword',sub:'Test your fraud awareness knowledge',desc:'Can you fill in the blanks? Each answer is a real fraud signal, risk term, or compliance concept from the title industry.',pts:50,done:false},
+  {icon:'🔀',color:'ipu',title:'AI Workflow Scramble',sub:'Unscramble AI adoption terms',desc:'NOITAMOTUA. WOLFKROW. YTIVITCUDORP. Unscramble 10 words tied to AI-enabled workflows in real estate and title.',pts:50,done:false},
+  {icon:'🎯',color:'igd',title:'Summit Bingo',sub:'Complete summit activities to win',desc:'Check off experiences across the event — QR scans, session attended, team member met, demo watched, prompt saved.',pts:50,done:false},
+];
+
+const BEST_PROMPTS=[
+  {cat:'Agent',color:'var(--ac)',text:'Summarize this title commitment document and flag any unusual requirements or conditions.'},
+  {cat:'Underwriter',color:'var(--ac2)',text:'Identify the top three risk factors in this policy application based on the property history.'},
+  {cat:'Executive',color:'var(--teal)',text:'Compare our current underwriting approval workflow against an AI-assisted equivalent. Show time savings.'},
+  {cat:'Operations',color:'var(--amber)',text:'Draft a follow-up communication for a delayed title search, keeping tone professional and solution-focused.'},
+  {cat:'All Roles',color:'var(--gold)',text:'Explain this reconciliation discrepancy in simple language so it can be communicated clearly to the client.'},
+  {cat:'Agent',color:'var(--ac)',text:'Identify potential fraud signals in this transaction based on the document set provided.'},
+  {cat:'All Roles',color:'var(--green)',text:'List the five most common manual steps in this workflow and suggest how each could be automated.'},
+];
+
+const TEAM=[
+  {name:'Ryan',role:'Strategy & Vision',icon:'🏢',color:'rgba(79,142,247,.15)',topic:'Talk strategy',key:'team_ryan'},
+  {name:'Vedant',role:'AI &amp; Product',icon:'🤖',color:'rgba(124,106,247,.15)',topic:'See product vision',key:'team_vedant'},
+  {name:'Priyal',role:'Design &amp; Experience',icon:'🎨',color:'rgba(13,148,136,.15)',topic:'Ask about AI workflows',key:'team_priyal'},
+  {name:'Anish',role:'Live Builder',icon:'⚡',color:'rgba(245,158,11,.15)',topic:'See live builder logic',key:'team_anish'},
+];
+
+const TOUCHPOINTS=[
+  {name:'Demo Zone',icon:'🔬',color:'ibl',sub:'AI Workflow Demonstrations',pts:25},
+  {name:'ATS Initiative Wall',icon:'🚀',color:'ign',sub:'Tools, Briefs & Innovation',pts:25},
+  {name:'Innovation Lounge',icon:'💡',color:'ipu',sub:'Networking & Exploration Hub',pts:25},
+  {name:'Live Demo Station',icon:'⚡',color:'iam',sub:'From Problem to Prototype',pts:25},
+  {name:'Breakout Hall A',icon:'🎓',color:'itl',sub:'AI Use Case Sessions',pts:25},
+  {name:'Breakout Hall B',icon:'📊',color:'irs',sub:'Operations & Workflow Sessions',pts:25},
+  {name:'Vendor Hub',icon:'🤝',color:'igd',sub:'Partner & Technology Showcase',pts:25},
+  {name:'Registration Desk',icon:'📋',color:'ibl',sub:'Summit Welcome Area',pts:25},
+];
+
 const INITIATIVES=[
   {icon:'🤖',color:'ibl',name:'Current AI',desc:'Internal AI capability framework for WFG workflows',why:'Brings structured AI thinking into everyday operations.',cta:'See related demo'},
   {icon:'📡',color:'itl',name:'FieldIQ',desc:'Field intelligence and agent performance analytics',why:'Gives agents and leaders real-time visibility into what\'s working.',cta:'View use case'},
@@ -521,10 +847,10 @@ const TOOLS=[
   {icon:'⚡',color:'irs',name:'ATS Workflow Engine',use:'Internal automation and routing for ATS processes',why:'Connects tools, people, and tasks without manual handoffs.',brief:false},
 ];
 const BRIEFS=[
-  {vol:'Vol. 1',title:'The AI Readiness Issue',tool:'Perplexity',topic:'Phishing awareness + AI fraud',teaser:'How WFG teams can build AI fluency without technical backgrounds — plus the fraud trends you need to know now.'},
-  {vol:'Vol. 2',title:'Automation in the Field',tool:'DocAnalyzer',topic:'Document fraud & synthetic identity',teaser:'A practical look at where automation creates the most value for agents and underwriters — with real examples.'},
-  {vol:'Vol. 3',title:'The Visibility Gap',tool:'Mapify + Orbital',topic:'Data manipulation & deepfake risk',teaser:'Why most teams are working blind — and how AI dashboards and visualization tools close the gap.'},
-  {vol:'Vol. 4',title:'Building AI Habits',tool:'Explainpaper',topic:'AI-assisted fraud at scale',teaser:'The simplest ways to embed AI into daily workflows without disrupting how teams already work.'},
+  {vol:'Vol. 1',title:'The AI Readiness Issue',tool:'Perplexity',topic:'Phishing awareness + AI fraud',teaser:'How WFG teams can build AI fluency without technical backgrounds — plus the fraud trends you need to know.'},
+  {vol:'Vol. 2',title:'Automation in the Field',tool:'DocAnalyzer',topic:'Document fraud & synthetic identity',teaser:'A practical look at where automation creates the most value for agents and underwriters.'},
+  {vol:'Vol. 3',title:'The Visibility Gap',tool:'Mapify + Orbital',topic:'Data manipulation & deepfake risk',teaser:'Why most teams are working blind — and how AI dashboards close the gap.'},
+  {vol:'Vol. 4',title:'Building AI Habits',tool:'Explainpaper',topic:'AI-assisted fraud at scale',teaser:'The simplest ways to embed AI into daily workflows without disrupting how teams work.'},
 ];
 const PROBLEMS=[
   {icon:'📄',label:'Manual Policy Typing',current:['Repetitive manual entry','No document parsing','High error rate'],ai:['Auto-fill from documents','Smart field detection','Error flagging'],proto:'Policy Assistant Tool'},
@@ -536,26 +862,26 @@ const PROBLEMS=[
 ];
 const CONCIERGE_MAP={
   'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong>. The live build starts soon.`,
-  'Show me something relevant':r=>`For a <strong>${r.role||'professional'}</strong> focused on ${r.pains.join(' and ')||'workflow improvement'}, the <em>AI for Operational Efficiency</em> breakout at 2:30 PM is your top session.`,
-  'What are others exploring?':()=>`Right now <strong>47 attendees</strong> are in the Demo Zone. Top challenge across all profiles: <strong>Delays in Processing</strong>.`,
+  'Show me something relevant':r=>`For a <strong>${r.role||'professional'}</strong> focused on ${r.pains.join(' and ')||'workflow improvement'}, the <em>AI for Operational Efficiency</em> breakout at 2:30 PM is your top pick.`,
+  'What are others exploring?':()=>`Right now <strong>47 attendees</strong> are in the Demo Zone. Top challenge today: <strong>Delays in Processing</strong>.`,
   'Find sessions for my role':r=>`Found <strong>3 sessions</strong> for ${r.role||'your role'}:<br>• AI Workflow Automation — 2:30 PM<br>• Reducing Operational Delays — 3:15 PM<br>• Executive AI Briefing — 4:00 PM`,
-  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong> for document workflows, <strong>Perplexity</strong> for fast research, and the <strong>ATS Workflow Engine</strong> for automation.`,
-  'Which ATS initiative is most relevant?':r=>`Based on your profile, <strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your most relevant ATS initiative right now.`,
+  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong>, <strong>Perplexity</strong>, and the <strong>ATS Workflow Engine</strong> are your highest-value tools.`,
+  'Which ATS initiative is most relevant?':r=>`Based on your profile, <strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is most relevant right now.`,
   'Show me the latest Intelligence Brief':()=>`Latest: <strong>Brief Vol. 4 — "Building AI Habits"</strong>, featuring <em>Explainpaper</em> and a deep dive on AI-assisted fraud at scale.`,
-  'What to explore before the keynote?':()=>`(1) <strong>Summit Intelligence</strong> — see today's trends. (2) <strong>Try a Real Problem</strong> — preview what the live demo solves. (3) Check the <strong>Demo Zone QR</strong>.`,
+  'What to explore before the keynote?':()=>`(1) <strong>Summit Intelligence</strong> for today's trends. (2) <strong>Try a Real Problem</strong> to preview the live demo. (3) <strong>Treasure Hunt</strong> — Clue 1 starts at the ATS Initiative Wall.`,
 };
 const QR_LOCATIONS=[
   {name:'Demo Zone',sub:'AI Workflow Demonstrations',insight:{title:'Trending here',body:'47 people exploring. Top topic: agent automation and reducing manual workflow time.'},actions:['See what this solves','Watch live demo','Save for later']},
-  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',insight:{title:'Did you know',body:'FieldIQ is being piloted here today. Ask the team for a 3-minute walkthrough.'},actions:['View FieldIQ overview','Connect with the ATS team','Grab a resource']},
+  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',insight:{title:'Did you know',body:'FieldIQ is being piloted here today. Ask the team for a 3-minute walkthrough.'},actions:['View FieldIQ overview','Connect with ATS team','Grab a resource']},
   {name:'Breakout Hall B',sub:'Hands-On AI Sessions',insight:{title:'Session starting soon',body:'AI for Operational Efficiency begins in 8 minutes. 31 seats remaining.'},actions:['Join current session','View session schedule','Save this session']},
-  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation Work',insight:{title:'Featured today',body:'ATS Intelligence Brief Vol. 4 is available here. Scan to read on your device.'},actions:['Read latest brief','Explore all initiatives','Learn more at ATS hub']},
-  {name:'Live Demo Station',sub:'From Problem to Prototype',insight:{title:"What's being built",body:"Today's live build: a lightweight reconciliation portal for RECS tracking — in under 20 minutes."},actions:['See the build in progress','View problem statement','Ask the builder a question']},
+  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation Work',insight:{title:'Featured today',body:'ATS Intelligence Brief Vol. 4 is available here. Clue 1 of the Treasure Hunt starts here!'},actions:['Read latest brief','Explore all initiatives','Start Treasure Hunt']},
+  {name:'Live Demo Station',sub:'From Problem to Prototype',insight:{title:"What's being built",body:"Today's live build: a lightweight reconciliation portal for RECS tracking — in under 20 minutes."},actions:['See the build in progress','View problem statement','Ask the builder']},
 ];
 const NEXTS={
   'Agent':['Book a 1:1 automation walkthrough','Join the Agent AI session at 3:15 PM','Explore the ATS Workflow Engine'],
-  'Underwriter':['See the risk automation demo','Book an underwriting AI briefing','Review Brief Vol. 2 on document fraud'],
-  'Executive':['Book executive AI briefing','Review today\'s Summit Intelligence report','Read ATS Brief Vol. 4'],
-  'Operations':['See workflow automation tools','Book an ops efficiency session','Explore FieldIQ for field visibility'],
+  'Underwriter':['See the risk automation demo','Book an underwriting AI briefing','Review Brief Vol. 2'],
+  'Executive':['Book executive AI briefing','Review Summit Intelligence','Read ATS Brief Vol. 4'],
+  'Operations':['See workflow automation tools','Book an ops efficiency session','Explore FieldIQ'],
 };
 const SOCIAL_DATA={
   'Agent':[{pct:'71%',lbl:'Visited Demo Zone'},{pct:'54%',lbl:'Explored AI tools'},{pct:'43%',lbl:'Booked a session'}],
@@ -563,26 +889,18 @@ const SOCIAL_DATA={
   'Executive':[{pct:'82%',lbl:'Visited Intel View'},{pct:'57%',lbl:'Joined AI briefing'},{pct:'49%',lbl:'Explored initiatives'}],
   'Operations':[{pct:'74%',lbl:'Explored workflows'},{pct:'62%',lbl:'Visited Demo Zone'},{pct:'45%',lbl:'Tried live demo'}],
 };
-const ROLE_INITS={
-  'Agent':['Agent Workflow Modernization','Current AI'],
-  'Underwriter':['Fraud AI Enablement','Current AI'],
-  'Executive':['ATS Intelligence Brief','FieldIQ'],
-  'Operations':['Agent Workflow Modernization','FieldIQ'],
-};
-const ROLE_TOOLS={
-  'Agent':['ATS Workflow Engine','DocAnalyzer'],
-  'Underwriter':['DocAnalyzer','Perplexity'],
-  'Executive':['Perplexity','Orbital'],
-  'Operations':['ATS Workflow Engine','Mapify'],
-};
+const ROLE_INITS={'Agent':['Agent Workflow Modernization','Current AI'],'Underwriter':['Fraud AI Enablement','Current AI'],'Executive':['ATS Intelligence Brief','FieldIQ'],'Operations':['Agent Workflow Modernization','FieldIQ']};
+const ROLE_TOOLS={'Agent':['ATS Workflow Engine','DocAnalyzer'],'Underwriter':['DocAnalyzer','Perplexity'],'Executive':['Perplexity','Orbital'],'Operations':['ATS Workflow Engine','Mapify']};
 
-// ── NAV ──
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
 let cur='s-welcome';
 const ONBOARDING=['s-welcome','s-role','s-pain','s-loading','s-suggest'];
 const PROG_MAP={'s-role':[1,0,0],'s-pain':[1,1,0],'s-loading':[1,1,0],'s-suggest':[1,1,1]};
-const SHOW_PILL=['s-pain','s-loading','s-suggest','s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash'];
-const SHOW_NAV=['s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash'];
-const NB_MAP={'s-action':'nb-home','s-feed':'nb-feed','s-explore':'nb-exp','s-initiatives':'nb-exp','s-tools':'nb-exp','s-briefs':'nb-exp','s-problems':'nb-exp','s-intel':'nb-intel','s-dash':'nb-dash'};
+const SHOW_PILL=['s-pain','s-loading','s-suggest','s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-touchpoints','s-book'];
+const SHOW_NAV=['s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-touchpoints','s-book'];
+const NB_MAP={'s-action':'nb-home','s-feed':'nb-feed','s-explore':'nb-exp','s-initiatives':'nb-exp','s-tools':'nb-exp','s-briefs':'nb-exp','s-problems':'nb-exp','s-hunt':'nb-exp','s-avatar':'nb-exp','s-games':'nb-exp','s-prompts':'nb-exp','s-golden':'nb-exp','s-touchpoints':'nb-exp','s-book':'nb-exp','s-intel':'nb-intel','s-dash':'nb-dash','s-concierge':'nb-home','s-qr':'nb-home'};
 
 function goTo(id){_nav(id,false);}
 function navTo(id){_nav(id,true);}
@@ -593,17 +911,15 @@ function _nav(id,track){
   prev.classList.remove('active');prev.classList.add('exit');
   setTimeout(()=>prev.classList.remove('exit'),300);
   next.classList.add('active');cur=id;
-  _shell(id);if(track)_trackE(id);_log(id);
-  if(id==='s-feed')_feed();
-  if(id==='s-qr')_qr();
-  if(id==='s-dash')_dash();
-  if(id==='s-problems')_problems();
-  if(id==='s-intel')_intel();
-  if(id==='s-concierge')_resetChat();
-  if(id==='s-initiatives')_initiatives();
-  if(id==='s-tools')_toolsScreen();
-  if(id==='s-briefs')_briefs();
-  if(id==='s-explore')_explore();
+  _shell(id);if(track)_trackE(id);_logFull('screen:'+id);
+  const FN={
+    's-feed':_feed,'s-qr':_qr,'s-dash':_dash,'s-problems':_problems,
+    's-intel':_intel,'s-concierge':_resetChat,'s-initiatives':_initiatives,
+    's-tools':_toolsScreen,'s-briefs':_briefs,'s-explore':_explore,
+    's-hunt':_hunt,'s-avatar':_avatar,'s-games':_games,
+    's-prompts':_prompts,'s-golden':_golden,'s-touchpoints':_tps,'s-book':_book,
+  };
+  if(FN[id])FN[id]();
 }
 function _shell(id){
   const onb=ONBOARDING.includes(id);
@@ -615,21 +931,23 @@ function _shell(id){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('cur'));
   if(NB_MAP[id])document.getElementById(NB_MAP[id])?.classList.add('cur');
   document.getElementById('exploreBar').classList.toggle('vis',SHOW_NAV.includes(id));
+  const showPts=SHOW_NAV.includes(id);
+  document.getElementById('ptsPill').style.display=showPts?'flex':'none';
 }
 function _trackE(id){
-  if(EXPLORE_SCREENS.includes(id)){
-    P.visited.add(id);const n=P.visited.size;
+  if(EXPLORE_SCREENS.includes(id)){P.visited.add(id);const n=P.visited.size;
     document.getElementById('expLabel').textContent=`You've explored ${n} of 7 experiences`;
     document.querySelectorAll('.exp-dot').forEach((d,i)=>d.classList.toggle('lit',i<n));
   }
 }
-document.getElementById('expDots').innerHTML=EXPLORE_SCREENS.map(()=>`<div class="exp-dot"></div>`).join('');
+document.getElementById('expDots').innerHTML=EXPLORE_SCREENS.slice(0,7).map(()=>`<div class="exp-dot"></div>`).join('');
 
-// ── ONBOARDING ──
+// ══════════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════════
 function selectRole(el,role){
   document.querySelectorAll('#s-role .tc').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');P.role=role;_log('role:'+role);
-  setTimeout(()=>goTo('s-pain'),260);
+  el.classList.add('sel');P.role=role;_logFull('role:'+role);setTimeout(()=>goTo('s-pain'),260);
 }
 function togglePain(el,pain){
   const sel=el.classList.contains('sel');
@@ -651,11 +969,17 @@ function goToAnalysis(){
   ];
   let i=0;const t=setInterval(()=>{
     i++;if(i<msgs.length){document.getElementById('loadMsg').textContent=msgs[i][0];document.getElementById('loadSub').textContent=msgs[i][1];}
-    else{clearInterval(t);document.getElementById('suggestList').innerHTML=P.suggestions.slice(0,3).map((s,j)=>`<div class="sc" style="animation-delay:${j*.1}s"><div class="sbadge">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');goTo('s-suggest');}
+    else{clearInterval(t);
+      document.getElementById('suggestList').innerHTML=P.suggestions.slice(0,3).map((s,j)=>`<div class="sc" style="animation-delay:${j*.1}s"><div class="sbadge">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');
+      goTo('s-suggest');
+      addPoints('onboarding','Profile Complete');
+    }
   },720);
 }
 
-// ── FEED ──
+// ══════════════════════════════════════════
+// LIVE FEED
+// ══════════════════════════════════════════
 let _fs=false,_cd;
 const FEED_DATA=[
   {icon:'🔥',title:'47 people in the Demo Zone',sub:'Highest traffic area right now',tag:'LIVE',cls:'tr'},
@@ -669,47 +993,39 @@ function _feed(){
   _cd=setInterval(()=>{if(cur!=='s-feed')return;s--;if(s<=0){el.textContent='NOW';clearInterval(_cd);return;}el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
 }
 
-// ── EXPLORE ──
+// ══════════════════════════════════════════
+// EXPLORE
+// ══════════════════════════════════════════
 function _explore(){
   const role=P.role||'Executive';
   const inits=(ROLE_INITS[role]||['Current AI','FieldIQ']).map(n=>{
     const it=INITIATIVES.find(x=>x.name===n);
     return it?`<button class="ab" onclick="navTo('s-initiatives')"><div class="ai-icon ${it.color}">${it.icon}</div><div class="at"><strong>${it.name}</strong><span>${it.desc.substring(0,40)}…</span></div><div class="arr">›</div></button>`:'';
   }).join('');
-  document.getElementById('exploreRecs').innerHTML=inits;
+  // not used in new layout but kept for data readiness
 }
 
-// ── INITIATIVES ──
+// ══════════════════════════════════════════
+// INITIATIVES / TOOLS / BRIEFS
+// ══════════════════════════════════════════
 function _initiatives(){
   document.getElementById('initiativesList').innerHTML=INITIATIVES.map((it,i)=>
-    `<div class="init-card" onclick="_toggleInit(${i})">
+    `<div class="init-card" onclick="_ti(${i})">
       <div class="init-header"><div class="ai-icon ${it.color}" style="width:34px;height:34px;font-size:16px">${it.icon}</div><div><div class="init-title">${it.name}</div><div class="init-desc">${it.desc}</div></div></div>
       <div id="ie${i}" style="display:none"><div class="init-expand"><div class="init-why">${it.why}</div><div class="init-cta">→ ${it.cta}</div></div></div>
-    </div>`
-  ).join('');
+    </div>`).join('');
 }
-function _toggleInit(i){
-  const el=document.getElementById('ie'+i);const vis=el.style.display==='block';
-  document.querySelectorAll('[id^="ie"]').forEach(e=>e.style.display='none');
-  if(!vis){el.style.display='block';_log('initiative:'+INITIATIVES[i].name);}
-}
+function _ti(i){const el=document.getElementById('ie'+i);const v=el.style.display==='block';document.querySelectorAll('[id^="ie"]').forEach(e=>e.style.display='none');if(!v){el.style.display='block';_logFull('initiative:'+INITIATIVES[i].name);}}
 
-// ── TOOLS ──
 function _toolsScreen(){
   document.getElementById('toolsList').innerHTML=TOOLS.map((t,i)=>
-    `<div class="tool-card" onclick="_toggleTool(${i})">
+    `<div class="tool-card" onclick="_tt(${i})">
       <div class="tool-header"><div class="ai-icon ${t.color}" style="width:32px;height:32px;font-size:15px">${t.icon}</div><div style="flex:1"><div class="tool-name">${t.name}${t.brief?'<span class="tool-brief-tag">ATS Brief</span>':''}</div><div class="tool-use">${t.use}</div></div></div>
       <div id="te${i}" style="display:none"><div class="tool-expand"><div class="tool-why">${t.why}</div></div></div>
-    </div>`
-  ).join('');
+    </div>`).join('');
 }
-function _toggleTool(i){
-  const el=document.getElementById('te'+i);const vis=el.style.display==='block';
-  document.querySelectorAll('[id^="te"]').forEach(e=>e.style.display='none');
-  if(!vis){el.style.display='block';_log('tool:'+TOOLS[i].name);}
-}
+function _tt(i){const el=document.getElementById('te'+i);const v=el.style.display==='block';document.querySelectorAll('[id^="te"]').forEach(e=>e.style.display='none');if(!v){el.style.display='block';_logFull('tool:'+TOOLS[i].name);}}
 
-// ── BRIEFS ──
 function _briefs(){
   document.getElementById('briefsList').innerHTML=BRIEFS.map((b,i)=>
     `<div class="brief-card">
@@ -721,12 +1037,13 @@ function _briefs(){
         <button class="brief-btn" onclick="_bAct('${b.vol}','highlights')">Highlights</button>
         <button class="brief-btn" onclick="navTo('s-tools')">See Tools</button>
       </div>
-    </div>`
-  ).join('');
+    </div>`).join('');
 }
-function _bAct(vol,a){_log('brief:'+vol+':'+a);}
+function _bAct(vol,a){_logFull('brief:'+vol+':'+a);}
 
-// ── CONCIERGE ──
+// ══════════════════════════════════════════
+// CONCIERGE
+// ══════════════════════════════════════════
 function _resetChat(){
   document.getElementById('chatArea').innerHTML=`<div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div>`;
   document.querySelectorAll('.pb').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});
@@ -738,44 +1055,40 @@ function askC(btn,q){
   setTimeout(()=>{
     const fn=CONCIERGE_MAP[q];
     area.innerHTML+=`<div class="msg ai">${fn?fn(P):'Let me find the best option for your profile.'}</div>`;
-    area.scrollTop=area.scrollHeight;_log('concierge:'+q);
+    area.scrollTop=area.scrollHeight;_logFull('concierge:'+q);
   },650);
 }
 
-// ── PROBLEMS ──
+// ══════════════════════════════════════════
+// PROBLEMS
+// ══════════════════════════════════════════
 function _problems(){
   document.getElementById('solutionPanel').innerHTML='';
-  document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>
-    `<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div class="prob-icon">${p.icon}</div><div class="prob-label">${p.label}</div></div>`
-  ).join('');
+  document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>`<div class="prob-card" onclick="_selP(${i})" id="pb${i}"><div class="prob-icon">${p.icon}</div><div class="prob-label">${p.label}</div></div>`).join('');
 }
-function _selProb(i){
+function _selP(i){
   document.querySelectorAll('.prob-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById('pb'+i).classList.add('sel');
   const p=PROBLEMS[i];
-  document.getElementById('solutionPanel').innerHTML=`
-    <div class="solution-panel">
-      <div class="sol-title">AI Solution Breakdown — ${p.label}</div>
-      <div class="sol-row">
-        <div class="sol-block"><h5 class="cur">Current State</h5><ul>${p.current.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-        <div class="sol-block"><h5 class="aih">AI Solution</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div>
-      </div>
-      <div class="proto-badge"><span class="proto-arr">→</span><span>Prototype idea: <strong>${p.proto}</strong></span></div>
-    </div>`;
+  document.getElementById('solutionPanel').innerHTML=`<div class="solution-panel"><div class="sol-title">AI Solution — ${p.label}</div><div class="sol-row"><div class="sol-block"><h5 class="cur">Current State</h5><ul>${p.current.map(c=>`<li>${c}</li>`).join('')}</ul></div><div class="sol-block"><h5 class="aih">AI Solution</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div></div><div class="proto-badge"><span class="proto-arr">→</span><span>Prototype: <strong>${p.proto}</strong></span></div></div>`;
   document.getElementById('solutionPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-  _log('problem:'+p.label);
+  _logFull('problem:'+p.label);
 }
 
-// ── INTEL ──
+// ══════════════════════════════════════════
+// INTEL
+// ══════════════════════════════════════════
 function _intel(){
-  const C=[{label:'Delays in processing',pct:62},{label:'Manual work',pct:48},{label:'Visibility issues',pct:33},{label:'Communication gaps',pct:27},{label:'Compliance concerns',pct:19}];
+  const C=[{label:'Delays',pct:62},{label:'Manual work',pct:48},{label:'Visibility',pct:33},{label:'Communication',pct:27},{label:'Compliance',pct:19}];
   document.getElementById('intelBars').innerHTML=C.map(c=>`<div class="intel-bar"><div class="intel-label">${c.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${c.pct}%"></div></div><div class="intel-pct">${c.pct}%</div></div>`).join('');
-  const V=[{label:'Demo Zone',pct:78},{label:'AI Concierge',pct:65},{label:'Breakout Sessions',pct:54},{label:'ATS Initiatives',pct:41}];
+  const V=[{label:'Demo Zone',pct:78},{label:'AI Concierge',pct:65},{label:'Breakouts',pct:54},{label:'ATS Initiatives',pct:41}];
   document.getElementById('visitBars').innerHTML=V.map(v=>`<div class="intel-bar"><div class="intel-label">${v.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${v.pct}%"></div></div><div class="intel-pct">${v.pct}%</div></div>`).join('');
   setTimeout(()=>document.querySelectorAll('.intel-fill').forEach(el=>el.style.width=el.dataset.p),80);
 }
 
-// ── QR ──
+// ══════════════════════════════════════════
+// QR
+// ══════════════════════════════════════════
 function _qr(){
   const loc=QR_LOCATIONS[Math.floor(Math.random()*QR_LOCATIONS.length)];
   document.getElementById('qrName').textContent=loc.name;
@@ -783,34 +1096,242 @@ function _qr(){
   document.getElementById('qrInsight').innerHTML=`<strong>${loc.insight.title}</strong>${loc.insight.body}`;
   document.getElementById('qrActions').innerHTML=loc.actions.map(a=>`<button class="ab" onclick="_qrAct(this,'${a}','${loc.name}')"><div class="ai-icon itl" style="font-size:13px">›</div><div class="at"><strong>${a}</strong><span>at ${loc.name}</span></div><div class="arr">›</div></button>`).join('');
 }
-function _qrAct(el,a,loc){el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';_log('qr:'+loc+':'+a);}
+function _qrAct(el,a,loc){
+  el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';
+  addPoints('qr_scanned','QR Touchpoint Scanned');
+  _logFull('qr:'+loc+':'+a);
+}
 
-// ── DASHBOARD ──
+// ══════════════════════════════════════════
+// TREASURE HUNT
+// ══════════════════════════════════════════
+function _hunt(){
+  const step=P.hunt_step;
+  if(step>=CLUES.length){
+    document.getElementById('huntContent').innerHTML=`<div class="hunt-complete"><div class="trophy">🏆</div><h3>Treasure Hunt Complete!</h3><p>You found all 5 clues and uncovered the full ATS innovation story.<br><br><strong style="color:var(--gold)">Reward Unlocked: Priority ATS Session + 150 Points</strong><br><br>Visit the ATS desk to claim your reward.</p></div>`;
+    return;
+  }
+  const c=CLUES[step];
+  const prog=CLUES.map((_,i)=>`<div class="hunt-step ${i<step?'done':i===step?'act':''}"></div>`).join('');
+  document.getElementById('huntContent').innerHTML=`
+    <div class="hunt-progress">${prog}</div>
+    <p style="font-size:11px;color:var(--m);margin-bottom:10px">${step} of ${CLUES.length} clues solved · ${step*30} pts earned so far</p>
+    <div class="clue-card">
+      <div class="clue-num">${c.num}</div>
+      <div class="clue-text">${c.text}</div>
+      <div class="clue-hint">${c.hint}</div>
+    </div>
+    <button class="btn gold-btn" onclick="_solveClue()" style="margin-bottom:10px">📷 Scan Next QR — Solve Clue ${step+1}</button>
+    <button class="btn ghost" onclick="navTo('s-qr')">Go to QR Scanner</button>`;
+  _logFull('hunt:clue_viewed:'+(step+1));
+}
+function _solveClue(){
+  P.hunt_step++;
+  if(P.hunt_step>=CLUES.length){addPoints('hunt_complete','Treasure Hunt Complete');}
+  else{showToast(`+30 pts — Clue ${P.hunt_step} Solved!`);}
+  _hunt();
+}
+
+// ══════════════════════════════════════════
+// AVATAR STUDIO
+// ══════════════════════════════════════════
+const AVATAR_STYLES=['Executive Agent','Modern Closer','Future Underwriter','Title Innovator'];
+const AVATAR_EMOJIS={'Executive Agent':'💼','Modern Closer':'🤝','Future Underwriter':'🔍','Title Innovator':'⚡'};
+let _avState=0,_avStyle=null,_avGenInt=null;
+function _avatar(){
+  _avState=P.acts.avatar_created?3:0;_renderAvatar();}
+function _renderAvatar(){
+  const c=document.getElementById('avatarContent');
+  if(_avState===0){
+    c.innerHTML=`<p style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:18px">Create your personalized summit avatar. Choose your style, generate your look, and print it at the ATS desk.</p><p style="font-size:11px;color:rgba(245,158,11,.7);margin-bottom:18px">⚡ Powered by Nano Banana integration — coming soon</p><div class="avatar-preview">🤳</div><button class="btn" onclick="_avState=1;_renderAvatar()">Take Selfie</button>`;
+  } else if(_avState===1){
+    c.innerHTML=`<div class="avatar-preview" id="avPrev">📸<div class="style-label">Captured</div></div><p style="font-size:13px;color:var(--m);margin-bottom:14px;text-align:center">Choose your avatar style</p><div class="style-grid">${AVATAR_STYLES.map(s=>`<div class="style-card ${_avStyle===s?'sel':''}" onclick="_selStyle('${s}')">${AVATAR_EMOJIS[s]} ${s}</div>`).join('')}</div><button class="btn" id="genBtn" style="opacity:${_avStyle?1:.4};pointer-events:${_avStyle?'all':'none'}" onclick="_avState=2;_renderAvatar()">Generate My Avatar</button>`;
+  } else if(_avState===2){
+    c.innerHTML=`<div style="text-align:center;padding:20px 0"><div class="avatar-preview" style="margin-bottom:16px">${AVATAR_EMOJIS[_avStyle]||'🎭'}<div class="style-label">${_avStyle||'AgentX'}</div></div><p style="font-size:13px;color:var(--m);margin-bottom:12px">Generating your ${_avStyle} avatar…</p><div class="gen-progress"><div class="gen-fill" id="genFill"></div></div></div>`;
+    let pct=0;clearInterval(_avGenInt);
+    _avGenInt=setInterval(()=>{pct+=3;const el=document.getElementById('genFill');if(el)el.style.width=pct+'%';if(pct>=100){clearInterval(_avGenInt);_avState=3;P.avatar_style=_avStyle;addPoints('avatar_created','Avatar Created');_renderAvatar();}},60);
+  } else {
+    c.innerHTML=`<div style="text-align:center"><div class="avatar-preview" style="background:linear-gradient(135deg,rgba(124,106,247,.25),rgba(79,142,247,.2));border-color:rgba(124,106,247,.5)">${AVATAR_EMOJIS[_avStyle]||'🎭'}<div class="style-label">${_avStyle||'AgentX'}</div></div><p style="font-size:16px;font-weight:700;margin-bottom:4px;margin-top:12px">Avatar Ready!</p><p style="font-size:13px;color:var(--m);margin-bottom:18px">Your ${_avStyle} avatar has been saved to your profile.</p></div><button class="btn teal-btn" onclick="_printAvatar()" style="margin-bottom:10px;animation:none">🖨️ Print at ATS Desk</button><button class="btn ghost" onclick="_saveAvatar()">Save to Profile</button>`;
+  }
+}
+function _selStyle(s){_avStyle=s;_renderAvatar();}
+function _printAvatar(){showToast('Print request sent to ATS desk!');_logFull('avatar:print');}
+function _saveAvatar(){showToast('Avatar saved to your profile');_logFull('avatar:saved');}
+
+// ══════════════════════════════════════════
+// GAMES
+// ══════════════════════════════════════════
+function _games(){
+  document.getElementById('gamesList').innerHTML=GAMES.map((g,i)=>
+    `<div class="game-card" onclick="_tg(${i})">
+      <div class="game-header">
+        <div class="game-icon ${g.color}">${g.icon}</div>
+        <div style="flex:1"><div class="game-title">${g.title}</div><div class="game-sub">${g.sub}</div></div>
+        ${g.done?'<div class="game-done-tag">Done ✓</div>':'<div class="pts-tag">+'+g.pts+' pts</div>'}
+      </div>
+      <div id="ge${i}" style="display:none">
+        <div class="game-expand"><p>${g.desc}</p><div class="game-btns"><button class="game-btn" onclick="_playGame(${i},event)">Play Now</button><button class="game-btn" style="background:rgba(255,255,255,.07);color:var(--m)" onclick="event.stopPropagation()">Preview</button></div></div>
+      </div>
+    </div>`).join('');
+}
+function _tg(i){const el=document.getElementById('ge'+i);const v=el.style.display==='block';document.querySelectorAll('[id^="ge"]').forEach(e=>e.style.display='none');if(!v)el.style.display='block';}
+function _playGame(i,e){
+  e.stopPropagation();
+  if(!GAMES[i].done){GAMES[i].done=true;addPoints('game_played','Game Played: '+GAMES[i].title);_logFull('game:played:'+GAMES[i].title);}
+  else{showToast('Already completed!');}
+  _games();
+}
+
+// ══════════════════════════════════════════
+// BEST PROMPTS
+// ══════════════════════════════════════════
+function _prompts(){
+  const top=BEST_PROMPTS[0];
+  document.getElementById('promptsList').innerHTML=`
+    <div class="top-prompt-banner"><div class="top-prompt-label">⭐ Top Prompt of the Day</div><div style="font-size:13px;font-weight:600;line-height:1.45;font-style:italic">${top.text}</div></div>
+    ${BEST_PROMPTS.map((p,i)=>`
+    <div class="prompt-card">
+      <div class="prompt-cat" style="color:${p.color}">${p.cat}</div>
+      <div class="prompt-text">${p.text}</div>
+      <div class="prompt-actions">
+        <button class="prompt-btn highlight" onclick="_savePrompt(${i},this)">Save Prompt</button>
+        <button class="prompt-btn" onclick="_tryPrompt(${i})">Try It</button>
+      </div>
+    </div>`).join('')}
+    <div style="margin-top:14px"><button class="btn teal-btn" onclick="_submitPrompt()" style="animation:none">Submit a Prompt — Earn 100 pts</button></div>`;
+}
+function _savePrompt(i,btn){
+  addPoints('prompt_saved','Best Prompt Saved');
+  btn.textContent='Saved ✓';btn.style.opacity='.5';btn.style.pointerEvents='none';
+  _logFull('prompt:saved:'+i);
+}
+function _tryPrompt(i){showToast('Prompt copied — try it in your AI tool');_logFull('prompt:tried:'+i);}
+function _submitPrompt(){showToast('+100 pts — Prompt Submitted!');addPoints('prompt_saved','Prompt Submitted');_logFull('prompt:submitted');}
+
+// ══════════════════════════════════════════
+// GOLDEN POINTS
+// ══════════════════════════════════════════
+function _golden(){
+  document.getElementById('goldenList').innerHTML=TEAM.map((m,i)=>
+    `<div class="team-card ${P.acts[m.key]?'scanned':''}" onclick="_tgold(${i})">
+      <div class="team-header">
+        <div class="team-avatar" style="background:${m.color}">${m.icon}</div>
+        <div style="flex:1"><div class="team-name">${m.name}<span class="scan-tag ${P.acts[m.key]?'done':'todo'}">${P.acts[m.key]?'✓ Scanned':'Not Yet'}</span></div><div class="team-role" style="font-size:11.5px;color:var(--m)">${m.role} · ${m.topic}</div></div>
+        <div class="team-pts">${P.acts[m.key]?'✓':'+200'}</div>
+      </div>
+      <div id="gexp${i}" style="display:none">
+        <div class="qr-placeholder">
+          📷 QR Code placeholder for <strong>${m.name}</strong><br>
+          Find ${m.name} at the summit and scan their personal QR to earn 200 Golden Points.
+        </div>
+        ${!P.acts[m.key]?`<button class="btn gold-btn" style="margin-top:10px;animation:none" onclick="_scanTeam('${m.key}','${m.name}',event)">Simulate Scan — +200 pts</button>`:`<p style="font-size:12px;color:var(--green);text-align:center;margin-top:10px;font-weight:700">✓ Already scanned!</p>`}
+      </div>
+    </div>`).join('');
+}
+function _tgold(i){const el=document.getElementById('gexp'+i);const v=el.style.display==='block';document.querySelectorAll('[id^="gexp"]').forEach(e=>e.style.display='none');if(!v)el.style.display='block';}
+function _scanTeam(key,name,e){e.stopPropagation();addPoints(key,'Scanned '+name+'\'s QR');_logFull('golden:scanned:'+name);setTimeout(_golden,300);}
+
+// ══════════════════════════════════════════
+// TOUCHPOINT TRACKER
+// ══════════════════════════════════════════
+function _tps(){
+  document.getElementById('touchpointList').innerHTML=TOUCHPOINTS.map((tp,i)=>`
+    <div class="tp-card ${P.tp_visited[tp.name]?'visited':''}" onclick="_visitTp('${tp.name}',${i})">
+      <div class="tp-icon ${tp.color}">${tp.icon}</div>
+      <div style="flex:1"><div class="tp-name">${tp.name}</div><div class="tp-sub">${tp.sub}</div></div>
+      <div class="tp-pts">${P.tp_visited[tp.name]?'✓ +25':'+ 25 pts'}</div>
+    </div>`).join('')+
+    `<div style="margin-top:12px;background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.2);border-radius:9px;padding:12px 14px;text-align:center">
+      <div style="font-size:13px;font-weight:700;margin-bottom:3px">${Object.keys(P.tp_visited).length} / ${TOUCHPOINTS.length} Checked In</div>
+      <div style="font-size:11.5px;color:var(--m)">Visit all 8 touchpoints for a bonus reward</div>
+    </div>`;
+}
+function _visitTp(name,i){
+  if(P.tp_visited[name])return;
+  P.tp_visited[name]=true;
+  P.points+=25;document.getElementById('ptsDisplay').textContent=P.points;
+  document.getElementById('d-pts-hero').textContent=P.points;
+  showToast('+25 pts — Checked in at '+name);
+  _logFull('touchpoint:visited:'+name);
+  setTimeout(_tps,200);
+}
+
+// ══════════════════════════════════════════
+// BOOK SESSION
+// ══════════════════════════════════════════
+const BOOK_TYPES=['Workflow Problem','AI Use Case','MVP Brainstorm','Agent Experience Idea'];
+const BOOK_ICONS=['🔧','🤖','🚀','👥'];
+const BOOK_MEMBERS=['Ryan','Vedant','Priyal','Anish','Any ATS Member'];
+const BOOK_TIMES=['10:00 AM','10:30 AM','11:00 AM','1:00 PM','1:30 PM','2:00 PM'];
+let _bookStep=0;
+function _book(){_bookStep=P.acts.booked?3:0;_renderBook();}
+function _renderBook(){
+  const c=document.getElementById('bookContent');
+  if(_bookStep===0){
+    c.innerHTML=`<div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:var(--r);padding:14px;margin-bottom:16px;font-size:13px;color:var(--m);line-height:1.6">Book a <strong style="color:var(--t)">20-minute one-on-one</strong> with the ATS team to brainstorm a workflow, AI use case, or MVP idea. Earn <strong style="color:var(--gold)">+125 points</strong>.</div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Choose Session Type</div>
+    <div class="option-grid">${BOOK_TYPES.map((t,i)=>`<div class="option-card ${P.book_state.type===t?'sel':''}" onclick="_setBook('type','${t}')"><div class="option-icon">${BOOK_ICONS[i]}</div>${t}</div>`).join('')}</div>
+    <button class="btn" style="opacity:${P.book_state.type?1:.4};pointer-events:${P.book_state.type?'all':'none'}" onclick="_bookStep=1;_renderBook()">Next: Choose Team Member</button>`;
+  } else if(_bookStep===1){
+    c.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Choose Team Member</div>
+    <div class="option-grid">${BOOK_MEMBERS.map(m=>`<div class="option-card ${P.book_state.member===m?'sel':''}" onclick="_setBook('member','${m}')">${m}</div>`).join('')}</div>
+    <button class="btn" style="margin-top:4px;opacity:${P.book_state.member?1:.4};pointer-events:${P.book_state.member?'all':'none'}" onclick="_bookStep=2;_renderBook()">Next: Choose Time Slot</button>
+    <button class="btn ghost" style="margin-top:8px" onclick="_bookStep=0;_renderBook()">← Back</button>`;
+  } else if(_bookStep===2){
+    c.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Choose Time Slot</div>
+    <div class="time-grid">${BOOK_TIMES.map(t=>`<div class="time-slot ${P.book_state.time===t?'sel':''}" onclick="_setBook('time','${t}')">${t}</div>`).join('')}</div>
+    <div style="background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 15px;margin-bottom:12px;font-size:13px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:6px">Booking Summary</div>
+      <div>Session: <strong>${P.book_state.type||'—'}</strong></div>
+      <div>With: <strong>${P.book_state.member||'—'}</strong></div>
+      <div>Time: <strong>${P.book_state.time||'—'}</strong></div>
+    </div>
+    <button class="btn teal-btn" style="opacity:${P.book_state.time?1:.4};pointer-events:${P.book_state.time?'all':'none'}" onclick="_confirmBook()">Confirm Booking — +125 pts</button>
+    <button class="btn ghost" style="margin-top:8px" onclick="_bookStep=1;_renderBook()">← Back</button>`;
+  } else {
+    c.innerHTML=`<div class="booking-confirm"><div class="check">✅</div><h3>Session Booked!</h3><p><strong>${P.book_state.type}</strong> session with <strong>${P.book_state.member}</strong> at <strong>${P.book_state.time}</strong>.<br><br>Head to the ATS desk to confirm your slot. +125 pts have been added.</p></div>`;
+  }
+}
+function _setBook(field,val){P.book_state[field]=val;_renderBook();}
+function _confirmBook(){addPoints('booked','ATS Session Booked');_bookStep=3;_renderBook();}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
 function _dash(){
+  document.getElementById('d-pts-hero').textContent=P.points;
   document.getElementById('d-role').textContent=P.role||'Not selected';
   document.getElementById('d-pains').innerHTML=P.pains.length?P.pains.map(p=>`<div class="dash-chip">${SUGG[p]?.icon||'•'} ${p}</div>`).join(''):`<div class="dash-chip">Not selected</div>`;
+  const prog=[
+    {label:'Onboarding',done:P.acts.onboarding},{label:'QR Scanned',done:P.acts.qr_scanned},
+    {label:'Treasure Hunt',done:P.acts.hunt_complete},{label:'Avatar Created',done:P.acts.avatar_created},
+    {label:'Game Played',done:P.acts.game_played},{label:'Prompt Saved',done:P.acts.prompt_saved},
+    {label:'Session Booked',done:P.acts.booked},
+    {label:'Team QRs',done:Object.keys(P.acts).filter(k=>k.startsWith('team_')&&P.acts[k]).length>0},
+  ];
+  document.getElementById('d-progress').innerHTML=prog.map(p=>`<div class="nit"><div class="ni-ico">${p.done?'✅':'⬜'}</div>${p.label}</div>`).join('');
   const soc=(P.role&&SOCIAL_DATA[P.role])||SOCIAL_DATA['Executive'];
   document.getElementById('d-social').innerHTML=soc.map(s=>`<div class="social-card"><span class="social-pct">${s.pct}</span><div class="social-lbl">${s.lbl}</div></div>`).join('');
   document.getElementById('d-recs').innerHTML=P.suggestions.slice(0,3).map(s=>`<div class="nit"><div class="ni-ico">${s.icon}</div>${s.text}</div>`).join('');
   const inits=(P.role&&ROLE_INITS[P.role])||['Current AI','FieldIQ'];
   document.getElementById('d-inits').innerHTML=inits.map(n=>{const it=INITIATIVES.find(x=>x.name===n);return it?`<div class="nit"><div class="ni-ico">${it.icon}</div>${it.name} — ${it.desc.substring(0,34)}…</div>`:''}).join('');
   const tools=(P.role&&ROLE_TOOLS[P.role])||['Perplexity','Orbital'];
-  document.getElementById('d-tools').innerHTML=tools.map(n=>{const t=TOOLS.find(x=>x.name===n);return t?`<div class="nit"><div class="ni-ico">${t.icon}</div>${t.name} — ${t.use.substring(0,34)}…</div>`:''}).join('');
+  document.getElementById('d-tools-dash').innerHTML=tools.map(n=>{const t=TOOLS.find(x=>x.name===n);return t?`<div class="nit"><div class="ni-ico">${t.icon}</div>${t.name} — ${t.use.substring(0,34)}…</div>`:''}).join('');
   const nexts=(P.role&&NEXTS[P.role])||NEXTS['Executive'];
   document.getElementById('d-nexts').innerHTML=nexts.map(n=>`<div class="nit"><div class="ni-ico">→</div>${n}</div>`).join('');
 }
-function bookSession(){
-  const btn=document.getElementById('bookBtn');
-  btn.textContent='✓ Session Booked — Confirmation on its way';
-  btn.style.background='linear-gradient(135deg,#0d9488,#0f766e)';
-  btn.style.animation='none';btn.style.pointerEvents='none';
-  _log('action:book-session');
-}
 
-// ── LOG ──
-function _log(ev){
+// ══════════════════════════════════════════
+// LOGGING
+// ══════════════════════════════════════════
+function _logFull(ev){
   P.actions.push({event:ev,time:new Date().toISOString()});
-  console.log('[WFG AgentX]',{role:P.role,pains:P.pains,visited:[...P.visited],last:ev,journey:P.actions});
+  console.log('[AgentX Journey + Points]',{
+    role:P.role,pains:P.pains,points:P.points,
+    activities:P.acts,touchpoints:Object.keys(P.tp_visited),
+    hunt_step:P.hunt_step,avatar_style:P.avatar_style,
+    visited:[...P.visited],lastEvent:ev,journey:P.actions
+  });
 }
 </script>
 </body>
