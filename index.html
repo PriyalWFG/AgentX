@@ -4,1483 +4,1070 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="WFG AgentX">
 <meta name="theme-color" content="#080c14">
 <title>WFG AgentX by ATS</title>
 <style>
 :root{
-  --bg:#080c14;--s:rgba(255,255,255,.045);--sh:rgba(255,255,255,.085);
-  --b:rgba(255,255,255,.09);--ba:rgba(99,160,255,.65);
-  --t:#f0f4ff;--m:rgba(240,244,255,.45);
-  --ac:#4f8ef7;--ac2:#7c6af7;--teal:#0d9488;--amber:#d97706;--rose:#e11d48;
-  --gold:#f59e0b;--gold2:#fbbf24;
-  --glow:rgba(79,142,247,.22);--sel:rgba(79,142,247,.11);
-  --r:14px;--tr:.27s cubic-bezier(.4,0,.2,1);
-  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+  --bg:#080c14;--s:rgba(255,255,255,.045);--sh:rgba(255,255,255,.08);
+  --b:rgba(255,255,255,.09);--t:#f0f4ff;--m:rgba(240,244,255,.45);
+  --ac:#4f8ef7;--ac2:#7c6af7;--teal:#0d9488;--amber:#d97706;
+  --gold:#f59e0b;--rose:#e11d48;
+  --glow:rgba(79,142,247,.2);--r:14px;
+  --tr:.25s cubic-bezier(.4,0,.2,1);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{height:100%;height:-webkit-fill-available}
-body{height:100%;height:-webkit-fill-available;width:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
-.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
-.o1{width:400px;height:400px;background:radial-gradient(circle,rgba(79,142,247,.11) 0%,transparent 70%);top:-100px;left:-80px}
-.o2{width:350px;height:350px;background:radial-gradient(circle,rgba(124,106,247,.09) 0%,transparent 70%);bottom:-80px;right:-60px}
-#app{position:relative;z-index:1;height:100%;height:-webkit-fill-available;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;padding:0 18px;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+html,body{height:100%;height:-webkit-fill-available;width:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+.o1{width:380px;height:380px;background:radial-gradient(circle,rgba(79,142,247,.09) 0%,transparent 70%);top:-120px;left:-80px}
+.o2{width:300px;height:300px;background:radial-gradient(circle,rgba(124,106,247,.07) 0%,transparent 70%);bottom:-60px;right:-60px}
+
+#app{position:relative;z-index:1;height:100%;height:-webkit-fill-available;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;padding:0 20px;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
 
 /* TOP BAR */
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;flex-shrink:0;min-height:44px;gap:8px}
-.logo-wrap{display:flex;flex-direction:column;line-height:1.15}
-.logo{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
-.exp-name{font-size:14px;font-weight:800;letter-spacing:.01em;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.pts-badge{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(251,191,36,.1));border:1px solid rgba(245,158,11,.35);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:800;color:var(--gold);cursor:pointer;transition:transform .1s;white-space:nowrap}
-.pts-badge:active{transform:scale(.95)}
-.pts-badge .star{font-size:12px}
-.scan-btn{width:36px;height:36px;border-radius:50%;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background .15s,transform .1s;flex-shrink:0}
-.scan-btn:active{background:rgba(79,142,247,.22);transform:scale(.93)}
-.ai-pill{display:flex;align-items:center;gap:5px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.22);border-radius:20px;padding:5px 10px;font-size:10px;font-weight:600;color:var(--ac);opacity:0;transition:opacity .5s;white-space:nowrap}
-.ai-pill.vis{opacity:1}
-.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:pdot 2s infinite;flex-shrink:0}
-@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-/* PROGRESS */
-.progress-bar{display:flex;gap:5px;padding:8px 0 0;flex-shrink:0;opacity:0;transition:opacity .4s}
-.progress-bar.vis{opacity:1}
-.pd{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.09);transition:background .4s}
-.pd.act{background:var(--ac)}.pd.dn{background:rgba(79,142,247,.32)}
-
-/* EXPLORE TRACKER */
-.explore-bar{display:none;align-items:center;justify-content:space-between;background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.13);border-radius:8px;padding:6px 12px;margin-top:7px;flex-shrink:0}
-.explore-bar.vis{display:flex}
-.exp-label{font-size:10px;color:var(--m);font-weight:600}
-.exp-dots{display:flex;gap:4px}
-.exp-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.09);transition:background .3s}
-.exp-dot.lit{background:var(--ac)}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;flex-shrink:0}
+.brand .sup{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
+.brand .name{font-size:15px;font-weight:800;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pts-pill{display:none;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:800;color:var(--gold);cursor:pointer}
+.pts-pill.vis{display:flex}
+.pts-pill:active{transform:scale(.95)}
 
 /* SCREENS */
 .screens{flex:1;position:relative;overflow:hidden;min-height:0}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:10px 0 8px;opacity:0;transform:translateX(38px);pointer-events:none;transition:opacity var(--tr),transform var(--tr)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 0 8px;opacity:0;transform:translateX(30px);pointer-events:none;transition:opacity var(--tr),transform var(--tr)}
 .screen.active{opacity:1;transform:translateX(0);pointer-events:all}
-.screen.exit{opacity:0;transform:translateX(-38px);pointer-events:none}
-.scrollable{overflow-y:auto;flex:1;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-.scrollable::-webkit-scrollbar{display:none}
-.screen-title-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;flex-shrink:0}
-.back-btn{background:none;border:1px solid var(--b);border-radius:8px;color:var(--m);font-size:11px;font-weight:600;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;min-height:30px;flex-shrink:0}
-.back-btn:active{background:var(--sh)}
+.screen.exit{opacity:0;transform:translateX(-30px)}
+.scroll{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.scroll::-webkit-scrollbar{display:none}
 
 /* TYPE */
-.lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:10px}
-.lbl.teal{color:var(--teal)}.lbl.amber{color:var(--amber)}.lbl.purple{color:var(--ac2)}.lbl.rose{color:var(--rose)}.lbl.green{color:#22c55e}.lbl.gold{color:var(--gold)}
-h1{font-size:clamp(26px,7vw,34px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:8px}
-h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-bottom:7px}
-.sub{font-size:14px;color:var(--m);line-height:1.6;margin-bottom:22px}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:10px}
+.eyebrow.teal{color:var(--teal)}.eyebrow.amber{color:var(--amber)}.eyebrow.purple{color:var(--ac2)}.eyebrow.gold{color:var(--gold)}.eyebrow.rose{color:var(--rose)}.eyebrow.green{color:#22c55e}
+h1{font-size:clamp(28px,7vw,36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px}
+h2{font-size:clamp(22px,5.5vw,28px);font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-bottom:8px}
+.sub{font-size:14px;color:var(--m);line-height:1.65;margin-bottom:24px}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:10px}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--r);padding:17px 28px;cursor:pointer;box-shadow:0 0 26px var(--glow);animation:pbtn 2.5s infinite;transition:transform .12s;width:100%;min-height:54px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--r);padding:17px;cursor:pointer;box-shadow:0 0 28px var(--glow);animation:glow 2.5s infinite;width:100%;min-height:54px;transition:transform .12s}
 .btn:active{transform:scale(.97)}
-.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:13px;padding:13px;min-height:46px}
+.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:14px;padding:14px;min-height:48px}
 .btn.ghost:active{background:var(--sh);color:var(--t)}
-.btn.teal-btn{background:linear-gradient(135deg,var(--teal),#0f766e);animation:none}
-.btn.gold-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));animation:none;color:#1a1000}
-.btn.sm{font-size:13px;padding:12px 18px;min-height:44px}
-@keyframes pbtn{0%,100%{box-shadow:0 0 26px var(--glow)}50%{box-shadow:0 0 44px rgba(79,142,247,.38)}}
+.btn.teal{background:linear-gradient(135deg,var(--teal),#0f766e);animation:none}
+.btn.gold{background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;animation:none}
+.btn.sm{font-size:14px;padding:13px;min-height:46px}
+@keyframes glow{0%,100%{box-shadow:0 0 28px var(--glow)}50%{box-shadow:0 0 44px rgba(79,142,247,.36)}}
 
-/* TAP CARDS */
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:20px 12px;cursor:pointer;text-align:center;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.tc:active{transform:scale(.95);background:var(--sh)}
-.tc.sel{background:var(--sel);border-color:var(--ba);box-shadow:0 0 12px rgba(79,142,247,.13)}
-.tc .ti{font-size:24px;margin-bottom:7px}.tc .tl{font-size:14px;font-weight:700}
+/* CARDS */
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:10px;cursor:pointer;transition:background var(--tr),transform .12s}
+.card:active{background:var(--sh);transform:scale(.98)}
+.card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
+.card.done{border-color:rgba(34,197,94,.3)}
+.card.gold-border{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.04)}
+
+/* ROLE GRID */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.role-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:22px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.role-card:active{transform:scale(.95)}
+.role-card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
+.role-card .ico{font-size:26px;margin-bottom:8px}
+.role-card .lbl{font-size:14px;font-weight:700}
+
+/* ROW ITEMS */
+.row-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:background var(--tr),transform .12s;width:100%;color:var(--t);min-height:60px;margin-bottom:9px}
+.row-item:active{background:var(--sh);transform:scale(.98)}
+.row-item .ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}.igd{background:rgba(245,158,11,.14)}
+.row-item .body{flex:1;text-align:left}
+.row-item .body strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.row-item .body span{font-size:12px;color:var(--m)}
+.row-item .arr{color:var(--m);font-size:18px;flex-shrink:0}
+.row-item .pts-tag{font-size:10px;font-weight:800;background:rgba(245,158,11,.14);color:var(--gold);border-radius:5px;padding:2px 7px;margin-right:4px;white-space:nowrap}
 
 /* PAIN */
-.pgrid{display:flex;flex-direction:column;gap:8px}
-.pc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:52px}
-.pc:active{transform:scale(.98);background:var(--sh)}
-.pc.sel{background:var(--sel);border-color:var(--ba)}
-.pi{font-size:18px;flex-shrink:0}.pl{font-size:13.5px;font-weight:600}
-.pck{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;font-size:10px}
-.pc.sel .pck{background:var(--ac);border-color:var(--ac)}
-.snote{font-size:11px;color:var(--m);text-align:center;margin-top:4px}
+.pain-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all var(--tr);margin-bottom:9px;min-height:54px}
+.pain-item:active{transform:scale(.98)}
+.pain-item.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
+.pain-item .pi{font-size:18px;flex-shrink:0}
+.pain-item .pl{font-size:14px;font-weight:600;flex:1}
+.pain-item .ck{width:20px;height:20px;border-radius:50%;border:2px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+.pain-item.sel .ck{background:var(--ac);border-color:var(--ac)}
 
 /* LOADER */
-.lwrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0}
-.lring{width:68px;height:68px;border-radius:50%;border:3px solid rgba(79,142,247,.13);border-top-color:var(--ac);animation:spin .9s linear infinite;position:relative}
-.lring::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px solid rgba(124,106,247,.18);border-bottom-color:var(--ac2);animation:spin 1.4s linear infinite reverse}
+.loader-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:30px 0}
+.ring{width:64px;height:64px;border-radius:50%;border:3px solid rgba(79,142,247,.12);border-top-color:var(--ac);animation:spin .9s linear infinite;position:relative}
+.ring::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px solid rgba(124,106,247,.15);border-bottom-color:var(--ac2);animation:spin 1.4s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ltxt{font-size:14px;color:var(--m);text-align:center;line-height:1.65}
-.ltxt strong{display:block;font-size:16px;font-weight:700;color:var(--t);margin-bottom:5px}
+.loader-txt{font-size:14px;color:var(--m);text-align:center;line-height:1.65}
+.loader-txt strong{display:block;font-size:16px;font-weight:700;color:var(--t);margin-bottom:5px}
 
 /* SUGGEST */
-.slist{display:flex;flex-direction:column;gap:10px;margin:14px 0 18px}
-.sc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;display:flex;align-items:flex-start;gap:12px;animation:fup .4s ease both}
-.sc:nth-child(2){animation-delay:.1s}.sc:nth-child(3){animation-delay:.2s}
-@keyframes fup{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-.sbadge{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:13px}
-.stxt{font-size:13px;font-weight:600;line-height:1.45;padding-top:4px}
-
-/* ACTION LIST */
-.alist{display:flex;flex-direction:column;gap:9px}
-.ab{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),transform .12s;text-align:left;width:100%;color:var(--t);min-height:58px}
-.ab:active{background:var(--sh);transform:scale(.98)}
-.ai-icon{width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
-.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}.igd{background:rgba(245,158,11,.14)}
-.at strong{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}.at span{font-size:11.5px;color:var(--m)}
-.arr{margin-left:auto;color:var(--m);font-size:16px;flex-shrink:0}
-.pts-tag{font-size:9px;font-weight:800;background:rgba(245,158,11,.15);color:var(--gold);border-radius:5px;padding:2px 6px;letter-spacing:.04em;margin-left:auto;margin-right:6px;white-space:nowrap}
+.suggest-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;display:flex;align-items:flex-start;gap:12px;animation:fup .4s ease both;margin-bottom:10px}
+.suggest-item:nth-child(2){animation-delay:.08s}.suggest-item:nth-child(3){animation-delay:.16s}
+@keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sicon{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:14px}
+.stxt{font-size:13.5px;font-weight:600;line-height:1.5;padding-top:5px}
 
 /* LIVE FEED */
-.feed-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
-.fi{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 14px;display:flex;align-items:center;gap:10px;animation:fup .35s ease both}
-.fi:nth-child(2){animation-delay:.07s}.fi:nth-child(3){animation-delay:.14s}.fi:nth-child(4){animation-delay:.21s}
-.fi-ico{font-size:17px;flex-shrink:0}.fi-body{flex:1}
-.fi-body strong{display:block;font-size:12.5px;font-weight:700;margin-bottom:1px}.fi-body span{font-size:11.5px;color:var(--m)}
-.fi-tag{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 7px;border-radius:20px;flex-shrink:0}
-.tr{background:rgba(239,68,68,.14);color:#f87171}.tg{background:rgba(13,148,136,.11);color:#2dd4bf}.tb{background:rgba(79,142,247,.11);color:var(--ac)}
-.countdown{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--amber);font-weight:700;margin-top:6px}
+.feed-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;animation:fup .35s ease both;margin-bottom:9px}
+.fi-body{flex:1}.fi-body strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px}.fi-body span{font-size:12px;color:var(--m)}
+.fi-tag{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;flex-shrink:0}
+.tag-live{background:rgba(239,68,68,.14);color:#f87171}
+.tag-trend{background:rgba(79,142,247,.12);color:var(--ac)}
+.tag-done{background:rgba(13,148,136,.1);color:#2dd4bf}
+.countdown{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--amber);font-weight:700;margin-top:8px}
 
 /* CONCIERGE */
-.chat-area{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;overflow-y:auto;max-height:180px;-webkit-overflow-scrolling:touch}
-.chat-area::-webkit-scrollbar{display:none}
-.msg{padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.5;animation:fup .3s ease both;max-width:90%}
-.msg.ai{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.09));border:1px solid rgba(79,142,247,.18);align-self:flex-start}
-.msg.user{background:rgba(255,255,255,.06);border:1px solid var(--b);align-self:flex-end;text-align:right}
-.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.pb{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 11px;font-size:11.5px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;transition:background .15s;line-height:1.35;min-height:44px;display:flex;align-items:center}
-.pb:active{background:var(--sh)}
-
-/* QR */
-.qr-loc{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.07));border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px}
-.qr-loc-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:4px}
-.qr-loc-name{font-size:20px;font-weight:700}.qr-loc-sub{font-size:12px;color:var(--m);margin-top:3px}
-.qr-insight{background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:9px;padding:12px 13px;margin-bottom:12px;font-size:12px;line-height:1.55;color:var(--m)}
-.qr-insight strong{color:var(--t);display:block;margin-bottom:3px;font-size:13px}
+.chat-wrap{display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:190px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.chat-wrap::-webkit-scrollbar{display:none}
+.msg{padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;animation:fup .3s ease;max-width:88%}
+.msg.ai{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.08));border:1px solid rgba(79,142,247,.17);align-self:flex-start}
+.msg.user{background:rgba(255,255,255,.06);border:1px solid var(--b);align-self:flex-end}
+.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-btn{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px;font-size:12px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;line-height:1.35;min-height:44px;display:flex;align-items:center;transition:background .15s}
+.q-btn:active{background:var(--sh)}
 
 /* PROBLEMS */
-.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:8px}
-.prob-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;user-select:none;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.prob-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .prob-card:active{transform:scale(.96)}.prob-card.sel{background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.45)}
-.prob-icon{font-size:22px;margin-bottom:7px}.prob-label{font-size:12.5px;font-weight:700;line-height:1.3}
-.solution-panel{background:var(--s);border:1px solid rgba(124,106,247,.28);border-radius:var(--r);padding:16px;margin-top:4px;animation:fup .3s ease}
-.sol-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac2);margin-bottom:10px}
-.sol-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
-.sol-block{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:9px;padding:12px}
-.sol-block h5{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.sol-block h5.cur{color:var(--m)}.sol-block h5.aih{color:var(--ac)}
-.sol-block ul{padding-left:14px;display:flex;flex-direction:column;gap:4px}
-.sol-block li{font-size:11.5px;color:var(--m);line-height:1.4}
-.proto-badge{background:linear-gradient(135deg,rgba(124,106,247,.13),rgba(79,142,247,.09));border:1px solid rgba(124,106,247,.25);border-radius:8px;padding:10px 13px;display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700}
-.proto-arr{font-size:15px;color:var(--ac2)}
+.sol-panel{background:var(--s);border:1px solid rgba(124,106,247,.25);border-radius:var(--r);padding:16px;animation:fup .25s ease}
+.sol-cols{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}
+.sol-col{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:9px;padding:12px}
+.sol-col h5{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
+.sol-col ul{padding-left:14px;display:flex;flex-direction:column;gap:5px}
+.sol-col li{font-size:12px;color:var(--m);line-height:1.4}
 
-/* INITIATIVES & TOOLS & BRIEFS */
-.init-card,.tool-card,.brief-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;cursor:pointer;margin-bottom:9px;transition:background var(--tr)}
-.init-card:active,.tool-card:active,.brief-card:active{background:var(--sh)}
-.init-header,.tool-header{display:flex;align-items:center;gap:11px}
-.init-title,.tool-name{font-size:13.5px;font-weight:700}.init-desc,.tool-use{font-size:11.5px;color:var(--m);margin-top:2px}
-.tool-brief-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(217,119,6,.12);color:var(--amber);border-radius:5px;padding:2px 6px;margin-left:7px;vertical-align:middle}
-.init-expand,.tool-expand{background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.14);border-radius:9px;padding:11px 13px;margin-top:10px;animation:fup .25s ease}
-.init-why,.tool-why{font-size:12px;color:var(--m);line-height:1.55;margin-bottom:7px}
-.init-cta{font-size:11px;font-weight:700;color:var(--ac);letter-spacing:.04em}
-.brief-vol{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
-.brief-title{font-size:14px;font-weight:700;margin-bottom:4px}
-.brief-meta{display:flex;gap:10px;margin-bottom:6px;flex-wrap:wrap}
-.brief-meta span{font-size:11px;color:var(--m)}
-.brief-teaser{font-size:12px;color:var(--m);line-height:1.55;margin-bottom:10px}
-.brief-actions{display:flex;gap:7px;flex-wrap:wrap}
-.brief-btn{font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:38px}
-.brief-btn:active{background:var(--sh)}
+/* INTEL BARS */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-lbl{font-size:12px;font-weight:600;min-width:100px}
+.bar-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .8s ease}
+.bar-pct{font-size:11px;color:var(--m);font-weight:700;min-width:28px;text-align:right}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.stat-box{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px}
+.stat-box strong{display:block;font-size:22px;font-weight:800;color:var(--ac);line-height:1;margin-bottom:4px}
+.stat-box span{font-size:11px;color:var(--m)}
 
-/* INTEL */
-.intel-section{margin-bottom:14px}
-.intel-section h4{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
-.intel-bar-row{display:flex;flex-direction:column;gap:7px}
-.intel-bar{display:flex;align-items:center;gap:9px}
-.intel-label{font-size:12px;font-weight:600;min-width:110px}
-.intel-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
-.intel-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .8s ease}
-.intel-pct{font-size:11px;color:var(--m);font-weight:700;min-width:30px;text-align:right}
-.intel-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.intel-stat{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:12px}
-.intel-stat strong{display:block;font-size:20px;font-weight:800;color:var(--ac);line-height:1}
-.intel-stat span{font-size:10.5px;color:var(--m);line-height:1.4;display:block;margin-top:4px}
+/* ACTIVITIES */
+.act-cards{display:flex;flex-direction:column;gap:9px}
+.act-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;transition:all var(--tr)}
+.act-card:active{background:var(--sh)}
+.act-card-head{display:flex;align-items:center;gap:12px}
+.act-ico{font-size:22px;flex-shrink:0;width:40px;text-align:center}
+.act-info{flex:1}
+.act-name{font-size:14px;font-weight:700;margin-bottom:2px}
+.act-desc{font-size:12px;color:var(--m)}
+.act-pts{font-size:11px;font-weight:800;color:var(--gold);background:rgba(245,158,11,.12);border-radius:5px;padding:3px 8px;flex-shrink:0}
+.act-expand{margin-top:14px;padding-top:14px;border-top:1px solid var(--b);animation:fup .22s ease}
 
-/* DASHBOARD */
-.dash-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(79,142,247,.09);border:1px solid rgba(79,142,247,.18);border-radius:20px;padding:5px 11px;font-size:11.5px;font-weight:700;color:var(--ac);margin:0 4px 6px 0}
-.ds{margin-bottom:14px}
-.ds h4{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:7px}
-.dash-row{display:flex;flex-wrap:wrap}
-.nit{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;width:100%;min-height:44px}
-.ni-ico{font-size:15px;flex-shrink:0}
-.social-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
-.social-card{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:11px 8px;text-align:center}
-.social-pct{font-size:18px;font-weight:800;color:var(--ac);display:block;margin-bottom:2px}
-.social-lbl{font-size:10.5px;color:var(--m);line-height:1.3}
+/* HUNT STEPS */
+.hunt-step{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s);border:1px solid var(--b);border-radius:10px;margin-bottom:8px}
+.hunt-step.active{border-color:rgba(13,148,136,.45);background:rgba(13,148,136,.05)}
+.hunt-step.done{border-color:rgba(34,197,94,.3)}
+.step-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.hunt-step.active .step-num{background:var(--teal);color:#fff}
+.hunt-step.done .step-num{background:#22c55e;color:#fff}
+.step-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.step-clue{font-size:12px;color:var(--m);line-height:1.5}
 
-/* POINTS DASHBOARD */
-.pts-summary{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(251,191,36,.07));border:1px solid rgba(245,158,11,.28);border-radius:var(--r);padding:18px;margin-bottom:14px;text-align:center}
-.pts-big{font-size:48px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-2px}
-.pts-label{font-size:11px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-.pts-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.pts-stat{background:rgba(0,0,0,.2);border-radius:9px;padding:10px 6px;text-align:center}
-.pts-stat strong{display:block;font-size:18px;font-weight:800;color:var(--t)}
-.pts-stat span{font-size:10px;color:var(--m)}
-.act-row{display:flex;flex-direction:column;gap:8px}
-.act-item{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
-.act-item.done{border-color:rgba(34,197,94,.3)}
-.act-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .2s}
-.act-item.done .act-check{background:#22c55e;border-color:#22c55e;color:#fff}
-.act-name{flex:1;font-size:13px;font-weight:600}
-.act-pts{font-size:11px;font-weight:800;color:var(--gold)}
-.leaderboard{display:flex;flex-direction:column;gap:7px}
-.lb-row{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px}
-.lb-row.me{background:rgba(79,142,247,.08);border-color:rgba(79,142,247,.3)}
-.lb-rank{font-size:16px;font-weight:900;min-width:24px;text-align:center;color:var(--m)}
+/* PROFILE */
+.profile-banner{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:20px;margin-bottom:14px;text-align:center}
+.pts-big{font-size:52px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-2px}
+.pts-sub{font-size:11px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.mini-stat{background:rgba(0,0,0,.2);border-radius:9px;padding:10px 6px;text-align:center}
+.mini-stat strong{display:block;font-size:18px;font-weight:800}
+.mini-stat span{font-size:10px;color:var(--m)}
+.act-list{display:flex;flex-direction:column;gap:8px}
+.act-row{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.act-row.done{border-color:rgba(34,197,94,.28)}
+.act-chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.act-row.done .act-chk{background:#22c55e;border-color:#22c55e;color:#fff}
+.act-row-name{flex:1;font-size:13px;font-weight:600}
+.act-row-pts{font-size:11px;font-weight:800;color:var(--gold)}
+.lb{display:flex;flex-direction:column;gap:7px}
+.lb-row{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.lb-row.me{background:rgba(79,142,247,.07);border-color:rgba(79,142,247,.28)}
+.lb-rank{font-size:15px;font-weight:900;min-width:22px;color:var(--m)}
 .lb-row:nth-child(1) .lb-rank{color:var(--gold)}
 .lb-row:nth-child(2) .lb-rank{color:#9ca3af}
 .lb-row:nth-child(3) .lb-rank{color:#d97706}
 .lb-name{flex:1;font-size:13px;font-weight:700}
 .lb-pts{font-size:13px;font-weight:800;color:var(--gold)}
 
-/* TREASURE HUNT */
-.hunt-progress{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;margin-bottom:14px}
-.hunt-progress-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin:8px 0 6px}
-.hunt-fill{height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;transition:width .6s ease}
-.hunt-steps{display:flex;flex-direction:column;gap:8px}
-.hunt-step{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;display:flex;align-items:flex-start;gap:10px;transition:border-color .2s}
-.hunt-step.active{border-color:rgba(13,148,136,.5);background:rgba(13,148,136,.06)}
-.hunt-step.complete{border-color:rgba(34,197,94,.3)}
-.hunt-step-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
-.hunt-step.active .hunt-step-num{background:var(--teal);color:#fff}
-.hunt-step.complete .hunt-step-num{background:#22c55e;color:#fff}
-.hunt-step-body{flex:1}
-.hunt-step-title{font-size:13px;font-weight:700;margin-bottom:3px}
-.hunt-step-clue{font-size:12px;color:var(--m);line-height:1.5}
-.hunt-step-pts{font-size:10px;font-weight:800;color:var(--gold)}
-.complete-card{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(13,148,136,.08));border:1px solid rgba(34,197,94,.3);border-radius:var(--r);padding:24px;text-align:center}
+/* QR SCREEN */
+.qr-loc-card{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:14px}
+.qr-loc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:5px}
+.qr-loc-name{font-size:22px;font-weight:700;margin-bottom:3px}
+.qr-loc-sub{font-size:12px;color:var(--m)}
+.qr-note{background:rgba(124,106,247,.07);border:1px solid rgba(124,106,247,.18);border-radius:10px;padding:13px;margin-bottom:14px;font-size:13px;line-height:1.55;color:var(--m)}
+.qr-note strong{color:var(--t);display:block;margin-bottom:3px}
 
-/* AVATAR STUDIO */
-.avatar-preview{background:linear-gradient(135deg,rgba(124,106,247,.1),rgba(79,142,247,.07));border:2px dashed rgba(124,106,247,.3);border-radius:var(--r);padding:32px;text-align:center;margin-bottom:14px;position:relative}
-.avatar-placeholder{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(79,142,247,.15));border:2px solid rgba(124,106,247,.3);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px}
-.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.style-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all .2s;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.style-card:active{transform:scale(.96)}
-.style-card.sel{background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.5)}
-.style-card .st-icon{font-size:20px;margin-bottom:6px}
-.style-card .st-name{font-size:12.5px;font-weight:700}
+/* TEAM CARDS */
+.team-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:10px;transition:all var(--tr)}
+.team-card.scanned{border-color:rgba(245,158,11,.4)}
+.team-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.t-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.t-name{font-size:16px;font-weight:800;margin-bottom:2px}
+.t-role{font-size:12px;color:var(--m)}
+.t-topic{font-size:12px;color:var(--m);line-height:1.5;margin-bottom:12px;font-style:italic}
+.t-foot{display:flex;align-items:center;justify-content:space-between}
+.t-pts{font-size:13px;font-weight:800;color:var(--gold)}
+.t-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;border:none;cursor:pointer;min-height:36px}
+.t-btn.done{background:rgba(34,197,94,.14);color:#86efac;border:1px solid rgba(34,197,94,.25)}
 
-/* GAMES */
-.game-cards{display:flex;flex-direction:column;gap:9px}
-.game-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;transition:background var(--tr),transform .12s}
-.game-card:active{background:var(--sh);transform:scale(.98)}
-.game-card.open{border-color:rgba(79,142,247,.3);background:rgba(79,142,247,.04)}
-.game-header{display:flex;align-items:center;gap:12px}
-.game-icon{font-size:24px;flex-shrink:0}
-.game-info{flex:1}
-.game-name{font-size:14px;font-weight:700;margin-bottom:2px}
-.game-desc{font-size:11.5px;color:var(--m)}
-.game-pts-badge{font-size:10px;font-weight:800;background:rgba(245,158,11,.15);color:var(--gold);border-radius:6px;padding:3px 8px}
-.game-expand{margin-top:12px;padding-top:12px;border-top:1px solid var(--b);animation:fup .25s ease}
-.puzzle-title{font-size:12px;font-weight:600;color:var(--m);margin-bottom:8px}
-.game-btns{display:flex;gap:7px;flex-wrap:wrap}
-.game-btn{font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:38px}
-.game-btn.primary{background:linear-gradient(135deg,var(--ac),var(--ac2));border:none;color:#fff}
-.game-btn:active{background:var(--sh)}
+/* BOOK */
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.sel-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px}
+.sel-card:active{transform:scale(.96)}
+.sel-card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
+.sel-card .s-ico{font-size:20px}
+.sel-card .s-lbl{font-size:12.5px;font-weight:700;line-height:1.3}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
+.t-slot{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:11px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;min-height:42px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.t-slot:active{transform:scale(.95)}
+.t-slot.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
+.t-slot.taken{opacity:.3;pointer-events:none;text-decoration:line-through}
+.confirm-card{background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(34,197,94,.06));border:1px solid rgba(13,148,136,.28);border-radius:var(--r);padding:24px;text-align:center;animation:fup .3s ease}
+.confirm-card h3{font-size:20px;font-weight:800;color:#34d399;margin-bottom:8px}
+.confirm-card p{font-size:13px;color:var(--m);line-height:1.65}
 
-/* BEST PROMPTS */
-.prompt-section{margin-bottom:16px}
-.prompt-section-title{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
-.prompt-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;margin-bottom:8px;cursor:pointer;transition:background var(--tr),border-color var(--tr)}
-.prompt-card:active{background:var(--sh)}
-.prompt-card.featured{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.04)}
-.prompt-text{font-size:13px;font-weight:600;line-height:1.5;margin-bottom:8px}
-.prompt-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.prompt-role-tag{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:rgba(79,142,247,.12);color:var(--ac)}
-.prompt-pts{font-size:10px;font-weight:800;color:var(--gold)}
-.prompt-actions{display:flex;gap:7px;margin-top:9px}
-.prompt-action-btn{font-size:11px;font-weight:700;padding:7px 12px;border-radius:7px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:34px}
-.prompt-action-btn:active{background:var(--sh)}
-.submit-area{background:linear-gradient(135deg,rgba(79,142,247,.08),rgba(124,106,247,.05));border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:16px;margin-bottom:14px}
+/* AVATAR */
+.av-preview{background:linear-gradient(135deg,rgba(124,106,247,.09),rgba(79,142,247,.06));border:2px dashed rgba(124,106,247,.28);border-radius:var(--r);padding:30px;text-align:center;margin-bottom:16px}
+.av-circle{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(79,142,247,.15));border:2px solid rgba(124,106,247,.3);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:34px}
 
-/* GOLDEN POINTS */
-.gold-banner{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(251,191,36,.08));border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:16px;margin-bottom:14px;text-align:center}
-.gold-banner h3{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:4px}
-.gold-banner p{font-size:12px;color:var(--m);line-height:1.5}
-.team-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;margin-bottom:9px;cursor:pointer;transition:all var(--tr)}
-.team-card:active{background:var(--sh)}
-.team-card.scanned{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05)}
-.team-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.team-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.team-name{font-size:16px;font-weight:800}
-.team-role{font-size:11.5px;color:var(--m)}
-.team-topic{font-size:12px;color:var(--m);font-style:italic;margin-bottom:10px}
-.team-status{display:flex;align-items:center;justify-content:space-between}
-.team-pts-val{font-size:13px;font-weight:800;color:var(--gold)}
-.team-scan-btn{font-size:11px;font-weight:700;padding:8px 14px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;border:none;cursor:pointer;min-height:36px}
-.team-scan-btn.done{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
-
-/* TOUCHPOINT TRACKER */
-.tp-map{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.tp-item{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
-.tp-item:active{background:var(--sh)}
-.tp-item.visited{border-color:rgba(13,148,136,.35)}
-.tp-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.12);flex-shrink:0;transition:background .2s}
-.tp-item.visited .tp-dot{background:#34d399}
-.tp-body{flex:1}
-.tp-name{font-size:13.5px;font-weight:700;margin-bottom:2px}
-.tp-desc{font-size:11.5px;color:var(--m)}
-.tp-pts{font-size:11px;font-weight:800;color:var(--gold);flex-shrink:0}
-.tp-next{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);border-radius:10px;padding:12px 14px;font-size:12.5px;font-weight:700;margin-bottom:12px}
-
-/* BOOK WITH ATS */
-.session-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.sess-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.sess-card:active{transform:scale(.96)}
-.sess-card.sel{background:var(--sel);border-color:var(--ba)}
-.sess-icon{font-size:20px;margin-bottom:6px}
-.sess-label{font-size:12px;font-weight:700;line-height:1.3}
-.team-choice{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
-.tc-btn{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:13px 16px;cursor:pointer;text-align:left;width:100%;color:var(--t);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;min-height:48px;transition:all .2s}
-.tc-btn:active{background:var(--sh)}
-.tc-btn.sel{background:rgba(79,142,247,.1);border-color:var(--ba)}
-.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-.time-slot{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;min-height:42px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.time-slot:active{transform:scale(.96)}
-.time-slot.sel{background:var(--sel);border-color:var(--ba)}
-.time-slot.taken{opacity:.35;pointer-events:none;text-decoration:line-through}
-.book-confirm{background:linear-gradient(135deg,rgba(13,148,136,.12),rgba(34,197,94,.07));border:1px solid rgba(13,148,136,.3);border-radius:var(--r);padding:18px;text-align:center;animation:fup .3s ease}
-.book-confirm h3{font-size:18px;font-weight:800;color:#34d399;margin-bottom:6px}
-.book-confirm p{font-size:13px;color:var(--m);line-height:1.6}
-
-/* EXPLORE HUB */
-.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
-.hub-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
-.hub-card:active{background:var(--sh);transform:scale(.96)}
-.hub-icon{font-size:24px;margin-bottom:7px}.hub-label{font-size:13.5px;font-weight:700;margin-bottom:3px}.hub-sub{font-size:11px;color:var(--m)}
-.hub-pts-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;background:rgba(245,158,11,.15);color:var(--gold);border-radius:5px;padding:2px 5px}
+/* PROMPTS */
+.prompt-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:15px;margin-bottom:9px}
+.prompt-card.featured{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.04)}
+.prompt-text{font-size:13.5px;font-weight:600;line-height:1.55;margin-bottom:10px}
+.prompt-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.role-tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:5px;background:rgba(79,142,247,.11);color:var(--ac)}
+.p-pts{font-size:10px;font-weight:800;color:var(--gold);margin-left:auto}
+.prompt-btns{display:flex;gap:7px;margin-top:10px}
+.p-btn{font-size:12px;font-weight:700;padding:7px 12px;border-radius:7px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:34px}
+.p-btn:active{background:var(--sh)}
 
 /* NAVBAR */
 .navbar{display:none;flex-shrink:0;border-top:1px solid var(--b);padding:8px 0;justify-content:space-around;padding-bottom:calc(8px + var(--safe-bot))}
 .navbar.vis{display:flex}
-.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;transition:color .2s;min-width:52px;min-height:44px;justify-content:center}
-.nav-btn.cur{color:var(--ac)}
-.nav-btn .ni{font-size:20px}
+.nb{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;transition:color .2s;min-width:60px;min-height:44px;justify-content:center}
+.nb.cur{color:var(--ac)}
+.nb .ni{font-size:22px}
 
 /* FOOTER */
-.global-footer{flex-shrink:0;text-align:center;padding:4px 0 6px;border-top:1px solid rgba(255,255,255,.05)}
-.footer-cta{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.07));border:1px solid rgba(79,142,247,.22);border-radius:20px;padding:7px 16px;font-size:11px;font-weight:700;color:var(--ac);text-decoration:none;letter-spacing:.03em;transition:all .2s;box-shadow:0 0 14px rgba(79,142,247,.1)}
-.footer-cta:active{transform:scale(.97);box-shadow:0 0 22px rgba(79,142,247,.22)}
-
-/* OFFLINE BANNER */
-.offline-banner{display:none;background:rgba(217,119,6,.1);border-bottom:1px solid rgba(217,119,6,.2);padding:7px 18px;font-size:11px;color:var(--amber);text-align:center;font-weight:600;flex-shrink:0}
-.offline-banner.vis{display:block}
+.footer{flex-shrink:0;text-align:center;padding:5px 0 7px;border-top:1px solid rgba(255,255,255,.05)}
+.footer a{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(79,142,247,.09),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:20px;padding:7px 16px;font-size:11px;font-weight:700;color:var(--ac);text-decoration:none;transition:all .2s}
+.footer a:active{transform:scale(.97)}
 
 /* BOT FAB */
-.bot-fab{position:fixed;bottom:calc(80px + var(--safe-bot));right:14px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.85),rgba(79,142,247,.85));border:1px solid rgba(124,106,247,.5);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(124,106,247,.3);z-index:100;transition:transform .12s}
-.bot-fab:active{transform:scale(.9)}
+.fab{position:fixed;bottom:calc(76px + var(--safe-bot));right:16px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.85),rgba(79,142,247,.85));border:1px solid rgba(124,106,247,.4);display:none;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 18px rgba(124,106,247,.28);z-index:100;transition:transform .12s}
+.fab.vis{display:flex}
+.fab:active{transform:scale(.9)}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
-.modal-overlay.vis{opacity:1;pointer-events:all}
-.modal-sheet{background:#0e1320;border:1px solid var(--b);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + var(--safe-bot));width:100%;max-width:430px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.modal-overlay.vis .modal-sheet{transform:translateY(0)}
-.modal-handle{width:36px;height:4px;background:rgba(255,255,255,.12);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:16px;font-weight:800;margin-bottom:8px}
-.modal-body{font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px}
-.modal-close{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:14px;font-weight:700;padding:13px;cursor:pointer;min-height:46px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.vis{opacity:1;pointer-events:all}
+.sheet{background:#0d1219;border:1px solid var(--b);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + var(--safe-bot));width:100%;max-width:430px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.overlay.vis .sheet{transform:translateY(0)}
+.handle{width:36px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto 16px}
+.sheet-title{font-size:16px;font-weight:800;margin-bottom:8px}
+.sheet-body{font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px}
+.sheet-close{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:14px;font-weight:700;padding:13px;cursor:pointer;min-height:46px}
 
-/* POINTS TOAST */
-.pts-toast{position:fixed;top:calc(70px + var(--safe-top));right:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;font-size:13px;font-weight:800;border-radius:20px;padding:8px 14px;z-index:300;opacity:0;transform:translateY(-8px) scale(.9);transition:all .3s;pointer-events:none;box-shadow:0 4px 20px rgba(245,158,11,.4)}
-.pts-toast.show{opacity:1;transform:translateY(0) scale(1)}
+/* TOAST */
+.toast{position:fixed;top:calc(72px + var(--safe-top));right:16px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;font-size:12px;font-weight:800;border-radius:20px;padding:8px 14px;z-index:300;opacity:0;transform:translateY(-6px) scale(.92);transition:all .28s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0) scale(1)}
 
-/* MISC */
-.divider{height:1px;background:var(--b);margin:12px 0}
-.tag-pill{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:.04em}
-.tag-new{background:rgba(124,106,247,.14);color:var(--ac2)}
-.section-h{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px}
+/* UTILS */
+.gap{height:10px}
+.divider{height:1px;background:var(--b);margin:14px 0}
 </style>
 </head>
 <body>
 <div class="orb o1"></div><div class="orb o2"></div>
 <div id="app">
 
-  <div class="offline-banner" id="offlineBanner">📴 You're offline — all content works without internet</div>
+<div class="topbar">
+  <div class="brand">
+    <div class="sup">WFG · ATS</div>
+    <div class="name">AgentX</div>
+  </div>
+  <div class="pts-pill" id="ptsPill" onclick="navTo('s-profile')">⭐ <span id="ptsVal">0</span> pts</div>
+</div>
 
-  <div class="topbar">
-    <div class="logo-wrap">
-      <div class="logo">WFG · ATS</div>
-      <div class="exp-name">AgentX</div>
-    </div>
-    <div class="topbar-right">
-      <div class="pts-badge" id="ptsBadge" style="display:none" onclick="navTo('s-mypoints')">
-        <span class="star">⭐</span><span id="pts-display">0</span> pts
-      </div>
-      <div class="scan-btn" id="scanBtn" style="display:none" onclick="navTo('s-qr')" title="Scan QR Code">📷</div>
-      <div class="ai-pill" id="aiPill"><div class="ai-dot"></div><span id="pillTxt">Tailoring Your Experience</span></div>
+<div class="screens">
+
+  <!-- WELCOME -->
+  <div class="screen active" id="s-welcome">
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <div class="eyebrow">Executive Summit 2026</div>
+      <h1>Welcome to<br>WFG AgentX</h1>
+      <p class="sub">Your personalized summit companion.<br>Earn points. Explore. Connect.</p>
+      <button class="btn" onclick="goTo('s-role')">Get Started →</button>
     </div>
   </div>
 
-  <div class="progress-bar" id="progressBar">
-    <div class="pd" id="p1"></div><div class="pd" id="p2"></div><div class="pd" id="p3"></div>
-  </div>
-  <div class="explore-bar" id="exploreBar">
-    <span class="exp-label" id="expLabel">You've explored 0 of 7 experiences</span>
-    <div class="exp-dots" id="expDots"></div>
-  </div>
-
-  <div class="screens">
-
-    <!-- S1 WELCOME -->
-    <div class="screen active" id="s-welcome">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:13px">Executive Summit 2026</div>
-      <h1>Welcome to<br>WFG AgentX<br>by ATS</h1>
-      <p class="sub">Your personalized summit companion.<br>Earn points. Explore the venue. Connect.</p>
-      <button class="btn" onclick="goTo('s-role')">Get Started <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+  <!-- ROLE -->
+  <div class="screen" id="s-role">
+    <div class="eyebrow">Step 1 of 3</div>
+    <h2>Your role?</h2>
+    <div class="role-grid">
+      <div class="role-card" onclick="pickRole(this,'Agent')"><div class="ico">📋</div><div class="lbl">Agent</div></div>
+      <div class="role-card" onclick="pickRole(this,'Underwriter')"><div class="ico">🔍</div><div class="lbl">Underwriter</div></div>
+      <div class="role-card" onclick="pickRole(this,'Executive')"><div class="ico">🏢</div><div class="lbl">Executive</div></div>
+      <div class="role-card" onclick="pickRole(this,'Operations')"><div class="ico">⚙️</div><div class="lbl">Operations</div></div>
     </div>
-
-    <!-- S2 ROLE -->
-    <div class="screen" id="s-role">
-      <div class="lbl">Step 1 of 3 — Your Role</div>
-      <h2>What best describes<br>your role?</h2>
-      <p class="sub" style="margin-bottom:16px">Tap one to continue.</p>
-      <div class="cgrid">
-        <div class="tc" onclick="selectRole(this,'Agent')"><div class="ti">📋</div><div class="tl">Agent</div></div>
-        <div class="tc" onclick="selectRole(this,'Underwriter')"><div class="ti">🔍</div><div class="tl">Underwriter</div></div>
-        <div class="tc" onclick="selectRole(this,'Executive')"><div class="ti">🏢</div><div class="tl">Executive</div></div>
-        <div class="tc" onclick="selectRole(this,'Operations')"><div class="ti">⚙️</div><div class="tl">Operations</div></div>
-      </div>
-    </div>
-
-    <!-- S3 PAIN -->
-    <div class="screen" id="s-pain">
-      <div class="lbl">Step 2 of 3 — Your Challenges</div>
-      <h2>What slows you<br>down most?</h2>
-      <div class="pgrid" style="margin-bottom:7px">
-        <div class="pc" onclick="togglePain(this,'Manual work')"><div class="pi">🔄</div><div class="pl">Manual &amp; repetitive tasks</div><div class="pck">✓</div></div>
-        <div class="pc" onclick="togglePain(this,'Delays')"><div class="pi">⏱</div><div class="pl">Delays in processing</div><div class="pck">✓</div></div>
-        <div class="pc" onclick="togglePain(this,'Visibility')"><div class="pi">📊</div><div class="pl">Lack of visibility &amp; tracking</div><div class="pck">✓</div></div>
-        <div class="pc" onclick="togglePain(this,'Communication')"><div class="pi">💬</div><div class="pl">Communication gaps</div><div class="pck">✓</div></div>
-        <div class="pc" onclick="togglePain(this,'Compliance')"><div class="pi">🛡</div><div class="pl">Compliance &amp; risk concerns</div><div class="pck">✓</div></div>
-      </div>
-      <div class="snote">Select up to 2</div>
-      <button class="btn" id="painNext" style="margin-top:13px;opacity:.35;pointer-events:none" onclick="goToAnalysis()">Show My AgentX Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-    </div>
-
-    <!-- S4 LOADING -->
-    <div class="screen" id="s-loading">
-      <div class="lwrap">
-        <div class="lring"></div>
-        <div class="ltxt"><strong id="loadMsg">Comparing your profile with 200+ workflows…</strong><span id="loadSub">Identifying your highest-impact opportunities</span></div>
-      </div>
-    </div>
-
-    <!-- S5 SUGGESTIONS -->
-    <div class="screen" id="s-suggest">
-      <div class="lbl">Step 3 of 3 — Your Insights</div>
-      <h2>Here's what we can<br>improve for you today</h2>
-      <div class="slist" id="suggestList"></div>
-      <button class="btn" onclick="finishOnboarding()" style="animation:none">Explore Your Options <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-    </div>
-
-    <!-- S6 ACTION GATEWAY -->
-    <div class="screen" id="s-action">
-      <h2 style="margin-bottom:4px">What would you<br>like to explore?</h2>
-      <p class="sub" style="margin-bottom:12px">Choose where to go next.</p>
-      <div class="scrollable">
-        <div class="alist">
-          <button class="ab" onclick="navTo('s-feed')"><div class="ai-icon ibl">📡</div><div class="at"><strong>Live Event Feed</strong><span>See what's happening right now</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-explore')"><div class="ai-icon ign">🔭</div><div class="at"><strong>Explore ATS</strong><span>Initiatives, tools &amp; intelligence</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-concierge')"><div class="ai-icon ipu">🤖</div><div class="at"><strong>AI Concierge</strong><span>Get personalized guidance</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-problems')"><div class="ai-icon irs">🧪</div><div class="at"><strong>Try a Real Problem</strong><span>See how we solve real challenges</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-intel')"><div class="ai-icon iam">📈</div><div class="at"><strong>Summit Intelligence</strong><span>Live insights across the event</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-qr')"><div class="ai-icon itl">📍</div><div class="at"><strong>Scan a QR Code</strong><span>Connect to a venue touchpoint</span></div><div class="arr">›</div></button>
-          <button class="ab" onclick="navTo('s-dash')"><div class="ai-icon ipu">👤</div><div class="at"><strong>My Insights Dashboard</strong><span>Your personalized summary</span></div><div class="arr">›</div></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- S7 LIVE FEED -->
-    <div class="screen" id="s-feed">
-      <div class="lbl teal">Happening Now</div>
-      <h2>Live Event Activity</h2>
-      <div class="feed-list" id="feedList"></div>
-      <div class="countdown">⚡ Live build starting in <span id="ctime">4:52</span></div>
-    </div>
-
-    <!-- S8 EXPLORE HUB -->
-    <div class="screen" id="s-explore">
-      <div class="lbl green">Explore ATS</div>
-      <h2>ATS Innovation Hub</h2>
-      <div class="scrollable">
-        <div class="section-h">Summit Experiences</div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="navTo('s-hunt')"><div class="hub-pts-badge">+100 pts</div><div class="hub-icon">🗺️</div><div class="hub-label">Treasure Hunt</div><div class="hub-sub">Explore the venue</div></div>
-          <div class="hub-card" onclick="navTo('s-avatar')"><div class="hub-pts-badge">+75 pts</div><div class="hub-icon">🎨</div><div class="hub-label">Avatar Studio</div><div class="hub-sub">Create your look</div></div>
-          <div class="hub-card" onclick="navTo('s-games')"><div class="hub-pts-badge">+50 pts</div><div class="hub-icon">🎮</div><div class="hub-label">AgentX Games</div><div class="hub-sub">Play &amp; earn</div></div>
-          <div class="hub-card" onclick="navTo('s-prompts')"><div class="hub-pts-badge">+150 pts</div><div class="hub-icon">💡</div><div class="hub-label">Best Prompts</div><div class="hub-sub">Top AI prompts</div></div>
-          <div class="hub-card" onclick="navTo('s-golden')"><div class="hub-pts-badge">+200 pts</div><div class="hub-icon">⭐</div><div class="hub-label">Golden Points</div><div class="hub-sub">Meet the ATS team</div></div>
-          <div class="hub-card" onclick="navTo('s-touchpoints')"><div class="hub-pts-badge">+30 pts</div><div class="hub-icon">📍</div><div class="hub-label">Touchpoints</div><div class="hub-sub">Track your stops</div></div>
-          <div class="hub-card" onclick="navTo('s-book')"><div class="hub-pts-badge">+100 pts</div><div class="hub-icon">📅</div><div class="hub-label">Book with ATS</div><div class="hub-sub">1:1 session</div></div>
-          <div class="hub-card" onclick="navTo('s-mypoints')"><div class="hub-icon">🏆</div><div class="hub-label">My Points</div><div class="hub-sub">Track progress</div></div>
-        </div>
-        <div class="divider"></div>
-        <div class="section-h" style="margin-top:4px">ATS Resources</div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="navTo('s-initiatives')"><div class="hub-icon">🚀</div><div class="hub-label">ATS Initiatives</div><div class="hub-sub">Tools &amp; programs</div></div>
-          <div class="hub-card" onclick="navTo('s-tools')"><div class="hub-icon">🧰</div><div class="hub-label">AI Tools Library</div><div class="hub-sub">Featured resources</div></div>
-          <div class="hub-card" onclick="navTo('s-briefs')"><div class="hub-icon">📰</div><div class="hub-label">Intelligence Briefs</div><div class="hub-sub">ATS Brief series</div></div>
-          <div class="hub-card" onclick="navTo('s-problems')"><div class="hub-icon">🧪</div><div class="hub-label">Real Problems</div><div class="hub-sub">Live demo scenarios</div></div>
-        </div>
-        <div class="divider"></div>
-        <div class="section-h">Recommended for You</div>
-        <div class="alist" id="exploreRecs"></div>
-      </div>
-    </div>
-
-    <!-- S9 INITIATIVES -->
-    <div class="screen" id="s-initiatives">
-      <div class="screen-title-row">
-        <div><div class="lbl green" style="margin-bottom:4px">ATS Initiatives</div><h2 style="margin-bottom:0">What We're Building</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="initiativesList" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S10 AI TOOLS -->
-    <div class="screen" id="s-tools">
-      <div class="screen-title-row">
-        <div><div class="lbl purple" style="margin-bottom:4px">AI Tools Library</div><h2 style="margin-bottom:0">Tools by ATS</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="toolsList" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S11 BRIEFS -->
-    <div class="screen" id="s-briefs">
-      <div class="screen-title-row">
-        <div><div class="lbl amber" style="margin-bottom:4px">ATS Intelligence Brief</div><h2 style="margin-bottom:0">Brief Series</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="briefsList" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S12 CONCIERGE -->
-    <div class="screen" id="s-concierge">
-      <div class="lbl purple">AI Concierge</div>
-      <h2>How can I help you?</h2>
-      <div class="chat-area" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div></div>
-      <div class="prompt-grid">
-        <div class="pb" onclick="askC(this,'Where should I go next?')">📍 Where to go next?</div>
-        <div class="pb" onclick="askC(this,'Show me something relevant')">✨ Show me relevant</div>
-        <div class="pb" onclick="askC(this,'What are others exploring?')">👥 What others do</div>
-        <div class="pb" onclick="askC(this,'Find sessions for my role')">🎯 My sessions</div>
-        <div class="pb" onclick="askC(this,'Show me ATS tools for my role')">🧰 ATS tools</div>
-        <div class="pb" onclick="askC(this,'Which ATS initiative is most relevant?')">🚀 Top initiative</div>
-        <div class="pb" onclick="askC(this,'Show me the latest Intelligence Brief')">📰 Latest brief</div>
-        <div class="pb" onclick="askC(this,'What to explore before the keynote?')">⚡ Before keynote</div>
-      </div>
-    </div>
-
-    <!-- S13 PROBLEMS -->
-    <div class="screen" id="s-problems">
-      <div class="lbl rose">Try a Real Problem</div>
-      <h2>Select a challenge<br>to solve</h2>
-      <div class="scrollable">
-        <div class="prob-grid" id="probGrid"></div>
-        <div id="solutionPanel"></div>
-      </div>
-    </div>
-
-    <!-- S14 INTEL -->
-    <div class="screen" id="s-intel">
-      <div class="lbl amber">Summit Intelligence</div>
-      <h2>Live Insights</h2>
-      <div class="scrollable">
-        <div class="intel-section"><h4>Top Challenges Today</h4><div class="intel-bar-row" id="intelBars"></div></div>
-        <div class="intel-section"><h4>Attendance Snapshot</h4>
-          <div class="intel-stat-row">
-            <div class="intel-stat"><strong>312</strong><span>Attendees checked in</span></div>
-            <div class="intel-stat"><strong>47</strong><span>Active in Demo Zone</span></div>
-            <div class="intel-stat"><strong>4</strong><span>Sessions in progress</span></div>
-            <div class="intel-stat"><strong>89%</strong><span>Completed onboarding</span></div>
-          </div>
-        </div>
-        <div class="intel-section"><h4>Most Visited Areas</h4><div class="intel-bar-row" id="visitBars"></div></div>
-      </div>
-    </div>
-
-    <!-- S15 QR -->
-    <div class="screen" id="s-qr">
-      <div class="lbl teal">QR Interaction</div>
-      <h2>You've arrived at<br>a touchpoint</h2>
-      <div class="qr-loc">
-        <div class="qr-loc-lbl">Current Location</div>
-        <div class="qr-loc-name" id="qrName">Demo Zone</div>
-        <div class="qr-loc-sub" id="qrSub">AI Workflow Demonstrations</div>
-      </div>
-      <div class="qr-insight" id="qrInsight"></div>
-      <div class="alist" id="qrActions"></div>
-    </div>
-
-    <!-- S16 DASHBOARD -->
-    <div class="screen" id="s-dash">
-      <div class="lbl amber">My Insights Dashboard</div>
-      <h2>Your Summary</h2>
-      <div class="scrollable">
-        <div class="ds"><h4>Your Profile</h4>
-          <div class="dash-row"><div class="dash-chip">👤 <span id="d-role">—</span></div></div>
-          <div class="dash-row" id="d-pains"></div>
-        </div>
-        <div class="ds"><h4>People Like You Are Doing</h4><div class="social-row" id="d-social"></div></div>
-        <div class="ds"><h4>Recommended for You</h4><div id="d-recs"></div></div>
-        <div class="ds"><h4>Recommended ATS Initiatives</h4><div id="d-inits"></div></div>
-        <div class="ds"><h4>Suggested AI Tools</h4><div id="d-tools"></div></div>
-        <div class="ds"><h4>Next Steps</h4><div id="d-nexts"></div></div>
-        <button class="btn teal-btn" id="bookBtn" onclick="navTo('s-book')" style="margin-bottom:10px;animation:none">Book a 1:1 ATS Session</button>
-        <button class="btn ghost" onclick="navTo('s-mypoints')">View My Points &amp; Progress</button>
-        <div style="height:8px"></div>
-        <button class="btn ghost" onclick="navTo('s-action')">Continue Exploring</button>
-      </div>
-    </div>
-
-    <!-- S17 MY POINTS -->
-    <div class="screen" id="s-mypoints">
-      <div class="screen-title-row">
-        <div><div class="lbl gold" style="margin-bottom:4px">Points &amp; Progress</div><h2 style="margin-bottom:0">My AgentX Journey</h2></div>
-        <button class="back-btn" onclick="navTo('s-action')">← Home</button>
-      </div>
-      <div class="scrollable" id="mypoints-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S18 TREASURE HUNT -->
-    <div class="screen" id="s-hunt">
-      <div class="screen-title-row">
-        <div><div class="lbl teal" style="margin-bottom:4px">🗺️ Treasure Hunt</div><h2 style="margin-bottom:0">Follow the Clues</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="hunt-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S19 AVATAR STUDIO -->
-    <div class="screen" id="s-avatar">
-      <div class="screen-title-row">
-        <div><div class="lbl purple" style="margin-bottom:4px">🎨 Avatar Studio</div><h2 style="margin-bottom:0">AgentX Avatar</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="avatar-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S20 GAMES -->
-    <div class="screen" id="s-games">
-      <div class="screen-title-row">
-        <div><div class="lbl purple" style="margin-bottom:4px">🎮 AgentX Games</div><h2 style="margin-bottom:0">Play &amp; Earn</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="games-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S21 BEST PROMPTS -->
-    <div class="screen" id="s-prompts">
-      <div class="screen-title-row">
-        <div><div class="lbl" style="margin-bottom:4px">💡 Best Prompts</div><h2 style="margin-bottom:0">AI Prompt Library</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="prompts-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S22 GOLDEN POINTS -->
-    <div class="screen" id="s-golden">
-      <div class="screen-title-row">
-        <div><div class="lbl gold" style="margin-bottom:4px">⭐ Golden Points</div><h2 style="margin-bottom:0">Meet the ATS Team</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="golden-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S23 TOUCHPOINTS -->
-    <div class="screen" id="s-touchpoints">
-      <div class="screen-title-row">
-        <div><div class="lbl teal" style="margin-bottom:4px">📍 Venue Map</div><h2 style="margin-bottom:0">Touchpoint Tracker</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="touchpoints-content" style="margin-top:10px"></div>
-    </div>
-
-    <!-- S24 BOOK WITH ATS -->
-    <div class="screen" id="s-book">
-      <div class="screen-title-row">
-        <div><div class="lbl teal" style="margin-bottom:4px">📅 Book with ATS</div><h2 style="margin-bottom:0">1:1 MVP Session</h2></div>
-        <button class="back-btn" onclick="navTo('s-explore')">← Back</button>
-      </div>
-      <div class="scrollable" id="book-content" style="margin-top:10px"></div>
-    </div>
-
   </div>
 
-  <!-- NAVBAR -->
-  <div class="navbar" id="navbar">
-    <button class="nav-btn" onclick="navTo('s-action')" id="nb-home"><div class="ni">🏠</div>Home</button>
-    <button class="nav-btn" onclick="navTo('s-feed')" id="nb-feed"><div class="ni">📡</div>Feed</button>
-    <button class="nav-btn" onclick="navTo('s-explore')" id="nb-exp"><div class="ni">🔭</div>Explore</button>
-    <button class="nav-btn" onclick="navTo('s-intel')" id="nb-intel"><div class="ni">📈</div>Intel</button>
-    <button class="nav-btn" onclick="navTo('s-dash')" id="nb-dash"><div class="ni">👤</div>Mine</button>
+  <!-- PAIN -->
+  <div class="screen" id="s-pain">
+    <div class="eyebrow">Step 2 of 3</div>
+    <h2>Biggest challenge?</h2>
+    <div id="painList" style="margin-bottom:10px">
+      <div class="pain-item" onclick="togglePain(this,'Manual work')"><div class="pi">🔄</div><div class="pl">Manual &amp; repetitive tasks</div><div class="ck">✓</div></div>
+      <div class="pain-item" onclick="togglePain(this,'Delays')"><div class="pi">⏱</div><div class="pl">Delays in processing</div><div class="ck">✓</div></div>
+      <div class="pain-item" onclick="togglePain(this,'Visibility')"><div class="pi">📊</div><div class="pl">Lack of visibility</div><div class="ck">✓</div></div>
+      <div class="pain-item" onclick="togglePain(this,'Communication')"><div class="pi">💬</div><div class="pl">Communication gaps</div><div class="ck">✓</div></div>
+      <div class="pain-item" onclick="togglePain(this,'Compliance')"><div class="pi">🛡</div><div class="pl">Compliance &amp; risk</div><div class="ck">✓</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--m);text-align:center;margin-bottom:14px">Select up to 2</div>
+    <button class="btn" id="painBtn" style="opacity:.35;pointer-events:none" onclick="startAnalysis()">Continue →</button>
   </div>
 
-  <footer class="global-footer">
-    <a class="footer-cta" href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">🚀 Explore the ATS Innovation Hub ↗</a>
-  </footer>
+  <!-- LOADING -->
+  <div class="screen" id="s-loading">
+    <div class="loader-wrap" style="flex:1;justify-content:center">
+      <div class="ring"></div>
+      <div class="loader-txt"><strong id="loadMsg">Analyzing your profile…</strong><span id="loadSub">Matching with 200+ workflows</span></div>
+    </div>
+  </div>
 
+  <!-- SUGGEST -->
+  <div class="screen" id="s-suggest">
+    <div class="eyebrow">Step 3 of 3</div>
+    <h2>Your opportunities</h2>
+    <div id="suggestList" style="margin:16px 0 20px"></div>
+    <button class="btn" onclick="finishOnboarding()" style="animation:none">Enter AgentX →</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen" id="s-home">
+    <div class="scroll">
+      <div class="eyebrow teal">Happening Now</div>
+      <div id="feedList"></div>
+      <div class="countdown" id="countdown">⚡ Live build in <span id="ctime">4:52</span></div>
+      <div class="divider"></div>
+      <div class="sec-label">Quick Actions</div>
+      <button class="row-item" onclick="navTo('s-concierge')"><div class="ico ipu">🤖</div><div class="body"><strong>AI Concierge</strong><span>Ask anything, get guidance</span></div><div class="arr">›</div></button>
+      <button class="row-item" onclick="navTo('s-qr')"><div class="ico itl">📷</div><div class="body"><strong>Scan a QR Code</strong><span>Check in to earn points</span></div><div class="arr">›</div></button>
+      <button class="row-item" onclick="navTo('s-intel')"><div class="ico iam">📈</div><div class="body"><strong>Summit Intelligence</strong><span>Live insights &amp; trends</span></div><div class="arr">›</div></button>
+    </div>
+  </div>
+
+  <!-- EXPLORE ATS -->
+  <div class="screen" id="s-explore">
+    <div class="scroll">
+      <div class="eyebrow green">Explore ATS</div>
+      <h2 style="margin-bottom:16px">ATS at the Summit</h2>
+      <div class="sec-label">Initiatives</div>
+      <div id="initList"></div>
+      <div class="sec-label" style="margin-top:6px">AI Tools</div>
+      <div id="toolList"></div>
+      <div class="sec-label" style="margin-top:6px">Intelligence Briefs</div>
+      <div id="briefList"></div>
+      <div class="sec-label" style="margin-top:6px">Real Problems</div>
+      <button class="row-item" onclick="navTo('s-problems')"><div class="ico irs">🧪</div><div class="body"><strong>Try a Real Problem</strong><span>See AI solve live challenges</span></div><div class="arr">›</div></button>
+      <button class="row-item" onclick="navTo('s-intel')"><div class="ico iam">📈</div><div class="body"><strong>Summit Intelligence</strong><span>Live attendee insights</span></div><div class="arr">›</div></button>
+    </div>
+  </div>
+
+  <!-- CONCIERGE -->
+  <div class="screen" id="s-concierge">
+    <div class="eyebrow purple">AI Concierge</div>
+    <h2>How can I help?</h2>
+    <div class="chat-wrap" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question to get started.</div></div>
+    <div class="q-grid">
+      <div class="q-btn" onclick="askC(this,'Where should I go next?')">📍 Where to next?</div>
+      <div class="q-btn" onclick="askC(this,'What are others exploring?')">👥 What's trending?</div>
+      <div class="q-btn" onclick="askC(this,'Show me ATS tools for my role')">🧰 Tools for me</div>
+      <div class="q-btn" onclick="askC(this,'Which ATS initiative is most relevant?')">🚀 Top initiative</div>
+      <div class="q-btn" onclick="askC(this,'Find sessions for my role')">🎯 My sessions</div>
+      <div class="q-btn" onclick="askC(this,'What to explore before the keynote?')">⚡ Before keynote</div>
+    </div>
+  </div>
+
+  <!-- PROBLEMS -->
+  <div class="screen" id="s-problems">
+    <div class="eyebrow rose">Real Problems</div>
+    <h2>Pick a challenge</h2>
+    <div class="scroll">
+      <div class="prob-grid" id="probGrid"></div>
+      <div id="solPanel"></div>
+    </div>
+  </div>
+
+  <!-- INTEL -->
+  <div class="screen" id="s-intel">
+    <div class="eyebrow amber">Summit Intelligence</div>
+    <h2>Live Insights</h2>
+    <div class="scroll">
+      <div class="stat-grid">
+        <div class="stat-box"><strong>312</strong><span>Checked in</span></div>
+        <div class="stat-box"><strong>47</strong><span>In Demo Zone</span></div>
+        <div class="stat-box"><strong>4</strong><span>Sessions live</span></div>
+        <div class="stat-box"><strong>89%</strong><span>Onboarded</span></div>
+      </div>
+      <div class="sec-label">Top Challenges Today</div>
+      <div id="intelBars"></div>
+      <div class="sec-label" style="margin-top:4px">Most Visited Areas</div>
+      <div id="visitBars"></div>
+    </div>
+  </div>
+
+  <!-- QR -->
+  <div class="screen" id="s-qr">
+    <div class="eyebrow teal">QR Check-In</div>
+    <h2>You've arrived</h2>
+    <div class="qr-loc-card">
+      <div class="qr-loc-label">Current Location</div>
+      <div class="qr-loc-name" id="qrName">Demo Zone</div>
+      <div class="qr-loc-sub" id="qrSub">AI Workflow Demonstrations</div>
+    </div>
+    <div class="qr-note" id="qrNote"></div>
+    <div id="qrActions"></div>
+  </div>
+
+  <!-- ACTIVITIES -->
+  <div class="screen" id="s-activities">
+    <div class="scroll">
+      <div class="eyebrow gold">Activities</div>
+      <h2 style="margin-bottom:16px">Explore &amp; Earn</h2>
+      <div class="act-cards" id="actCards"></div>
+    </div>
+  </div>
+
+  <!-- TREASURE HUNT -->
+  <div class="screen" id="s-hunt">
+    <div class="eyebrow teal">🗺️ Treasure Hunt</div>
+    <h2>Follow the Clues</h2>
+    <div class="scroll" id="huntContent"></div>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="screen" id="s-avatar">
+    <div class="eyebrow purple">🎨 Avatar Studio</div>
+    <h2>Your AgentX Look</h2>
+    <div class="scroll" id="avatarContent"></div>
+  </div>
+
+  <!-- GAMES -->
+  <div class="screen" id="s-games">
+    <div class="eyebrow purple">🎮 Games</div>
+    <h2>Play &amp; Earn</h2>
+    <div class="scroll" id="gamesContent"></div>
+  </div>
+
+  <!-- PROMPTS -->
+  <div class="screen" id="s-prompts">
+    <div class="eyebrow">💡 Best Prompts</div>
+    <h2>AI Prompt Library</h2>
+    <div class="scroll" id="promptsContent"></div>
+  </div>
+
+  <!-- GOLDEN POINTS -->
+  <div class="screen" id="s-golden">
+    <div class="eyebrow gold">⭐ Golden Points</div>
+    <h2>Meet the ATS Team</h2>
+    <p class="sub" style="margin-bottom:14px">Scan each team member's QR for exclusive points.</p>
+    <div class="scroll" id="goldenContent"></div>
+  </div>
+
+  <!-- BOOK -->
+  <div class="screen" id="s-book">
+    <div class="eyebrow teal">📅 Book with ATS</div>
+    <h2>1:1 MVP Session</h2>
+    <div class="scroll" id="bookContent"></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="screen" id="s-profile">
+    <div class="scroll">
+      <div class="eyebrow amber">My Profile</div>
+      <div class="profile-banner">
+        <div class="pts-big" id="profPts">0</div>
+        <div class="pts-sub">AgentX Points</div>
+        <div class="mini-stats">
+          <div class="mini-stat"><strong id="profDone">0</strong><span>Done</span></div>
+          <div class="mini-stat"><strong id="profTeam">0/4</strong><span>Team Met</span></div>
+          <div class="mini-stat"><strong id="profRank">#3</strong><span>Rank</span></div>
+        </div>
+      </div>
+      <div class="sec-label">Activities</div>
+      <div class="act-list" id="profActs"></div>
+      <div class="divider"></div>
+      <div class="sec-label">Leaderboard</div>
+      <div class="lb" id="profLb"></div>
+      <div class="gap"></div>
+      <button class="btn teal sm" onclick="navTo('s-book')" style="margin-bottom:9px;animation:none">Book a 1:1 ATS Session</button>
+      <button class="btn ghost sm" onclick="navTo('s-activities')">Explore Activities</button>
+      <div class="gap"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar" id="navbar">
+  <button class="nb" id="nb-home" onclick="navTo('s-home')"><div class="ni">🏠</div>Home</button>
+  <button class="nb" id="nb-explore" onclick="navTo('s-explore')"><div class="ni">🔭</div>Explore</button>
+  <button class="nb" id="nb-activities" onclick="navTo('s-activities')"><div class="ni">⚡</div>Activities</button>
+  <button class="nb" id="nb-profile" onclick="navTo('s-profile')"><div class="ni">👤</div>Profile</button>
+</div>
+
+<footer class="footer">
+  <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">🚀 ATS Innovation Hub ↗</a>
+</footer>
 </div>
 
 <!-- BOT FAB -->
-<div class="bot-fab" id="botFab" style="display:none" onclick="openModal('botModal')">🤖</div>
+<div class="fab" id="botFab" onclick="openModal('botModal')">🤖</div>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="botModal" onclick="if(event.target===this)closeModal('botModal')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🤖 ATS DiscoveryBot</div>
-    <div class="modal-body">DiscoveryBot integration coming soon.<br><br>This assistant will help you search knowledge, surface relevant ATS content, and answer your summit questions — all powered by ATS's AI platform.</div>
-    <button class="modal-close" onclick="closeModal('botModal')">Got it</button>
-  </div>
-</div>
-<div class="modal-overlay" id="scanModal" onclick="if(event.target===this)closeModal('scanModal')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📷 Quick Scan</div>
-    <div class="modal-body">Point your camera at any QR code around the venue to check in to touchpoints, earn points, and unlock content.</div>
-    <button class="btn" style="margin-bottom:10px;animation:none" onclick="closeModal('scanModal');navTo('s-qr')">Simulate a Scan</button>
-    <button class="modal-close" onclick="closeModal('scanModal')">Cancel</button>
+<!-- BOT MODAL -->
+<div class="overlay" id="botModal" onclick="if(event.target===this)closeModal('botModal')">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">🤖 ATS DiscoveryBot</div>
+    <div class="sheet-body">DiscoveryBot integration coming soon. This assistant will help you search knowledge and surface relevant ATS content — powered by ATS's AI platform.</div>
+    <button class="sheet-close" onclick="closeModal('botModal')">Got it</button>
   </div>
 </div>
 
-<!-- POINTS TOAST -->
-<div class="pts-toast" id="ptsToast">+0 pts</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
 // ── STATE ──
-const P={
-  role:null,pains:[],suggestions:[],visited:new Set(),actions:[],
-  points:0,
-  completed:{onboarding:false,huntSteps:[false,false,false,false,false],huntDone:false,
-    gamesOpened:{},promptsClicked:0,promptSubmitted:false,
-    teamScanned:{Ryan:false,Vedant:false,Priyal:false,Anish:false},
-    touchpoints:{},avatarDone:false,avatarStyle:null,booked:false,
-    sessionType:null,teamPref:null,timeSlot:null},
-  huntStep:0
+const S={
+  role:null,pains:[],suggestions:[],points:0,
+  done:{onboarding:false,avatar:false,avatarStyle:null,booked:false,sessType:null,teamPref:null,timeSlot:null,
+    games:{},promptSubmitted:false,teamScanned:{Ryan:false,Vedant:false,Priyal:false,Anish:false},
+    touchpoints:{},huntStep:0,huntDone:false}
 };
-
-// Offline
-window.addEventListener('online',()=>document.getElementById('offlineBanner').classList.remove('vis'));
-window.addEventListener('offline',()=>document.getElementById('offlineBanner').classList.add('vis'));
-if(!navigator.onLine)document.getElementById('offlineBanner').classList.add('vis');
 
 // ── DATA ──
 const SUGG={
   'Manual work':{icon:'⚡',text:'Automate repetitive tasks in your workflow'},
-  'Delays':{icon:'🚀',text:'Reduce turnaround time with AI-assisted tools'},
-  'Visibility':{icon:'📊',text:'Improve visibility and tracking across processes'},
-  'Communication':{icon:'🔗',text:'Close communication gaps with AI-powered routing'},
+  'Delays':{icon:'🚀',text:'Reduce turnaround time with AI tools'},
+  'Visibility':{icon:'📊',text:'Improve tracking across your processes'},
+  'Communication':{icon:'🔗',text:'Close communication gaps with AI routing'},
   'Compliance':{icon:'🛡️',text:'Strengthen compliance with automated monitoring'},
 };
-const DEFS=[{icon:'⚡',text:'Automate repetitive tasks in your workflow'},{icon:'📊',text:'Improve visibility across your processes'},{icon:'🚀',text:'Reduce turnaround time using AI-assisted tools'}];
-
-const INITIATIVES=[
-  {icon:'🤖',color:'ibl',name:'Current AI',desc:'Internal AI capability framework for WFG workflows',why:'Brings structured AI thinking into everyday operations.',cta:'See related demo'},
-  {icon:'📡',color:'itl',name:'FieldIQ',desc:'Field intelligence and agent performance analytics',why:'Gives agents and leaders real-time visibility into what\'s working.',cta:'View use case'},
-  {icon:'🔍',color:'ipu',name:'DiscoveryBot',desc:'AI-powered search and knowledge discovery tool',why:'Surfaces the right information faster — no manual digging.',cta:'See demo relevance'},
-  {icon:'📰',color:'iam',name:'ATS Intelligence Brief',desc:'Bi-weekly AI & innovation digest for WFG teams',why:'Keeps the organization current without information overload.',cta:'Read latest brief'},
-  {icon:'🛡',color:'irs',name:'Fraud AI Enablement',desc:'AI-supported fraud detection and awareness program',why:'Protects agents, clients, and the organization proactively.',cta:'Why this matters'},
-  {icon:'🚀',color:'ign',name:'Agent Workflow Modernization',desc:'End-to-end modernization of agent-facing processes',why:'Reduces friction and accelerates time-to-value for agents.',cta:'View use case'},
+const INITS=[
+  {icon:'🤖',c:'ibl',name:'Current AI',desc:'Internal AI framework for WFG workflows'},
+  {icon:'📡',c:'itl',name:'FieldIQ',desc:'Field intelligence & agent analytics'},
+  {icon:'🔍',c:'ipu',name:'DiscoveryBot',desc:'AI-powered search & knowledge discovery'},
+  {icon:'🛡',c:'irs',name:'Fraud AI',desc:'AI-supported fraud detection'},
+  {icon:'🚀',c:'ign',name:'Agent Workflow',desc:'End-to-end agent process modernization'},
 ];
 const TOOLS=[
-  {icon:'🔎',color:'ibl',name:'Perplexity',use:'AI-powered research and real-time answers',why:'Replaces hours of manual research with instant, sourced answers.',brief:true},
-  {icon:'📄',color:'itl',name:'DocAnalyzer',use:'Extract insights from documents automatically',why:'Eliminates manual document review — AI surfaces what matters.',brief:true},
-  {icon:'🗺',color:'iam',name:'Mapify',use:'Turn long content into visual mind maps',why:'Makes complex topics easier to understand and present.',brief:false},
-  {icon:'📖',color:'ipu',name:'Explainpaper',use:'Simplify dense reports and research papers',why:'Helps non-technical teams understand AI concepts quickly.',brief:true},
-  {icon:'🌐',color:'ign',name:'Orbital',use:'Visual data exploration and mapping tool',why:'Connects data points in ways spreadsheets can\'t.',brief:false},
-  {icon:'⚡',color:'irs',name:'ATS Workflow Engine',use:'Internal automation and routing for ATS processes',why:'Connects tools, people, and tasks without manual handoffs.',brief:false},
+  {icon:'🔎',c:'ibl',name:'Perplexity',use:'AI research & real-time answers'},
+  {icon:'📄',c:'itl',name:'DocAnalyzer',use:'Auto-extract insights from documents'},
+  {icon:'📖',c:'ipu',name:'Explainpaper',use:'Simplify dense reports & research'},
+  {icon:'⚡',c:'irs',name:'ATS Workflow Engine',use:'Internal automation & routing'},
 ];
 const BRIEFS=[
-  {vol:'Vol. 1',title:'The AI Readiness Issue',tool:'Perplexity',topic:'Phishing awareness + AI fraud',teaser:'How WFG teams can build AI fluency without technical backgrounds — plus the fraud trends you need to know now.'},
-  {vol:'Vol. 2',title:'Automation in the Field',tool:'DocAnalyzer',topic:'Document fraud & synthetic identity',teaser:'A practical look at where automation creates the most value for agents and underwriters — with real examples.'},
-  {vol:'Vol. 3',title:'The Visibility Gap',tool:'Mapify + Orbital',topic:'Data manipulation & deepfake risk',teaser:'Why most teams are working blind — and how AI dashboards and visualization tools close the gap.'},
-  {vol:'Vol. 4',title:'Building AI Habits',tool:'Explainpaper',topic:'AI-assisted fraud at scale',teaser:'The simplest ways to embed AI into daily workflows without disrupting how teams already work.'},
+  {vol:'Vol. 4',title:'Building AI Habits',teaser:'The simplest ways to embed AI into daily workflows.'},
+  {vol:'Vol. 3',title:'The Visibility Gap',teaser:'How AI dashboards close the data gap.'},
+  {vol:'Vol. 2',title:'Automation in the Field',teaser:'Where automation creates the most agent value.'},
 ];
 const PROBLEMS=[
-  {icon:'📄',label:'Manual Policy Typing',current:['Repetitive manual entry','No document parsing','High error rate'],ai:['Auto-fill from documents','Smart field detection','Error flagging'],proto:'Policy Assistant Tool'},
-  {icon:'🗂',label:'RECS Tracking',current:['Email-based tracking','No central visibility','Manual follow-ups'],ai:['Centralized dashboard','Auto-status updates','Smart reminders'],proto:'Reconciliation Portal'},
-  {icon:'🛡',label:'Fraud Detection',current:['Reactive manual checks','Delayed alerts','No risk scoring'],ai:['Real-time risk scoring','Proactive alerts','Pattern detection'],proto:'Fraud Intelligence Layer'},
-  {icon:'🚀',label:'Agent Onboarding',current:['Slow manual process','Paper-based docs','No progress tracking'],ai:['Guided digital onboarding','Auto document intake','Progress dashboard'],proto:'Smart Onboarding System'},
-  {icon:'💬',label:'Communication Gaps',current:['Back-and-forth emails','No routing logic','Lost context'],ai:['AI workflow routing','Smart message threading','Context retention'],proto:'AI Communication Hub'},
-  {icon:'📊',label:'Visibility Issues',current:['No real-time insights','Siloed data','Reactive decisions'],ai:['Live dashboards','Unified data view','Predictive alerts'],proto:'Operational Intelligence Dashboard'},
+  {icon:'📄',label:'Manual Policy Entry',curr:['Manual data entry','No document parsing','High error rate'],ai:['Auto-fill from docs','Smart field detection','Error flagging'],proto:'Policy Assistant'},
+  {icon:'🗂',label:'RECS Tracking',curr:['Email-based tracking','No central view','Manual follow-up'],ai:['Central dashboard','Auto status updates','Smart reminders'],proto:'Reconciliation Portal'},
+  {icon:'🛡',label:'Fraud Detection',curr:['Reactive checks','Delayed alerts','No risk scoring'],ai:['Real-time scoring','Proactive alerts','Pattern detection'],proto:'Fraud Intelligence Layer'},
+  {icon:'🚀',label:'Agent Onboarding',curr:['Slow manual process','Paper-based docs','No tracking'],ai:['Digital onboarding','Auto doc intake','Progress dashboard'],proto:'Smart Onboarding'},
+  {icon:'💬',label:'Communication Gaps',curr:['Email back-and-forth','No routing logic','Lost context'],ai:['AI workflow routing','Smart threading','Context retention'],proto:'AI Comms Hub'},
+  {icon:'📊',label:'Visibility Issues',curr:['No live insights','Siloed data','Reactive decisions'],ai:['Live dashboards','Unified data view','Predictive alerts'],proto:'Intel Dashboard'},
 ];
-const CONCIERGE_MAP={
-  'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong>. The live build starts soon.`,
-  'Show me something relevant':r=>`For a <strong>${r.role||'professional'}</strong> focused on ${r.pains.join(' and ')||'workflow improvement'}, the <em>AI for Operational Efficiency</em> breakout at 2:30 PM is your top session.`,
-  'What are others exploring?':()=>`Right now <strong>47 attendees</strong> are in the Demo Zone. Top challenge across all profiles: <strong>Delays in Processing</strong>.`,
-  'Find sessions for my role':r=>`Found <strong>3 sessions</strong> for ${r.role||'your role'}:<br>• AI Workflow Automation — 2:30 PM<br>• Reducing Operational Delays — 3:15 PM<br>• Executive AI Briefing — 4:00 PM`,
-  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong> for document workflows, <strong>Perplexity</strong> for fast research, and the <strong>ATS Workflow Engine</strong> for automation.`,
-  'Which ATS initiative is most relevant?':r=>`Based on your profile, <strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your most relevant ATS initiative right now.`,
-  'Show me the latest Intelligence Brief':()=>`Latest: <strong>Brief Vol. 4 — "Building AI Habits"</strong>, featuring <em>Explainpaper</em> and a deep dive on AI-assisted fraud at scale.`,
-  'What to explore before the keynote?':()=>`(1) <strong>Summit Intelligence</strong> — see today's trends. (2) <strong>Try a Real Problem</strong> — preview what the live demo solves. (3) Check the <strong>Demo Zone QR</strong>.`,
+const CQ={
+  'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong> — live build starts soon.`,
+  'What are others exploring?':()=>`<strong>47 attendees</strong> are in the Demo Zone right now. Top challenge: <strong>Delays in Processing</strong>.`,
+  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong>, <strong>Perplexity</strong>, and the <strong>ATS Workflow Engine</strong>.`,
+  'Which ATS initiative is most relevant?':r=>`<strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your best match right now.`,
+  'Find sessions for my role':r=>`3 sessions for <strong>${r.role||'your role'}</strong>:<br>• AI Workflow Automation — 2:30 PM<br>• Reducing Operational Delays — 3:15 PM<br>• Executive AI Briefing — 4:00 PM`,
+  'What to explore before the keynote?':()=>`Try: <strong>Summit Intelligence</strong> for trends, <strong>Try a Real Problem</strong> for a preview, then check the <strong>Demo Zone QR</strong>.`,
 };
-const QR_LOCATIONS=[
-  {name:'Demo Zone',sub:'AI Workflow Demonstrations',insight:{title:'Trending here',body:'47 people exploring. Top topic: agent automation and reducing manual workflow time.'},actions:['See what this solves','Watch live demo','Save for later']},
-  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',insight:{title:'Did you know',body:'FieldIQ is being piloted here today. Ask the team for a 3-minute walkthrough.'},actions:['View FieldIQ overview','Connect with the ATS team','Grab a resource']},
-  {name:'Breakout Hall B',sub:'Hands-On AI Sessions',insight:{title:'Session starting soon',body:'AI for Operational Efficiency begins in 8 minutes. 31 seats remaining.'},actions:['Join current session','View session schedule','Save this session']},
-  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation Work',insight:{title:'Featured today',body:'ATS Intelligence Brief Vol. 4 is available here. Scan to read on your device.'},actions:['Read latest brief','Explore all initiatives','Learn more at ATS hub']},
-  {name:'Live Demo Station',sub:'From Problem to Prototype',insight:{title:"What's being built",body:"Today's live build: a lightweight reconciliation portal for RECS tracking — in under 20 minutes."},actions:['See the build in progress','View problem statement','Ask the builder a question']},
+const QR_LOCS=[
+  {name:'Demo Zone',sub:'AI Workflow Demonstrations',note:{t:'Trending here',b:'47 people exploring. Top topic: agent automation.'},acts:['See what this solves','Watch live demo']},
+  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',note:{t:'Did you know',b:'FieldIQ is being piloted here. Ask the team for a walkthrough.'},acts:['View FieldIQ','Connect with ATS team']},
+  {name:'Breakout Hall B',sub:'Hands-On AI Sessions',note:{t:'Session starting soon',b:'AI for Operational Efficiency in 8 min. 31 seats left.'},acts:['Join session','Save for later']},
+  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation',note:{t:'Featured today',b:'ATS Brief Vol. 4 is available here. Scan to read.'},acts:['Read brief','Explore initiatives']},
+  {name:'Live Demo Station',sub:'From Problem to Prototype',note:{t:"What's being built",b:"Today's live build: a reconciliation portal in under 20 minutes."},acts:['See build','Ask the builder']},
 ];
-const NEXTS={
-  'Agent':['Book a 1:1 automation walkthrough','Join the Agent AI session at 3:15 PM','Explore the ATS Workflow Engine'],
-  'Underwriter':['See the risk automation demo','Book an underwriting AI briefing','Review Brief Vol. 2 on document fraud'],
-  'Executive':['Book executive AI briefing','Review today\'s Summit Intelligence report','Read ATS Brief Vol. 4'],
-  'Operations':['See workflow automation tools','Book an ops efficiency session','Explore FieldIQ for field visibility'],
-};
-const SOCIAL_DATA={
-  'Agent':[{pct:'71%',lbl:'Visited Demo Zone'},{pct:'54%',lbl:'Explored AI tools'},{pct:'43%',lbl:'Booked a session'}],
-  'Underwriter':[{pct:'68%',lbl:'Visited Demo Zone'},{pct:'61%',lbl:'Reviewed risk tools'},{pct:'38%',lbl:'Read a Brief'}],
-  'Executive':[{pct:'82%',lbl:'Visited Intel View'},{pct:'57%',lbl:'Joined AI briefing'},{pct:'49%',lbl:'Explored initiatives'}],
-  'Operations':[{pct:'74%',lbl:'Explored workflows'},{pct:'62%',lbl:'Visited Demo Zone'},{pct:'45%',lbl:'Tried live demo'}],
-};
-const ROLE_INITS={'Agent':['Agent Workflow Modernization','Current AI'],'Underwriter':['Fraud AI Enablement','Current AI'],'Executive':['ATS Intelligence Brief','FieldIQ'],'Operations':['Agent Workflow Modernization','FieldIQ']};
-const ROLE_TOOLS={'Agent':['ATS Workflow Engine','DocAnalyzer'],'Underwriter':['DocAnalyzer','Perplexity'],'Executive':['Perplexity','Orbital'],'Operations':['ATS Workflow Engine','Mapify']};
-
+const TEAM=[
+  {name:'Ryan',emoji:'👨‍💼',role:'Strategy & Vision',topic:'Where is ATS headed next?',pts:50},
+  {name:'Vedant',emoji:'🧠',role:'Product & Platform',topic:'What\'s being built?',pts:50},
+  {name:'Priyal',emoji:'👩‍💻',role:'AI Workflows',topic:'See the AI logic live.',pts:50},
+  {name:'Anish',emoji:'⚙️',role:'Builder & Automation',topic:'Watch it work in real time.',pts:50},
+];
 const HUNT_STEPS=[
-  {title:'Where Visibility Becomes Insight',clue:'Find the station where raw data transforms into real-time intelligence. Look for the screens. This is where the story of your workflow begins.',location:'Summit Intelligence Dashboard',pts:20},
-  {title:'Where Workflows Move Faster',clue:'Go to the place where manual tasks disappear. The team here is showing how AI handles what used to take hours. Look for the live build.',location:'Demo Zone — Live Station',pts:20},
-  {title:'The Wall of Innovation',clue:'Find the wall where every ATS initiative lives side by side. Read what we\'re building. The answer to your next challenge is posted here.',location:'ATS Initiative Wall',pts:20},
-  {title:'Where Risk Becomes Intelligence',clue:'Seek the station where fraud patterns are decoded in real time. Underwriting meets AI. Ask someone here about Fraud AI Enablement.',location:'Fraud Intelligence Zone',pts:20},
-  {title:'The Team Solving Agent Pain Points',clue:'Find the ATS team members directly. Each one has a unique code. Scan all four to complete your hunt and unlock your reward.',location:'ATS Team — Golden Points Zone',pts:20},
+  {title:'Where Visibility Becomes Insight',clue:'Find the station where raw data transforms into real-time intelligence. Look for the live screens.',pts:20},
+  {title:'Where Workflows Move Faster',clue:'Go to the place where manual tasks disappear. The team is showing how AI handles what took hours.',pts:20},
+  {title:'The Wall of Innovation',clue:'Find the wall where every ATS initiative lives side by side. Your next answer is posted here.',pts:20},
+  {title:'Where Risk Becomes Intelligence',clue:'Seek the station where fraud patterns are decoded in real time. Ask about Fraud AI Enablement.',pts:20},
+  {title:'The Team Solving Agent Pain Points',clue:'Find the ATS team members. Each has a unique code. Scan all four to complete your hunt.',pts:20},
 ];
-const TEAM_MEMBERS=[
-  {name:'Ryan',emoji:'👨‍💼',role:'Strategy & Vision',topic:'Talk strategy — where is ATS headed next?',pts:50},
-  {name:'Vedant',emoji:'🧠',role:'Product & Platform',topic:'See the product vision — what\'s being built.',pts:50},
-  {name:'Priyal',emoji:'👩‍💻',role:'AI Workflows',topic:'Ask about AI workflows — see the logic live.',pts:50},
-  {name:'Anish',emoji:'⚙️',role:'Builder & Automation',topic:'See live builder logic — watch it work in real time.',pts:50},
+const GAMES=[
+  {icon:'🔡',name:'Title Terms Word Search',desc:'Find key title industry terms in a 12×12 grid',pts:50},
+  {icon:'📝',name:'Fraud Flags Crossword',desc:'Test your knowledge of common fraud indicators',pts:50},
+  {icon:'🔀',name:'AI Workflow Scramble',desc:'Unscramble AI and workflow terms',pts:50},
+  {icon:'🎯',name:'Summit Bingo',desc:'Check off summit moments as they happen',pts:50},
 ];
-const TOUCHPOINT_LOCATIONS=[
-  {id:'demo',name:'Demo Zone',desc:'AI Workflow Demonstrations',pts:30},
-  {id:'ats_booth',name:'ATS Main Booth',desc:'Strategy, tools & briefings',pts:30},
-  {id:'initiative_wall',name:'Initiative Wall',desc:'Explore all ATS programs',pts:25},
-  {id:'live_demo',name:'Live Demo Station',desc:'From Problem to Prototype',pts:30},
-  {id:'innovation_lounge',name:'Innovation Lounge',desc:'FieldIQ & field intelligence',pts:25},
-  {id:'breakout',name:'Breakout Halls',desc:'Hands-on AI sessions',pts:20},
-  {id:'vendor',name:'Vendor Zone',desc:'Partner solutions & tools',pts:20},
-];
-const PROMPT_LIBRARY=[
-  {text:'Summarize this long title document and flag anything unusual',roles:['Agent','Underwriter'],pts:150,featured:true},
-  {text:'Identify potential risks in this closing workflow and suggest mitigations',roles:['Underwriter','Operations'],pts:150,featured:true},
-  {text:'Draft a professional follow-up communication for a delayed title issue',roles:['Agent'],pts:100},
-  {text:'Explain this underwriting report in simple language for a client conversation',roles:['Executive','Agent'],pts:100},
-  {text:'Compare our current manual reconciliation process vs an AI-assisted approach',roles:['Operations','Executive'],pts:125},
-  {text:'Generate a checklist for fraud risk review on this property transaction',roles:['Underwriter'],pts:125},
-  {text:'Summarize today\'s summit intelligence highlights for an executive briefing',roles:['Executive'],pts:100},
-  {text:'What are the top three workflow bottlenecks agents face and how can AI solve them?',roles:['Agent','Operations'],pts:100},
+const PROMPTS=[
+  {text:'Summarize this title document and flag anything unusual',roles:['Agent','Underwriter'],pts:150,featured:true},
+  {text:'Identify risks in this closing workflow and suggest mitigations',roles:['Underwriter'],pts:150,featured:true},
+  {text:'Draft a follow-up for a delayed title issue',roles:['Agent'],pts:100},
+  {text:'Compare our manual reconciliation process vs an AI-assisted approach',roles:['Operations'],pts:125},
+  {text:'What are the top workflow bottlenecks agents face and how can AI solve them?',roles:['Agent','Executive'],pts:100},
 ];
 
 // ── POINTS ──
-function addPoints(amt,label){
-  P.points+=amt;
-  document.getElementById('pts-display').textContent=P.points;
-  showToast('+'+amt+' pts'+(label?' — '+label:''));
-  logJourney('points:+'+amt+(label?':'+label:''));
+function addPts(n,label){
+  S.points+=n;
+  document.getElementById('ptsVal').textContent=S.points;
+  toast('+'+n+(label?' — '+label:''));
+  log('pts:+'+n+(label?':'+label:''));
 }
-function showToast(msg){
-  const t=document.getElementById('ptsToast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
-}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 // ── NAV ──
 let cur='s-welcome';
-const ONBOARDING=['s-welcome','s-role','s-pain','s-loading','s-suggest'];
-const PROG_MAP={'s-role':[1,0,0],'s-pain':[1,1,0],'s-loading':[1,1,0],'s-suggest':[1,1,1]};
-const SHOW_PILL=['s-pain','s-loading','s-suggest','s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash','s-mypoints','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-touchpoints','s-book'];
-const SHOW_NAV=['s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash','s-mypoints','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-touchpoints','s-book'];
-const EXPLORE_SCREENS=['s-feed','s-explore','s-concierge','s-problems','s-intel','s-qr','s-dash'];
-const NB_MAP={'s-action':'nb-home','s-feed':'nb-feed','s-explore':'nb-exp','s-initiatives':'nb-exp','s-tools':'nb-exp','s-briefs':'nb-exp','s-problems':'nb-exp','s-hunt':'nb-exp','s-avatar':'nb-exp','s-games':'nb-exp','s-prompts':'nb-exp','s-golden':'nb-exp','s-touchpoints':'nb-exp','s-book':'nb-exp','s-intel':'nb-intel','s-dash':'nb-dash','s-mypoints':'nb-dash'};
+const NAV_SCREENS=['s-home','s-explore','s-concierge','s-problems','s-intel','s-qr','s-activities','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-book','s-profile'];
+const NB_MAP={'s-home':'nb-home','s-explore':'nb-explore','s-concierge':'nb-home','s-problems':'nb-explore','s-intel':'nb-home','s-qr':'nb-home','s-activities':'nb-activities','s-hunt':'nb-activities','s-avatar':'nb-activities','s-games':'nb-activities','s-prompts':'nb-activities','s-golden':'nb-activities','s-book':'nb-profile','s-profile':'nb-profile'};
 
-function goTo(id){_nav(id,false);}
-function navTo(id){_nav(id,true);}
-function _nav(id,track){
+function goTo(id){_nav(id);}
+function navTo(id){_nav(id);}
+function _nav(id){
   if(id===cur)return;
-  const prev=document.getElementById(cur),next=document.getElementById(id);
-  if(!next)return;
-  prev.classList.remove('active');prev.classList.add('exit');
-  setTimeout(()=>prev.classList.remove('exit'),300);
-  next.classList.add('active');cur=id;
-  _shell(id);if(track)_trackE(id);logJourney('screen:'+id);
-  if(id==='s-feed')_feed();
-  if(id==='s-qr')_qr();
-  if(id==='s-dash')_dash();
+  const p=document.getElementById(cur),n=document.getElementById(id);
+  if(!n)return;
+  p.classList.remove('active');p.classList.add('exit');
+  setTimeout(()=>p.classList.remove('exit'),280);
+  n.classList.add('active');cur=id;
+  const inMain=NAV_SCREENS.includes(id);
+  document.getElementById('navbar').classList.toggle('vis',inMain);
+  document.getElementById('ptsPill').classList.toggle('vis',inMain);
+  document.getElementById('botFab').classList.toggle('vis',inMain);
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('cur'));
+  if(NB_MAP[id])document.getElementById(NB_MAP[id])?.classList.add('cur');
+  if(id==='s-home')_home();
+  if(id==='s-explore')_explore();
+  if(id==='s-concierge')_resetChat();
   if(id==='s-problems')_problems();
   if(id==='s-intel')_intel();
-  if(id==='s-concierge')_resetChat();
-  if(id==='s-initiatives')_initiatives();
-  if(id==='s-tools')_toolsScreen();
-  if(id==='s-briefs')_briefs();
-  if(id==='s-explore')_explore();
-  if(id==='s-mypoints')_mypoints();
+  if(id==='s-qr')_qr();
+  if(id==='s-activities')_activities();
   if(id==='s-hunt')_hunt();
   if(id==='s-avatar')_avatar();
   if(id==='s-games')_games();
-  if(id==='s-prompts')_promptsScreen();
+  if(id==='s-prompts')_prompts();
   if(id==='s-golden')_golden();
-  if(id==='s-touchpoints')_touchpointsScreen();
-  if(id==='s-book')_bookScreen();
+  if(id==='s-book')_book();
+  if(id==='s-profile')_profile();
+  log('nav:'+id);
 }
-function _shell(id){
-  const onb=ONBOARDING.includes(id);
-  document.getElementById('progressBar').classList.toggle('vis',onb&&id!=='s-welcome'&&id!=='s-loading');
-  if(PROG_MAP[id]){const s=PROG_MAP[id];['p1','p2','p3'].forEach((pid,i)=>{const el=document.getElementById(pid);el.className='pd'+(s[i]?(i<s.reduce((a,b)=>a+b,0)-1?' dn':' act'):'');});}
-  document.getElementById('aiPill').classList.toggle('vis',SHOW_PILL.includes(id));
-  document.getElementById('pillTxt').textContent=id==='s-loading'?'Building your profile…':'Tailoring Your Experience';
-  document.getElementById('navbar').classList.toggle('vis',SHOW_NAV.includes(id));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('cur'));
-  if(NB_MAP[id])document.getElementById(NB_MAP[id])?.classList.add('cur');
-  document.getElementById('exploreBar').classList.toggle('vis',SHOW_NAV.includes(id));
-  const showTools=SHOW_NAV.includes(id);
-  document.getElementById('ptsBadge').style.display=showTools?'flex':'none';
-  document.getElementById('scanBtn').style.display=showTools?'flex':'none';
-  document.getElementById('botFab').style.display=showTools?'flex':'none';
-}
-function _trackE(id){
-  if(EXPLORE_SCREENS.includes(id)){
-    P.visited.add(id);const n=P.visited.size;
-    document.getElementById('expLabel').textContent=`You've explored ${n} of 7 experiences`;
-    document.querySelectorAll('.exp-dot').forEach((d,i)=>d.classList.toggle('lit',i<n));
-  }
-}
-document.getElementById('expDots').innerHTML=EXPLORE_SCREENS.map(()=>`<div class="exp-dot"></div>`).join('');
 
 // ── ONBOARDING ──
-function selectRole(el,role){
-  document.querySelectorAll('#s-role .tc').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');P.role=role;logJourney('role:'+role);
-  setTimeout(()=>goTo('s-pain'),260);
+function pickRole(el,role){
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');S.role=role;
+  setTimeout(()=>goTo('s-pain'),240);
 }
 function togglePain(el,pain){
-  const sel=el.classList.contains('sel');
-  if(!sel&&P.pains.length>=2)return;
-  el.classList.toggle('sel',!sel);
-  P.pains=sel?P.pains.filter(p=>p!==pain):[...P.pains,pain];
-  const btn=document.getElementById('painNext');
-  btn.style.opacity=P.pains.length?'1':'.35';
-  btn.style.pointerEvents=P.pains.length?'all':'none';
+  const on=el.classList.contains('sel');
+  if(!on&&S.pains.length>=2)return;
+  el.classList.toggle('sel',!on);
+  S.pains=on?S.pains.filter(p=>p!==pain):[...S.pains,pain];
+  const b=document.getElementById('painBtn');
+  b.style.opacity=S.pains.length?'1':'.35';
+  b.style.pointerEvents=S.pains.length?'all':'none';
 }
-function goToAnalysis(){
+function startAnalysis(){
   goTo('s-loading');
-  P.suggestions=P.pains.length?P.pains.map(p=>SUGG[p]).filter(Boolean):DEFS.slice(0,2);
-  if(P.suggestions.length<3)P.suggestions.push(DEFS[2]);
-  const msgs=[['Comparing your profile with 200+ workflows…','Identifying your highest-impact opportunities'],['Mapping your challenges to AI capabilities…','Matching patterns across your role and inputs'],['Almost ready…','Generating your personalized AgentX experience']];
+  S.suggestions=S.pains.length?S.pains.map(p=>SUGG[p]).filter(Boolean):[SUGG['Manual work'],SUGG['Visibility'],SUGG['Delays']];
+  const msgs=[['Analyzing your profile…','Matching with 200+ workflows'],['Mapping challenges to AI capabilities…','Identifying best-fit solutions'],['Almost ready…','Generating your AgentX experience']];
   let i=0;const t=setInterval(()=>{
     i++;if(i<msgs.length){document.getElementById('loadMsg').textContent=msgs[i][0];document.getElementById('loadSub').textContent=msgs[i][1];}
-    else{clearInterval(t);document.getElementById('suggestList').innerHTML=P.suggestions.slice(0,3).map((s,j)=>`<div class="sc" style="animation-delay:${j*.1}s"><div class="sbadge">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');goTo('s-suggest');}
-  },720);
+    else{clearInterval(t);document.getElementById('suggestList').innerHTML=S.suggestions.slice(0,3).map((s,j)=>`<div class="suggest-item" style="animation-delay:${j*.1}s"><div class="sicon">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');goTo('s-suggest');}
+  },750);
 }
 function finishOnboarding(){
-  if(!P.completed.onboarding){P.completed.onboarding=true;addPoints(50,'Onboarding Complete');}
-  goTo('s-action');
+  if(!S.done.onboarding){S.done.onboarding=true;addPts(50,'Onboarding Complete');}
+  goTo('s-home');
 }
 
-// ── FEED ──
-let _fs=false,_cd;
-const FEED_DATA=[
-  {icon:'🔥',title:'47 people in the Demo Zone',sub:'Highest traffic area right now',tag:'LIVE',cls:'tr'},
-  {icon:'⚡',title:'Live build starting soon',sub:'Main stage — From Problem to Prototype',tag:'SOON',cls:'tr'},
-  {icon:'📊',title:'Top challenge today: Delays',sub:'Reported by 62% of attendees',tag:'TRENDING',cls:'tb'},
-  {icon:'✅',title:'AI for Operations breakout ended',sub:'23 attendees — avg 5-star rating',tag:'DONE',cls:'tg'},
-];
-function _feed(){
-  if(!_fs){document.getElementById('feedList').innerHTML=FEED_DATA.map((f,i)=>`<div class="fi" style="animation-delay:${i*.07}s"><div class="fi-ico">${f.icon}</div><div class="fi-body"><strong>${f.title}</strong><span>${f.sub}</span></div><div class="fi-tag ${f.cls}">${f.tag}</div></div>`).join('');_fs=true;}
+// ── HOME ──
+let _homeInit=false,_cd;
+function _home(){
+  if(!_homeInit){
+    const FEED=[
+      {ico:'🔥',t:'47 in the Demo Zone',s:'Highest traffic area right now',tag:'LIVE',cls:'tag-live'},
+      {ico:'⚡',t:'Live build starting soon',s:'Main stage — Problem to Prototype',tag:'SOON',cls:'tag-live'},
+      {ico:'📊',t:'Top challenge: Delays',s:'Reported by 62% of attendees',tag:'TRENDING',cls:'tag-trend'},
+      {ico:'✅',t:'AI for Operations ended',s:'23 attendees — avg 5-star',tag:'DONE',cls:'tag-done'},
+    ];
+    document.getElementById('feedList').innerHTML=FEED.map((f,i)=>`
+      <div class="feed-item" style="animation-delay:${i*.07}s">
+        <div style="font-size:18px;flex-shrink:0">${f.ico}</div>
+        <div class="fi-body"><strong>${f.t}</strong><span>${f.s}</span></div>
+        <div class="fi-tag ${f.cls}">${f.tag}</div>
+      </div>`).join('');
+    _homeInit=true;
+  }
   clearInterval(_cd);let s=292;const el=document.getElementById('ctime');
-  _cd=setInterval(()=>{if(cur!=='s-feed')return;s--;if(s<=0){el.textContent='NOW';clearInterval(_cd);return;}el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
+  _cd=setInterval(()=>{if(cur!=='s-home')return;s--;if(s<=0){el.textContent='NOW';clearInterval(_cd);return;}el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
 }
 
 // ── EXPLORE ──
 function _explore(){
-  const role=P.role||'Executive';
-  const inits=(ROLE_INITS[role]||['Current AI','FieldIQ']).map(n=>{
-    const it=INITIATIVES.find(x=>x.name===n);
-    return it?`<button class="ab" onclick="navTo('s-initiatives')"><div class="ai-icon ${it.color}">${it.icon}</div><div class="at"><strong>${it.name}</strong><span>${it.desc.substring(0,40)}…</span></div><div class="arr">›</div></button>`:'';
-  }).join('');
-  document.getElementById('exploreRecs').innerHTML=inits;
-}
-
-// ── INITIATIVES ──
-function _initiatives(){
-  document.getElementById('initiativesList').innerHTML=INITIATIVES.map((it,i)=>
-    `<div class="init-card" onclick="_toggleInit(${i})">
-      <div class="init-header"><div class="ai-icon ${it.color}" style="width:34px;height:34px;font-size:16px">${it.icon}</div><div><div class="init-title">${it.name}</div><div class="init-desc">${it.desc}</div></div></div>
-      <div id="ie${i}" style="display:none"><div class="init-expand"><div class="init-why">${it.why}</div><div class="init-cta">→ ${it.cta}</div></div></div>
+  document.getElementById('initList').innerHTML=INITS.map((it,i)=>`
+    <div class="row-item" onclick="toggleExpand('init',${i},this)">
+      <div class="ico ${it.c}">${it.icon}</div>
+      <div class="body"><strong>${it.name}</strong><span>${it.desc}</span></div>
+      <div class="arr" id="initArr${i}">›</div>
+    </div>
+    <div id="initExp${i}" style="display:none;background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.12);border-radius:10px;padding:12px 14px;margin-bottom:9px;font-size:13px;color:var(--m);line-height:1.55;animation:fup .22s ease">
+      ${['Brings structured AI thinking into everyday operations.','Gives agents and leaders real-time visibility into what\'s working.','Surfaces the right information faster — no manual digging.','Protects agents, clients, and the organization proactively.','Reduces friction and accelerates time-to-value for agents.'][i]}
+    </div>`).join('');
+  document.getElementById('toolList').innerHTML=TOOLS.map((t,i)=>`
+    <div class="row-item" onclick="toggleExpand('tool',${i},this)">
+      <div class="ico ${t.c}">${t.icon}</div>
+      <div class="body"><strong>${t.name}</strong><span>${t.use}</span></div>
+      <div class="arr" id="toolArr${i}">›</div>
+    </div>
+    <div id="toolExp${i}" style="display:none;background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.12);border-radius:10px;padding:12px 14px;margin-bottom:9px;font-size:13px;color:var(--m);line-height:1.55;animation:fup .22s ease">
+      ${['Replaces hours of research with instant sourced answers.','Eliminates manual document review — AI surfaces what matters.','Helps non-technical teams understand AI concepts quickly.','Connects tools, people, and tasks without manual handoffs.'][i]}
+    </div>`).join('');
+  document.getElementById('briefList').innerHTML=BRIEFS.map((b,i)=>`
+    <div class="card" style="margin-bottom:9px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:4px">${b.vol}</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">${b.title}</div>
+      <div style="font-size:12px;color:var(--m)">${b.teaser}</div>
     </div>`).join('');
 }
-function _toggleInit(i){
-  const el=document.getElementById('ie'+i);const vis=el.style.display==='block';
-  document.querySelectorAll('[id^="ie"]').forEach(e=>e.style.display='none');
-  if(!vis){el.style.display='block';logJourney('initiative:'+INITIATIVES[i].name);}
+function toggleExpand(type,i,el){
+  const expId=`${type}Exp${i}`;const arrId=`${type}Arr${i}`;
+  const exp=document.getElementById(expId);const vis=exp.style.display==='block';
+  document.querySelectorAll(`[id^="${type}Exp"]`).forEach(e=>e.style.display='none');
+  document.querySelectorAll(`[id^="${type}Arr"]`).forEach(a=>a.textContent='›');
+  if(!vis){exp.style.display='block';document.getElementById(arrId).textContent='↓';}
 }
-
-// ── TOOLS ──
-function _toolsScreen(){
-  document.getElementById('toolsList').innerHTML=TOOLS.map((t,i)=>
-    `<div class="tool-card" onclick="_toggleTool(${i})">
-      <div class="tool-header"><div class="ai-icon ${t.color}" style="width:32px;height:32px;font-size:15px">${t.icon}</div><div style="flex:1"><div class="tool-name">${t.name}${t.brief?'<span class="tool-brief-tag">ATS Brief</span>':''}</div><div class="tool-use">${t.use}</div></div></div>
-      <div id="te${i}" style="display:none"><div class="tool-expand"><div class="tool-why">${t.why}</div></div></div>
-    </div>`).join('');
-}
-function _toggleTool(i){
-  const el=document.getElementById('te'+i);const vis=el.style.display==='block';
-  document.querySelectorAll('[id^="te"]').forEach(e=>e.style.display='none');
-  if(!vis){el.style.display='block';logJourney('tool:'+TOOLS[i].name);}
-}
-
-// ── BRIEFS ──
-function _briefs(){
-  document.getElementById('briefsList').innerHTML=BRIEFS.map((b,i)=>
-    `<div class="brief-card">
-      <div class="brief-vol">${b.vol}</div><div class="brief-title">${b.title}</div>
-      <div class="brief-meta"><span>🧰 ${b.tool}</span><span>🛡 ${b.topic}</span></div>
-      <div class="brief-teaser">${b.teaser}</div>
-      <div class="brief-actions">
-        <button class="brief-btn" onclick="_bAct('${b.vol}','open')">Open Brief</button>
-        <button class="brief-btn" onclick="_bAct('${b.vol}','highlights')">Highlights</button>
-        <button class="brief-btn" onclick="navTo('s-tools')">See Tools</button>
-      </div>
-    </div>`).join('');
-}
-function _bAct(vol,a){logJourney('brief:'+vol+':'+a);}
 
 // ── CONCIERGE ──
 function _resetChat(){
-  document.getElementById('chatArea').innerHTML=`<div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div>`;
-  document.querySelectorAll('.pb').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});
+  document.getElementById('chatArea').innerHTML=`<div class="msg ai">Hi! I've reviewed your profile. Tap a question to get started.</div>`;
+  document.querySelectorAll('.q-btn').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});
 }
 function askC(btn,q){
-  const area=document.getElementById('chatArea');
-  area.innerHTML+=`<div class="msg user">${q}</div>`;
+  const a=document.getElementById('chatArea');
+  a.innerHTML+=`<div class="msg user">${q}</div>`;
   btn.style.opacity='.4';btn.style.pointerEvents='none';
   setTimeout(()=>{
-    const fn=CONCIERGE_MAP[q];
-    area.innerHTML+=`<div class="msg ai">${fn?fn(P):'Let me find the best option for your profile.'}</div>`;
-    area.scrollTop=area.scrollHeight;logJourney('concierge:'+q);
-  },650);
+    const fn=CQ[q];
+    a.innerHTML+=`<div class="msg ai">${fn?fn(S):'Let me find the best option for your profile.'}</div>`;
+    a.scrollTop=a.scrollHeight;log('concierge:'+q);
+  },600);
 }
 
 // ── PROBLEMS ──
 function _problems(){
-  document.getElementById('solutionPanel').innerHTML='';
+  document.getElementById('solPanel').innerHTML='';
   document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>
-    `<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div class="prob-icon">${p.icon}</div><div class="prob-label">${p.label}</div></div>`).join('');
+    `<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div style="font-size:24px;margin-bottom:8px">${p.icon}</div><div style="font-size:12.5px;font-weight:700;line-height:1.3">${p.label}</div></div>`).join('');
 }
 function _selProb(i){
   document.querySelectorAll('.prob-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById('pb'+i).classList.add('sel');
   const p=PROBLEMS[i];
-  document.getElementById('solutionPanel').innerHTML=`
-    <div class="solution-panel">
-      <div class="sol-title">AI Solution Breakdown — ${p.label}</div>
-      <div class="sol-row">
-        <div class="sol-block"><h5 class="cur">Current State</h5><ul>${p.current.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-        <div class="sol-block"><h5 class="aih">AI Solution</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div>
+  document.getElementById('solPanel').innerHTML=`
+    <div class="sol-panel">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac2);margin-bottom:6px">${p.label}</div>
+      <div class="sol-cols">
+        <div class="sol-col"><h5 style="color:var(--m)">Current</h5><ul>${p.curr.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+        <div class="sol-col"><h5 style="color:var(--ac)">With AI</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div>
       </div>
-      <div class="proto-badge"><span class="proto-arr">→</span><span>Prototype idea: <strong>${p.proto}</strong></span></div>
+      <div style="background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:8px;padding:10px 12px;font-size:12.5px;font-weight:700">→ Prototype: <strong>${p.proto}</strong></div>
     </div>`;
-  document.getElementById('solutionPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-  logJourney('problem:'+p.label);
+  document.getElementById('solPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+  log('problem:'+p.label);
 }
 
 // ── INTEL ──
 function _intel(){
-  const C=[{label:'Delays in processing',pct:62},{label:'Manual work',pct:48},{label:'Visibility issues',pct:33},{label:'Communication gaps',pct:27},{label:'Compliance concerns',pct:19}];
-  document.getElementById('intelBars').innerHTML=C.map(c=>`<div class="intel-bar"><div class="intel-label">${c.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${c.pct}%"></div></div><div class="intel-pct">${c.pct}%</div></div>`).join('');
-  const V=[{label:'Demo Zone',pct:78},{label:'AI Concierge',pct:65},{label:'Breakout Sessions',pct:54},{label:'ATS Initiatives',pct:41}];
-  document.getElementById('visitBars').innerHTML=V.map(v=>`<div class="intel-bar"><div class="intel-label">${v.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${v.pct}%"></div></div><div class="intel-pct">${v.pct}%</div></div>`).join('');
-  setTimeout(()=>document.querySelectorAll('.intel-fill').forEach(el=>el.style.width=el.dataset.p),80);
+  const C=[{l:'Delays in processing',p:62},{l:'Manual work',p:48},{l:'Visibility issues',p:33},{l:'Communication gaps',p:27}];
+  document.getElementById('intelBars').innerHTML=C.map(c=>`<div class="bar-row"><div class="bar-lbl">${c.l}</div><div class="bar-track"><div class="bar-fill" style="width:0%" data-p="${c.p}%"></div></div><div class="bar-pct">${c.p}%</div></div>`).join('');
+  const V=[{l:'Demo Zone',p:78},{l:'AI Concierge',p:65},{l:'Breakout Sessions',p:54},{l:'ATS Initiatives',p:41}];
+  document.getElementById('visitBars').innerHTML=V.map(v=>`<div class="bar-row"><div class="bar-lbl">${v.l}</div><div class="bar-track"><div class="bar-fill" style="width:0%" data-p="${v.p}%"></div></div><div class="bar-pct">${v.p}%</div></div>`).join('');
+  setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(el=>el.style.width=el.dataset.p),80);
 }
 
 // ── QR ──
 function _qr(){
-  const loc=QR_LOCATIONS[Math.floor(Math.random()*QR_LOCATIONS.length)];
+  const loc=QR_LOCS[Math.floor(Math.random()*QR_LOCS.length)];
   document.getElementById('qrName').textContent=loc.name;
   document.getElementById('qrSub').textContent=loc.sub;
-  document.getElementById('qrInsight').innerHTML=`<strong>${loc.insight.title}</strong>${loc.insight.body}`;
-  document.getElementById('qrActions').innerHTML=loc.actions.map(a=>`<button class="ab" onclick="_qrAct(this,'${a}','${loc.name}')"><div class="ai-icon itl" style="font-size:13px">›</div><div class="at"><strong>${a}</strong><span>at ${loc.name}</span></div><div class="arr">›</div></button>`).join('');
-  // award tp points
-  const tpId=loc.name.toLowerCase().replace(/\s/g,'_');
-  if(!P.completed.touchpoints[tpId]){P.completed.touchpoints[tpId]=true;addPoints(30,'QR Check-in: '+loc.name);}
+  document.getElementById('qrNote').innerHTML=`<strong>${loc.note.t}</strong>${loc.note.b}`;
+  document.getElementById('qrActions').innerHTML=loc.acts.map(a=>`
+    <button class="row-item" onclick="_qrAct(this,'${a}')">
+      <div class="ico itl" style="font-size:13px">›</div>
+      <div class="body"><strong>${a}</strong><span>${loc.name}</span></div>
+      <div class="arr">›</div>
+    </button>`).join('');
+  const id=loc.name.toLowerCase().replace(/\s+/g,'_');
+  if(!S.done.touchpoints[id]){S.done.touchpoints[id]=true;addPts(30,'Check-in: '+loc.name);}
 }
-function _qrAct(el,a,loc){el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';logJourney('qr:'+loc+':'+a);}
+function _qrAct(el,a){el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';log('qr:'+a);}
 
-// ── DASHBOARD ──
-function _dash(){
-  document.getElementById('d-role').textContent=P.role||'Not selected';
-  document.getElementById('d-pains').innerHTML=P.pains.length?P.pains.map(p=>`<div class="dash-chip">${SUGG[p]?.icon||'•'} ${p}</div>`).join(''):`<div class="dash-chip">Not selected</div>`;
-  const soc=(P.role&&SOCIAL_DATA[P.role])||SOCIAL_DATA['Executive'];
-  document.getElementById('d-social').innerHTML=soc.map(s=>`<div class="social-card"><span class="social-pct">${s.pct}</span><div class="social-lbl">${s.lbl}</div></div>`).join('');
-  document.getElementById('d-recs').innerHTML=P.suggestions.slice(0,3).map(s=>`<div class="nit"><div class="ni-ico">${s.icon}</div>${s.text}</div>`).join('');
-  const inits=(P.role&&ROLE_INITS[P.role])||['Current AI','FieldIQ'];
-  document.getElementById('d-inits').innerHTML=inits.map(n=>{const it=INITIATIVES.find(x=>x.name===n);return it?`<div class="nit"><div class="ni-ico">${it.icon}</div>${it.name} — ${it.desc.substring(0,34)}…</div>`:''}).join('');
-  const tools=(P.role&&ROLE_TOOLS[P.role])||['Perplexity','Orbital'];
-  document.getElementById('d-tools').innerHTML=tools.map(n=>{const t=TOOLS.find(x=>x.name===n);return t?`<div class="nit"><div class="ni-ico">${t.icon}</div>${t.name} — ${t.use.substring(0,34)}…</div>`:''}).join('');
-  const nexts=(P.role&&NEXTS[P.role])||NEXTS['Executive'];
-  document.getElementById('d-nexts').innerHTML=nexts.map(n=>`<div class="nit"><div class="ni-ico">→</div>${n}</div>`).join('');
-}
-
-// ── MY POINTS ──
-function _mypoints(){
+// ── ACTIVITIES ──
+function _activities(){
   const acts=[
-    {id:'onboarding',label:'Complete Onboarding',pts:50,done:P.completed.onboarding},
-    {id:'hunt',label:'Complete Treasure Hunt',pts:100,done:P.completed.huntDone},
-    {id:'avatar',label:'Create Your Avatar',pts:75,done:P.completed.avatarDone},
-    {id:'game_bingo',label:'Play Summit Bingo',pts:50,done:!!P.completed.gamesOpened['Summit Bingo']},
-    {id:'prompt',label:'Submit a Prompt',pts:150,done:P.completed.promptSubmitted},
-    {id:'team_all',label:'Scan All ATS Team Members',pts:200,done:Object.values(P.completed.teamScanned).every(Boolean)},
-    {id:'tp_demo',label:'Check In at Demo Zone',pts:30,done:!!P.completed.touchpoints['demo_zone']},
-    {id:'book',label:'Book a 1:1 ATS Session',pts:100,done:P.completed.booked},
+    {icon:'🗺️',name:'Treasure Hunt',desc:'Follow 5 clues across the venue',pts:100,screen:'s-hunt'},
+    {icon:'🎨',name:'Avatar Studio',desc:'Create your summit profile look',pts:75,screen:'s-avatar'},
+    {icon:'🎮',name:'Games',desc:'Industry-themed puzzles & bingo',pts:50,screen:'s-games'},
+    {icon:'💡',name:'Best Prompts',desc:'Explore & submit AI prompts',pts:150,screen:'s-prompts'},
+    {icon:'⭐',name:'Golden Points',desc:'Scan the ATS team QR codes',pts:200,screen:'s-golden'},
+    {icon:'📅',name:'Book with ATS',desc:'1:1 MVP brainstorm session',pts:100,screen:'s-book'},
   ];
-  const done=acts.filter(a=>a.done).length;
-  const teamScanned=Object.values(P.completed.teamScanned).filter(Boolean).length;
-  const tpVisited=Object.keys(P.completed.touchpoints).length;
-  const mock_lb=[
-    {name:'Sarah M.',pts:P.points+420,me:false},{name:'James T.',pts:P.points+285,me:false},
-    {name:'You',pts:P.points,me:true},{name:'Linda K.',pts:Math.max(0,P.points-120),me:false},
-    {name:'Marcus R.',pts:Math.max(0,P.points-200),me:false},
-  ].sort((a,b)=>b.pts-a.pts);
-  const myRank=mock_lb.findIndex(r=>r.me)+1;
-
-  document.getElementById('mypoints-content').innerHTML=`
-    <div class="pts-summary">
-      <div class="pts-big">${P.points}</div>
-      <div class="pts-label">Total AgentX Points</div>
-      <div class="pts-stat-row">
-        <div class="pts-stat"><strong>${done}</strong><span>Activities Done</span></div>
-        <div class="pts-stat"><strong>${teamScanned}/4</strong><span>Team Scanned</span></div>
-        <div class="pts-stat"><strong>${tpVisited}</strong><span>Stops Visited</span></div>
+  document.getElementById('actCards').innerHTML=acts.map(a=>`
+    <div class="act-card" onclick="navTo('${a.screen}')">
+      <div class="act-card-head">
+        <div class="act-ico">${a.icon}</div>
+        <div class="act-info"><div class="act-name">${a.name}</div><div class="act-desc">${a.desc}</div></div>
+        <div class="act-pts">+${a.pts} pts</div>
       </div>
-    </div>
-    <div class="section-h">Activities</div>
-    <div class="act-row">${acts.map(a=>`
-      <div class="act-item${a.done?' done':''}">
-        <div class="act-check">${a.done?'✓':''}</div>
-        <div class="act-name">${a.label}</div>
-        <div class="act-pts">+${a.pts}</div>
-      </div>`).join('')}</div>
-    <div class="divider"></div>
-    <div class="section-h">Leaderboard — Your Rank: #${myRank}</div>
-    <div class="leaderboard">${mock_lb.map((r,i)=>`
-      <div class="lb-row${r.me?' me':''}">
-        <div class="lb-rank">#${i+1}</div>
-        <div class="lb-name">${r.me?'⭐ '+r.name:r.name}</div>
-        <div class="lb-pts">${r.pts} pts</div>
-      </div>`).join('')}</div>
-    <div style="height:8px"></div>`;
+    </div>`).join('');
 }
 
-// ── TREASURE HUNT ──
+// ── HUNT ──
 function _hunt(){
-  const step=P.huntStep;
-  if(P.completed.huntDone){
-    document.getElementById('hunt-content').innerHTML=`
-      <div class="complete-card">
+  const step=S.done.huntStep;
+  if(S.done.huntDone){
+    document.getElementById('huntContent').innerHTML=`
+      <div style="background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(13,148,136,.07));border:1px solid rgba(34,197,94,.28);border-radius:var(--r);padding:28px;text-align:center">
         <div style="font-size:48px;margin-bottom:12px">🏆</div>
-        <h3 style="font-size:22px;font-weight:900;color:#34d399;margin-bottom:8px">Hunt Complete!</h3>
-        <p style="font-size:14px;color:var(--m);line-height:1.65;margin-bottom:16px">You uncovered every clue and mapped the innovation story of this summit. You've earned <strong style="color:var(--gold)">100 points</strong> and unlocked the ATS Insight Pack.</p>
-        <button class="btn teal-btn sm" onclick="navTo('s-golden')" style="animation:none">Claim Your Reward at ATS Desk →</button>
+        <div style="font-size:22px;font-weight:900;color:#34d399;margin-bottom:8px">Hunt Complete!</div>
+        <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">You uncovered all 5 clues and earned <strong style="color:var(--gold)">100 pts</strong>. Claim your reward at the ATS desk.</div>
+        <button class="btn teal sm" onclick="navTo('s-golden')" style="animation:none">Meet the ATS Team →</button>
       </div>`;
     return;
   }
   const pct=Math.round((step/HUNT_STEPS.length)*100);
-  document.getElementById('hunt-content').innerHTML=`
-    <div class="hunt-progress">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:12px;font-weight:700;color:var(--m)">Progress</span>
-        <span style="font-size:12px;font-weight:800;color:var(--teal)">${step}/${HUNT_STEPS.length} clues found</span>
+  document.getElementById('huntContent').innerHTML=`
+    <div style="background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--m);font-weight:600">${step} of ${HUNT_STEPS.length} clues found</span>
+        <span style="font-size:12px;font-weight:800;color:var(--teal)">${step*20} pts earned</span>
       </div>
-      <div class="hunt-progress-bar"><div class="hunt-fill" style="width:${pct}%"></div></div>
-      <div style="font-size:11px;color:var(--m)">${pct}% complete · ${step*20} pts earned so far</div>
+      <div style="height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;width:${pct}%;transition:width .5s"></div></div>
     </div>
-    <div class="section-h">Your Clues</div>
-    <div class="hunt-steps">
-      ${HUNT_STEPS.map((s,i)=>`
-        <div class="hunt-step${i===step?' active':i<step?' complete':''}">
-          <div class="hunt-step-num">${i<step?'✓':i+1}</div>
-          <div class="hunt-step-body">
-            <div class="hunt-step-title">${s.title}</div>
-            ${i<=step?`<div class="hunt-step-clue">${s.clue}</div><div class="hunt-step-pts">+${s.pts} pts</div>`:'<div class="hunt-step-clue" style="filter:blur(4px);user-select:none">Unlocked when you reach this step.</div>'}
-          </div>
-        </div>`).join('')}
-    </div>
+    ${HUNT_STEPS.map((s,i)=>`
+      <div class="hunt-step${i===step?' active':i<step?' done':''}">
+        <div class="step-num">${i<step?'✓':i+1}</div>
+        <div>
+          <div class="step-title">${s.title}</div>
+          ${i<=step?`<div class="step-clue">${s.clue}</div><div style="font-size:10px;font-weight:800;color:var(--gold);margin-top:5px">+${s.pts} pts</div>`:'<div class="step-clue" style="filter:blur(3px);user-select:none">Unlock by reaching this step.</div>'}
+        </div>
+      </div>`).join('')}
     <div style="height:12px"></div>
-    ${step<HUNT_STEPS.length?`<button class="btn teal-btn sm" onclick="advanceHunt()" style="animation:none">📷 Scan Next QR Code</button>`:''}
-    <div style="height:8px"></div>`;
+    ${step<HUNT_STEPS.length?`<button class="btn teal sm" onclick="advanceHunt()" style="animation:none">📷 Scan Next QR Code</button>`:''}`;
 }
 function advanceHunt(){
-  const s=HUNT_STEPS[P.huntStep];
-  addPoints(s.pts,'Hunt Clue: '+s.title);
-  P.completed.huntSteps[P.huntStep]=true;
-  P.huntStep++;
-  if(P.huntStep>=HUNT_STEPS.length&&!P.completed.huntDone){P.completed.huntDone=true;addPoints(0,'Treasure Hunt Complete');}
-  logJourney('hunt:step:'+P.huntStep);
-  _hunt();
+  const s=HUNT_STEPS[S.done.huntStep];
+  addPts(s.pts,'Hunt: '+s.title);
+  S.done.huntStep++;
+  if(S.done.huntStep>=HUNT_STEPS.length&&!S.done.huntDone){S.done.huntDone=true;}
+  log('hunt:step:'+S.done.huntStep);_hunt();
 }
 
 // ── AVATAR ──
-let _avatarState=0;
-function _avatar(){
-  _avatarState=P.completed.avatarDone?3:0;_renderAvatar();
-}
-function _renderAvatar(){
+let _avState=0;
+function _avatar(){_avState=S.done.avatar?3:0;_renderAv();}
+function _renderAv(){
   const styles=[{id:'exec',icon:'💼',name:'Executive Agent'},{id:'closer',icon:'🔑',name:'Modern Closer'},{id:'uw',icon:'📋',name:'Future Underwriter'},{id:'innov',icon:'🚀',name:'Title Innovator'}];
-  const selStyle=P.completed.avatarStyle;
-  const c=document.getElementById('avatar-content');
-  if(_avatarState===0){
+  const c=document.getElementById('avatarContent');
+  if(_avState===0){
     c.innerHTML=`
-      <div style="background:linear-gradient(135deg,rgba(124,106,247,.08),rgba(79,142,247,.05));border:1px solid rgba(124,106,247,.2);border-radius:var(--r);padding:16px;margin-bottom:14px">
-        <div style="font-size:13px;line-height:1.6;color:var(--m)">Create your personalized summit avatar. Choose a style, generate your look, and print it at the ATS desk. <strong style="color:var(--t)">Powered by Nano Banana</strong> — integration coming post-summit.</div>
-      </div>
-      <div class="avatar-preview">
-        <div class="avatar-placeholder">🧑</div>
-        <div style="font-size:13px;color:var(--m)">Your avatar will appear here</div>
-      </div>
-      <button class="btn sm" onclick="_avatarState=1;_renderAvatar()" style="animation:none;margin-bottom:10px">📷 Take Selfie</button>
-      <div style="font-size:11px;color:var(--m);text-align:center">No real camera needed in demo mode</div>`;
-  } else if(_avatarState===1){
+      <div style="font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px">Create your summit avatar. Powered by <strong style="color:var(--t)">Nano Banana</strong> — integration coming post-summit.</div>
+      <div class="av-preview"><div class="av-circle">🧑</div><div style="font-size:13px;color:var(--m)">Your avatar will appear here</div></div>
+      <button class="btn sm" onclick="_avState=1;_renderAv()" style="animation:none">📷 Take Selfie (Demo)</button>`;
+  } else if(_avState===1){
     c.innerHTML=`
-      <div class="avatar-preview" style="position:relative">
-        <div class="avatar-placeholder" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,106,247,.2))">📸</div>
-        <div style="font-size:13px;color:var(--m)">Selfie captured — choose your style</div>
-      </div>
-      <div class="section-h">Choose Your Style (+75 pts)</div>
-      <div class="style-grid">
-        ${styles.map(s=>`<div class="style-card${selStyle===s.id?' sel':''}" onclick="_pickStyle('${s.id}')"><div class="st-icon">${s.icon}</div><div class="st-name">${s.name}</div></div>`).join('')}
-      </div>
-      <button class="btn sm" style="animation:none;margin-bottom:8px;opacity:${selStyle?'1':'.35'};pointer-events:${selStyle?'all':'none'}" onclick="_avatarState=2;_renderAvatar()">✨ Generate My Avatar</button>`;
-  } else if(_avatarState===2){
-    const s=styles.find(x=>x.id===selStyle)||styles[0];
+      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,106,247,.2))">📸</div><div style="font-size:13px;color:var(--m)">Choose your style</div></div>
+      <div class="sel-grid">${styles.map(s=>`<div class="sel-card${S.done.avatarStyle===s.id?' sel':''}" onclick="S.done.avatarStyle='${s.id}';_renderAv()"><div class="s-ico">${s.icon}</div><div class="s-lbl">${s.name}</div></div>`).join('')}</div>
+      <button class="btn sm" style="animation:none;opacity:${S.done.avatarStyle?'1':'.35'};pointer-events:${S.done.avatarStyle?'all':'none'}" onclick="_avState=2;_renderAv()">✨ Generate Avatar</button>`;
+  } else if(_avState===2){
+    const st=styles.find(x=>x.id===S.done.avatarStyle)||styles[0];
     c.innerHTML=`
-      <div class="avatar-preview">
-        <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:40px">${s.icon}</div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px">${s.name}</div>
-        <div style="font-size:11.5px;color:var(--m)">Summit Edition · WFG AgentX 2026</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn sm" onclick="_finalizeAvatar()" style="animation:none">🖨️ Print at ATS Desk</button>
-        <button class="btn ghost sm" onclick="_finalizeAvatar()">💾 Save to Profile</button>
-      </div>`;
+      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:36px">${st.icon}</div><div style="font-size:14px;font-weight:700;margin-bottom:3px">${st.name}</div><div style="font-size:11.5px;color:var(--m)">Summit Edition · WFG AgentX 2026</div></div>
+      <button class="btn sm" onclick="_finalAv()" style="animation:none;margin-bottom:8px">🖨️ Print at ATS Desk</button>
+      <button class="btn ghost sm" onclick="_finalAv()">💾 Save to Profile</button>`;
   } else {
+    const st=styles.find(x=>x.id===S.done.avatarStyle)||styles[0];
     c.innerHTML=`
-      <div class="avatar-preview">
-        <div class="avatar-placeholder" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:40px">${styles.find(x=>x.id===selStyle)?.icon||'🚀'}</div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px">${styles.find(x=>x.id===selStyle)?.name||'AgentX Avatar'}</div>
-        <div style="font-size:11.5px;color:#34d399">✓ Saved to Profile</div>
-      </div>
-      <div class="nit" style="background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.25)"><div class="ni-ico">✅</div>Avatar created — +75 pts earned</div>
-      <div style="height:8px"></div>
-      <button class="btn ghost sm" onclick="_avatarState=0;P.completed.avatarDone=false;P.completed.avatarStyle=null;_renderAvatar()">Redo Avatar</button>`;
+      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:36px">${st.icon}</div><div style="font-size:14px;font-weight:700;margin-bottom:3px">${st.name}</div><div style="font-size:12px;color:#34d399;margin-top:2px">✓ Saved to Profile — +75 pts</div></div>
+      <button class="btn ghost sm" onclick="_avState=0;S.done.avatar=false;S.done.avatarStyle=null;_renderAv()">Redo Avatar</button>`;
   }
 }
-function _pickStyle(id){P.completed.avatarStyle=id;_renderAvatar();}
-function _finalizeAvatar(){
-  if(!P.completed.avatarDone){P.completed.avatarDone=true;addPoints(75,'Avatar Created');}
-  _avatarState=3;_renderAvatar();logJourney('avatar:complete:'+P.completed.avatarStyle);
+function _finalAv(){
+  if(!S.done.avatar){S.done.avatar=true;addPts(75,'Avatar Created');}
+  _avState=3;_renderAv();log('avatar:complete');
 }
 
 // ── GAMES ──
-const GAMES=[
-  {icon:'🔡',name:'Title Terms Word Search',desc:'Find key title industry terms hidden in a 12×12 grid',puzzleTitle:'Hidden words: Escrow, Easement, Lien, Title, Deed, Closing, Premium, Commitment',pts:50},
-  {icon:'📝',name:'Fraud Flags Crossword',desc:'Test your knowledge of common fraud indicators in title',puzzleTitle:'Across: Red flags, Forged deed, Straw buyer, Wire fraud. Down: Identity theft, Clouded title',pts:50},
-  {icon:'🔀',name:'AI Workflow Scramble',desc:'Unscramble AI and workflow terms before time runs out',puzzleTitle:'ROTAOMTINUA · EELDRNB · COSSPER · FWOKROLW · NTICOGEVI',pts:50},
-  {icon:'🎯',name:'Summit Bingo',desc:'Check off summit moments as you experience them',puzzleTitle:'Square topics: Demo Zone, Met ATS Team, Heard AI mentioned, Saw Live Build, Found a Clue…',pts:50},
-];
 function _games(){
-  document.getElementById('games-content').innerHTML=`
-    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px">Industry-themed games to sharpen your knowledge — and earn points.</div>
-    <div class="game-cards">${GAMES.map((g,i)=>`
-      <div class="game-card" id="gc${i}" onclick="_toggleGame(${i})">
-        <div class="game-header">
-          <div class="game-icon">${g.icon}</div>
-          <div class="game-info"><div class="game-name">${g.name}</div><div class="game-desc">${g.desc}</div></div>
-          <div class="game-pts-badge">+${g.pts} pts</div>
+  document.getElementById('gamesContent').innerHTML=`
+    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px">Industry-themed games. Earn points for each one you play.</div>
+    ${GAMES.map((g,i)=>`
+      <div class="act-card" id="gc${i}" onclick="toggleGame(${i})">
+        <div class="act-card-head">
+          <div class="act-ico">${g.icon}</div>
+          <div class="act-info"><div class="act-name">${g.name}</div><div class="act-desc">${g.desc}</div></div>
+          <div class="act-pts">${S.done.games[g.name]?'✓':'+'+g.pts}</div>
         </div>
-        <div id="gexp${i}" style="display:none" class="game-expand">
-          <div class="puzzle-title">${g.puzzleTitle}</div>
-          <div class="game-btns">
-            <button class="game-btn primary" onclick="event.stopPropagation();_playGame(${i})">▶ Play Now</button>
-            <button class="game-btn" onclick="event.stopPropagation()">Preview</button>
-          </div>
+        <div id="gexp${i}" style="display:none" class="act-expand">
+          <button class="btn teal sm" onclick="event.stopPropagation();playGame(${i})" style="animation:none">${S.done.games[g.name]?'✓ Played':'▶ Play Now (+'+g.pts+' pts)'}</button>
         </div>
-      </div>`).join('')}</div>`;
+      </div>`).join('')}`;
 }
-function _toggleGame(i){
+function toggleGame(i){
   const el=document.getElementById('gexp'+i);const vis=el.style.display==='block';
   document.querySelectorAll('[id^="gexp"]').forEach(e=>e.style.display='none');
-  if(!vis){el.style.display='block';logJourney('game:opened:'+GAMES[i].name);}
+  if(!vis)el.style.display='block';
+  log('game:expand:'+GAMES[i].name);
 }
-function _playGame(i){
+function playGame(i){
   const g=GAMES[i];
-  if(!P.completed.gamesOpened[g.name]){P.completed.gamesOpened[g.name]=true;addPoints(g.pts,'Game: '+g.name);}
-  logJourney('game:played:'+g.name);
-  const btn=document.getElementById('gexp'+i).querySelector('.game-btn.primary');
-  btn.textContent='✓ Played';btn.style.background='rgba(34,197,94,.2)';btn.style.color='#86efac';
+  if(!S.done.games[g.name]){S.done.games[g.name]=true;addPts(g.pts,'Game: '+g.name);}
+  log('game:play:'+g.name);_games();
 }
 
-// ── BEST PROMPTS ──
-function _promptsScreen(){
-  const sections=[
-    {title:'⭐ Top Prompt of the Day',prompts:[PROMPT_LIBRARY[0]],featured:true},
-    {title:'🏆 Most Useful Prompt',prompts:[PROMPT_LIBRARY[4]]},
-    {title:'👔 Prompt Ideas for Executives',prompts:PROMPT_LIBRARY.filter(p=>p.roles.includes('Executive'))},
-    {title:'📋 Prompt Ideas for Agents',prompts:PROMPT_LIBRARY.filter(p=>p.roles.includes('Agent'))},
-    {title:'🔍 Prompt Ideas for Underwriters',prompts:PROMPT_LIBRARY.filter(p=>p.roles.includes('Underwriter'))},
-  ];
-  document.getElementById('prompts-content').innerHTML=`
-    <div class="submit-area">
-      <div style="font-size:13px;font-weight:700;margin-bottom:4px">Submit Your Best Prompt</div>
-      <div style="font-size:12px;color:var(--m);margin-bottom:10px">Highest point value activity. Help ATS understand what you're trying to solve.</div>
-      <button class="btn sm" onclick="_submitPrompt()" style="animation:none" id="submitPromptBtn">✉️ Submit a Prompt (+150 pts)</button>
+// ── PROMPTS ──
+function _prompts(){
+  document.getElementById('promptsContent').innerHTML=`
+    <div style="background:linear-gradient(135deg,rgba(79,142,247,.07),rgba(124,106,247,.04));border:1px solid rgba(79,142,247,.18);border-radius:var(--r);padding:16px;margin-bottom:16px">
+      <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">Submit Your Best Prompt</div>
+      <div style="font-size:12px;color:var(--m);margin-bottom:12px">Highest point value. Help ATS understand what you're solving.</div>
+      <button class="btn gold sm" id="submitBtn" onclick="submitPrompt()" style="animation:none">${S.done.promptSubmitted?'✓ Submitted':'✉️ Submit a Prompt (+150 pts)'}</button>
     </div>
-    ${sections.map(sec=>`
-      <div class="prompt-section">
-        <div class="prompt-section-title">${sec.title}</div>
-        ${sec.prompts.map((p,i)=>`
-          <div class="prompt-card${p.featured?' featured':''}">
-            <div class="prompt-text">"${p.text}"</div>
-            <div class="prompt-meta">
-              ${p.roles.map(r=>`<span class="prompt-role-tag">${r}</span>`).join('')}
-              <span class="prompt-pts">+${p.pts} pts</span>
-            </div>
-            <div class="prompt-actions">
-              <button class="prompt-action-btn" onclick="_usePrompt(this,'${p.text.substring(0,20)}')">▶ Try This</button>
-              <button class="prompt-action-btn" onclick="_savePrompt(this,'${p.text.substring(0,20)}')">💾 Save</button>
-            </div>
-          </div>`).join('')}
+    <div class="sec-label">Prompt Ideas</div>
+    ${PROMPTS.map((p,i)=>`
+      <div class="prompt-card${p.featured?' featured':''}">
+        <div class="prompt-text">"${p.text}"</div>
+        <div class="prompt-foot">
+          ${p.roles.map(r=>`<span class="role-tag">${r}</span>`).join('')}
+          <span class="p-pts">+${p.pts} pts</span>
+        </div>
+        <div class="prompt-btns">
+          <button class="p-btn" onclick="usePrompt(this)">▶ Try</button>
+          <button class="p-btn" onclick="savePrompt(this)">💾 Save</button>
+        </div>
       </div>`).join('')}`;
-  if(P.completed.promptSubmitted){
-    const btn=document.getElementById('submitPromptBtn');
-    if(btn){btn.textContent='✓ Prompt Submitted';btn.style.background='rgba(34,197,94,.15)';btn.style.color='#86efac';btn.style.animation='none';}
-  }
 }
-function _submitPrompt(){
-  if(!P.completed.promptSubmitted){P.completed.promptSubmitted=true;addPoints(150,'Best Prompt Submitted');logJourney('prompt:submitted');}
-  const btn=document.getElementById('submitPromptBtn');
-  if(btn){btn.textContent='✓ Submitted — +150 pts';btn.style.background='rgba(34,197,94,.15)';btn.style.color='#86efac';btn.style.animation='none';btn.style.border='1px solid rgba(34,197,94,.3)';}
+function submitPrompt(){
+  if(!S.done.promptSubmitted){S.done.promptSubmitted=true;addPts(150,'Prompt Submitted');}
+  const b=document.getElementById('submitBtn');
+  if(b){b.textContent='✓ Submitted';b.style.background='rgba(34,197,94,.15)';b.style.color='#86efac';}
 }
-function _usePrompt(el,label){el.textContent='✓ Tried';el.style.color='#34d399';logJourney('prompt:used:'+label);P.completed.promptsClicked++;if(P.completed.promptsClicked<=3)addPoints(25,'Prompt Used');}
-function _savePrompt(el,label){el.textContent='✓ Saved';el.style.color='var(--ac)';logJourney('prompt:saved:'+label);}
+function usePrompt(el){el.textContent='✓ Tried';el.style.color='#34d399';addPts(25,'Prompt Used');log('prompt:used');}
+function savePrompt(el){el.textContent='✓ Saved';el.style.color='var(--ac)';log('prompt:saved');}
 
-// ── GOLDEN POINTS ──
+// ── GOLDEN ──
 function _golden(){
-  document.getElementById('golden-content').innerHTML=`
-    <div class="gold-banner">
-      <h3>Golden Points Zone</h3>
-      <p>Scan each ATS team member's unique QR code for exclusive high-value points. Find them throughout the venue.</p>
-    </div>
-    ${TEAM_MEMBERS.map(m=>`
-      <div class="team-card${P.completed.teamScanned[m.name]?' scanned':''}" id="tc_${m.name}">
-        <div class="team-header">
-          <div class="team-avatar">${m.emoji}</div>
-          <div><div class="team-name">${m.name}</div><div class="team-role">${m.role}</div></div>
-        </div>
-        <div class="team-topic">"${m.topic}"</div>
-        <div style="background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:10px;text-align:center;margin-bottom:10px;font-size:11px;color:var(--m)">
-          ${P.completed.teamScanned[m.name]?'<span style="color:#34d399">✓ QR Code Scanned</span>':'[ QR Code Placeholder ]'}
-        </div>
-        <div class="team-status">
-          <div class="team-pts-val">+${m.pts} pts${P.completed.teamScanned[m.name]?' ✓':''}</div>
-          <button class="team-scan-btn${P.completed.teamScanned[m.name]?' done':''}" onclick="_scanTeam('${m.name}')" ${P.completed.teamScanned[m.name]?'disabled':''}>
-            ${P.completed.teamScanned[m.name]?'✓ Scanned':'📷 Scan QR'}
-          </button>
-        </div>
-      </div>`).join('')}
-    <div style="height:8px"></div>`;
+  document.getElementById('goldenContent').innerHTML=TEAM.map(m=>`
+    <div class="team-card${S.done.teamScanned[m.name]?' scanned':''}">
+      <div class="team-top">
+        <div class="t-avatar">${m.emoji}</div>
+        <div><div class="t-name">${m.name}</div><div class="t-role">${m.role}</div></div>
+      </div>
+      <div class="t-topic">"${m.topic}"</div>
+      <div style="background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:10px;text-align:center;margin-bottom:12px;font-size:12px;color:var(--m)">
+        ${S.done.teamScanned[m.name]?'<span style="color:#34d399">✓ QR Scanned</span>':'[ QR Code Placeholder ]'}
+      </div>
+      <div class="t-foot">
+        <div class="t-pts">+${m.pts} pts${S.done.teamScanned[m.name]?' ✓':''}</div>
+        <button class="t-btn${S.done.teamScanned[m.name]?' done':''}" onclick="scanTeam('${m.name}')" ${S.done.teamScanned[m.name]?'disabled':''}>
+          ${S.done.teamScanned[m.name]?'✓ Scanned':'📷 Scan QR'}
+        </button>
+      </div>
+    </div>`).join('');
 }
-function _scanTeam(name){
-  if(P.completed.teamScanned[name])return;
-  P.completed.teamScanned[name]=true;
-  const m=TEAM_MEMBERS.find(x=>x.name===name);
-  addPoints(m.pts,'Golden Points: '+name);
-  logJourney('golden:scanned:'+name);
-  _golden();
-  if(Object.values(P.completed.teamScanned).every(Boolean)){setTimeout(()=>showToast('🏆 All 4 team members scanned!'),400);}
+function scanTeam(name){
+  if(S.done.teamScanned[name])return;
+  S.done.teamScanned[name]=true;
+  const m=TEAM.find(x=>x.name===name);
+  addPts(m.pts,'Golden: '+name);
+  log('golden:'+name);_golden();
+  if(Object.values(S.done.teamScanned).every(Boolean))setTimeout(()=>toast('🏆 All team members scanned!'),400);
 }
 
-// ── TOUCHPOINTS ──
-function _touchpointsScreen(){
-  const visited=Object.keys(P.completed.touchpoints);
-  const ptsFromTp=visited.length*30;
-  const nextTp=TOUCHPOINT_LOCATIONS.find(t=>!P.completed.touchpoints[t.id]);
-  document.getElementById('touchpoints-content').innerHTML=`
-    <div style="background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-        <span style="font-size:12px;color:var(--m);font-weight:600">Stops Checked In</span>
-        <span style="font-size:12px;font-weight:800;color:var(--gold)">${ptsFromTp} pts earned</span>
-      </div>
-      <div style="height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
-        <div style="height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;width:${Math.round((visited.length/TOUCHPOINT_LOCATIONS.length)*100)}%;transition:width .6s"></div>
-      </div>
-      <div style="font-size:11px;color:var(--m);margin-top:5px">${visited.length} of ${TOUCHPOINT_LOCATIONS.length} locations</div>
-    </div>
-    ${nextTp?`<div class="tp-next">🧭 Recommended next stop: <strong>${nextTp.name}</strong></div>`:''}
-    <div class="section-h">Venue Touchpoints</div>
-    <div class="tp-map">
-      ${TOUCHPOINT_LOCATIONS.map(t=>`
-        <div class="tp-item${P.completed.touchpoints[t.id]?' visited':''}" onclick="_checkInTp('${t.id}','${t.name}')">
-          <div class="tp-dot"></div>
-          <div class="tp-body"><div class="tp-name">${t.name}</div><div class="tp-desc">${t.desc}</div></div>
-          <div class="tp-pts">${P.completed.touchpoints[t.id]?'✓':'+'+t.pts}</div>
-        </div>`).join('')}
-    </div>`;
-}
-function _checkInTp(id,name){
-  if(P.completed.touchpoints[id])return;
-  P.completed.touchpoints[id]=true;
-  addPoints(30,'Touchpoint: '+name);
-  logJourney('touchpoint:'+name);
-  _touchpointsScreen();
-}
-
-// ── BOOK WITH ATS ──
-function _bookScreen(){
-  const c=document.getElementById('book-content');
-  if(P.completed.booked){
-    c.innerHTML=`
-      <div class="book-confirm">
-        <div style="font-size:40px;margin-bottom:10px">🎉</div>
-        <h3>Session Booked!</h3>
-        <p>Your 20-minute 1:1 MVP session is confirmed. Check your email for details. <br><br>Session with: <strong style="color:var(--t)">${P.completed.teamPref||'ATS Team'}</strong><br>Type: <strong style="color:var(--t)">${P.completed.sessionType||'MVP Brainstorm'}</strong><br>Time: <strong style="color:var(--t)">${P.completed.timeSlot||'10:30 AM'}</strong></p>
-      </div>`;
+// ── BOOK ──
+function _book(){
+  const c=document.getElementById('bookContent');
+  if(S.done.booked){
+    c.innerHTML=`<div class="confirm-card"><div style="font-size:40px;margin-bottom:12px">🎉</div><h3>Session Booked!</h3><p>20-minute 1:1 confirmed.<br><br>With: <strong style="color:var(--t)">${S.done.teamPref||'ATS Team'}</strong><br>Type: <strong style="color:var(--t)">${S.done.sessType||'MVP Brainstorm'}</strong><br>Time: <strong style="color:var(--t)">${S.done.timeSlot||'10:30 AM'}</strong></p></div>`;
     return;
   }
-  const sessTypes=[{icon:'⚙️',label:'Workflow Problem'},{icon:'🤖',label:'AI Use Case'},{icon:'💡',label:'MVP Brainstorm'},{icon:'🚀',label:'Agent Idea'}];
-  const teamOpts=['Ryan','Vedant','Priyal','Anish','Any ATS Member'];
-  const times=['10:00 AM','10:30 AM','11:00 AM','11:30 AM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM'];
-  const takenSlots=['10:00 AM','11:30 AM','2:00 PM'];
+  const types=[{i:'⚙️',l:'Workflow Problem'},{i:'🤖',l:'AI Use Case'},{i:'💡',l:'MVP Brainstorm'},{i:'🚀',l:'Agent Idea'}];
+  const team=['Ryan','Vedant','Priyal','Anish','Any ATS Member'];
+  const times=['10:00 AM','10:30 AM','11:00 AM','11:30 AM','1:00 PM','1:30 PM','2:00 PM','2:30 PM'];
+  const taken=['10:00 AM','11:30 AM','2:00 PM'];
   c.innerHTML=`
-    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">Book a <strong style="color:var(--t)">20-minute 1:1 session</strong> to brainstorm a workflow, AI use case, or MVP idea with ATS. +100 pts when booked.</div>
-    <div class="section-h">Session Type</div>
-    <div class="session-type-grid">
-      ${sessTypes.map(s=>`<div class="sess-card${P.completed.sessionType===s.label?' sel':''}" onclick="_setSessType('${s.label}')"><div class="sess-icon">${s.icon}</div><div class="sess-label">${s.label}</div></div>`).join('')}
-    </div>
-    <div class="section-h">Team Preference</div>
-    <div class="team-choice">
-      ${teamOpts.map(t=>`<button class="tc-btn${P.completed.teamPref===t?' sel':''}" onclick="_setTeamPref('${t}')">${t==='Any ATS Member'?'👥':TEAM_MEMBERS.find(m=>m.name===t)?.emoji||'👤'} ${t}</button>`).join('')}
-    </div>
-    <div class="section-h">Choose a Time</div>
-    <div class="time-grid">
-      ${times.map(t=>`<div class="time-slot${takenSlots.includes(t)?' taken':P.completed.timeSlot===t?' sel':''}" onclick="_setTime('${t}')">${takenSlots.includes(t)?'<span style="font-size:9px">Full</span>':t}</div>`).join('')}
-    </div>
-    <button class="btn teal-btn sm" onclick="_confirmBook()" style="animation:none;opacity:${P.completed.sessionType&&P.completed.teamPref&&P.completed.timeSlot?'1':'.35'};pointer-events:${P.completed.sessionType&&P.completed.teamPref&&P.completed.timeSlot?'all':'none'}">Confirm Booking → +100 pts</button>`;
+    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">Book a <strong style="color:var(--t)">20-minute 1:1</strong> to brainstorm a workflow, AI use case, or MVP idea. <span style="color:var(--gold)">+100 pts</span> when confirmed.</div>
+    <div class="sec-label">Session Type</div>
+    <div class="sel-grid">${types.map(t=>`<div class="sel-card${S.done.sessType===t.l?' sel':''}" onclick="S.done.sessType='${t.l}';_book()"><div class="s-ico">${t.i}</div><div class="s-lbl">${t.l}</div></div>`).join('')}</div>
+    <div class="sec-label">Preferred Team Member</div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">${team.map(t=>`<button style="background:var(--s);border:1px solid ${S.done.teamPref===t?'rgba(99,160,255,.5)':'var(--b)'};background:${S.done.teamPref===t?'rgba(79,142,247,.1)':'var(--s)'};border-radius:10px;padding:13px 16px;cursor:pointer;text-align:left;color:var(--t);font-size:13.5px;font-weight:700;width:100%;min-height:46px;transition:all .2s" onclick="S.done.teamPref='${t}';_book()">${['👨‍💼','🧠','👩‍💻','⚙️','👥'][team.indexOf(t)]} ${t}</button>`).join('')}</div>
+    <div class="sec-label">Choose a Time</div>
+    <div class="time-grid">${times.map(t=>`<div class="t-slot${taken.includes(t)?' taken':S.done.timeSlot===t?' sel':''}" onclick="${taken.includes(t)?'':`S.done.timeSlot='${t}';_book()`}">${taken.includes(t)?'Full':t}</div>`).join('')}</div>
+    <button class="btn teal sm" onclick="confirmBook()" style="animation:none;opacity:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'1':'.35'};pointer-events:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'all':'none'}">Confirm Booking → +100 pts</button>`;
 }
-function _setSessType(t){P.completed.sessionType=t;_bookScreen();}
-function _setTeamPref(t){P.completed.teamPref=t;_bookScreen();}
-function _setTime(t){P.completed.timeSlot=t;_bookScreen();}
-function _confirmBook(){
-  if(P.completed.booked)return;
-  P.completed.booked=true;
-  addPoints(100,'1:1 Session Booked');
-  logJourney('book:confirmed:'+P.completed.sessionType+':'+P.completed.teamPref+':'+P.completed.timeSlot);
-  _bookScreen();
+function confirmBook(){
+  if(S.done.booked)return;
+  S.done.booked=true;addPts(100,'Session Booked');log('book:confirmed');_book();
+}
+
+// ── PROFILE ──
+function _profile(){
+  document.getElementById('profPts').textContent=S.points;
+  const acts=[
+    {l:'Onboarding Complete',pts:50,done:S.done.onboarding},
+    {l:'Treasure Hunt Done',pts:100,done:S.done.huntDone},
+    {l:'Avatar Created',pts:75,done:S.done.avatar},
+    {l:'Prompt Submitted',pts:150,done:S.done.promptSubmitted},
+    {l:'All Team Scanned',pts:200,done:Object.values(S.done.teamScanned).every(Boolean)},
+    {l:'Session Booked',pts:100,done:S.done.booked},
+  ];
+  const done=acts.filter(a=>a.done).length;
+  const teamDone=Object.values(S.done.teamScanned).filter(Boolean).length;
+  document.getElementById('profDone').textContent=done;
+  document.getElementById('profTeam').textContent=teamDone+'/4';
+  document.getElementById('profActs').innerHTML=acts.map(a=>`
+    <div class="act-row${a.done?' done':''}">
+      <div class="act-chk">${a.done?'✓':''}</div>
+      <div class="act-row-name">${a.l}</div>
+      <div class="act-row-pts">+${a.pts}</div>
+    </div>`).join('');
+  const lb=[{n:'Sarah M.',p:S.points+420},{n:'James T.',p:S.points+285},{n:'You',p:S.points,me:true},{n:'Linda K.',p:Math.max(0,S.points-120)},{n:'Marcus R.',p:Math.max(0,S.points-200)}].sort((a,b)=>b.p-a.p);
+  const rank=lb.findIndex(r=>r.me)+1;
+  document.getElementById('profRank').textContent='#'+rank;
+  document.getElementById('profLb').innerHTML=lb.map((r,i)=>`
+    <div class="lb-row${r.me?' me':''}">
+      <div class="lb-rank">#${i+1}</div>
+      <div class="lb-name">${r.me?'⭐ You':r.n}</div>
+      <div class="lb-pts">${r.p}</div>
+    </div>`).join('');
 }
 
 // ── MODAL ──
@@ -1488,9 +1075,9 @@ function openModal(id){document.getElementById(id).classList.add('vis');}
 function closeModal(id){document.getElementById(id).classList.remove('vis');}
 
 // ── LOG ──
-function logJourney(ev){
-  P.actions.push({event:ev,time:new Date().toISOString(),pts:P.points});
-  console.log('[AgentX Journey + Points]',{role:P.role,pains:P.pains,points:P.points,visited:[...P.visited],completed:P.completed,last:ev});
+function log(ev){
+  S.actions=(S.actions||[]);S.actions.push({e:ev,t:new Date().toISOString(),pts:S.points});
+  console.log('[AgentX Journey + Points]',{role:S.role,pains:S.pains,points:S.points,done:S.done,last:ev});
 }
 </script>
 </body>
