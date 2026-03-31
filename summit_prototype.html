@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WFG AgentX">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#080c14">
+<meta property="og:title" content="WFG AgentX by ATS">
+<meta property="og:description" content="Your personalized Executive Summit 2026 companion. Tap to explore.">
+<meta property="og:type" content="website">
+<title>WFG AgentX by ATS</title>
+<style>
+:root{
+  --bg:#080c14;--s:rgba(255,255,255,.045);--sh:rgba(255,255,255,.085);
+  --b:rgba(255,255,255,.09);--ba:rgba(99,160,255,.65);
+  --t:#f0f4ff;--m:rgba(240,244,255,.45);
+  --ac:#4f8ef7;--ac2:#7c6af7;--teal:#0d9488;--amber:#d97706;--rose:#e11d48;
+  --glow:rgba(79,142,247,.22);--sel:rgba(79,142,247,.11);
+  --r:14px;--tr:.27s cubic-bezier(.4,0,.2,1);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;height:-webkit-fill-available}
+body{
+  height:100%;height:-webkit-fill-available;
+  width:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  background:var(--bg);color:var(--t);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  touch-action:manipulation;
+}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.o1{width:400px;height:400px;background:radial-gradient(circle,rgba(79,142,247,.11) 0%,transparent 70%);top:-100px;left:-80px}
+.o2{width:350px;height:350px;background:radial-gradient(circle,rgba(124,106,247,.09) 0%,transparent 70%);bottom:-80px;right:-60px}
+
+#app{
+  position:relative;z-index:1;
+  height:100%;height:-webkit-fill-available;
+  width:100%;max-width:430px;
+  margin:0 auto;
+  display:flex;flex-direction:column;
+  padding:0 18px;
+  padding-top:var(--safe-top);
+  padding-bottom:var(--safe-bot);
+}
+
+/* TOP BAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;flex-shrink:0;min-height:44px}
+.logo-wrap{display:flex;flex-direction:column;line-height:1.15}
+.logo{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
+.exp-name{font-size:14px;font-weight:800;letter-spacing:.01em;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ai-pill{display:flex;align-items:center;gap:5px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.22);border-radius:20px;padding:5px 10px;font-size:10px;font-weight:600;color:var(--ac);opacity:0;transition:opacity .5s;white-space:nowrap}
+.ai-pill.vis{opacity:1}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:pdot 2s infinite;flex-shrink:0}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* PROGRESS */
+.progress-bar{display:flex;gap:5px;padding:10px 0 0;flex-shrink:0;opacity:0;transition:opacity .4s}
+.progress-bar.vis{opacity:1}
+.pd{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.09);transition:background .4s}
+.pd.act{background:var(--ac)}.pd.dn{background:rgba(79,142,247,.32)}
+
+/* EXPLORE TRACKER */
+.explore-bar{display:none;align-items:center;justify-content:space-between;background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.13);border-radius:8px;padding:6px 12px;margin-top:7px;flex-shrink:0}
+.explore-bar.vis{display:flex}
+.exp-label{font-size:10px;color:var(--m);font-weight:600}
+.exp-dots{display:flex;gap:4px}
+.exp-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.09);transition:background .3s}
+.exp-dot.lit{background:var(--ac)}
+
+/* SCREENS */
+.screens{flex:1;position:relative;overflow:hidden;min-height:0}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:10px 0 8px;opacity:0;transform:translateX(38px);pointer-events:none;transition:opacity var(--tr),transform var(--tr)}
+.screen.active{opacity:1;transform:translateX(0);pointer-events:all}
+.screen.exit{opacity:0;transform:translateX(-38px);pointer-events:none}
+.scrollable{overflow-y:auto;flex:1;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.scrollable::-webkit-scrollbar{display:none}
+
+/* TYPE */
+.lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:10px}
+.lbl.teal{color:var(--teal)}.lbl.amber{color:var(--amber)}.lbl.purple{color:var(--ac2)}.lbl.rose{color:var(--rose)}.lbl.green{color:#22c55e}
+h1{font-size:clamp(26px,7vw,34px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:8px}
+h2{font-size:clamp(20px,5.5vw,26px);font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-bottom:7px}
+.sub{font-size:14px;color:var(--m);line-height:1.6;margin-bottom:22px}
+
+/* BUTTONS — min 44px touch targets */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--r);padding:17px 28px;cursor:pointer;box-shadow:0 0 26px var(--glow);animation:pbtn 2.5s infinite;transition:transform .12s;width:100%;min-height:54px}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:13px;padding:13px;min-height:46px}
+.btn.ghost:active{background:var(--sh);color:var(--t)}
+.btn.teal-btn{background:linear-gradient(135deg,var(--teal),#0f766e);animation:none}
+@keyframes pbtn{0%,100%{box-shadow:0 0 26px var(--glow)}50%{box-shadow:0 0 44px rgba(79,142,247,.38)}}
+
+/* TAP CARDS — 44px min height */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:20px 12px;cursor:pointer;text-align:center;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tc:active{transform:scale(.95);background:var(--sh)}
+.tc.sel{background:var(--sel);border-color:var(--ba);box-shadow:0 0 12px rgba(79,142,247,.13)}
+.tc .ti{font-size:24px;margin-bottom:7px}.tc .tl{font-size:14px;font-weight:700}
+
+/* PAIN */
+.pgrid{display:flex;flex-direction:column;gap:8px}
+.pc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),border-color var(--tr),transform .12s;user-select:none;min-height:52px}
+.pc:active{transform:scale(.98);background:var(--sh)}
+.pc.sel{background:var(--sel);border-color:var(--ba)}
+.pi{font-size:18px;flex-shrink:0}.pl{font-size:13.5px;font-weight:600}
+.pck{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;font-size:10px}
+.pc.sel .pck{background:var(--ac);border-color:var(--ac)}
+.snote{font-size:11px;color:var(--m);text-align:center;margin-top:4px}
+
+/* LOADER */
+.lwrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0}
+.lring{width:68px;height:68px;border-radius:50%;border:3px solid rgba(79,142,247,.13);border-top-color:var(--ac);animation:spin .9s linear infinite;position:relative}
+.lring::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px solid rgba(124,106,247,.18);border-bottom-color:var(--ac2);animation:spin 1.4s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ltxt{font-size:14px;color:var(--m);text-align:center;line-height:1.65}
+.ltxt strong{display:block;font-size:16px;font-weight:700;color:var(--t);margin-bottom:5px}
+
+/* SUGGEST */
+.slist{display:flex;flex-direction:column;gap:10px;margin:14px 0 18px}
+.sc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;display:flex;align-items:flex-start;gap:12px;animation:fup .4s ease both}
+.sc:nth-child(2){animation-delay:.1s}.sc:nth-child(3){animation-delay:.2s}
+@keyframes fup{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.sbadge{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:13px}
+.stxt{font-size:13px;font-weight:600;line-height:1.45;padding-top:4px}
+
+/* ACTION LIST */
+.alist{display:flex;flex-direction:column;gap:9px}
+.ab{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background var(--tr),transform .12s;text-align:left;width:100%;color:var(--t);min-height:58px}
+.ab:active{background:var(--sh);transform:scale(.98)}
+.ai-icon{width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}
+.at strong{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}.at span{font-size:11.5px;color:var(--m)}
+.arr{margin-left:auto;color:var(--m);font-size:16px;flex-shrink:0}
+
+/* LIVE FEED */
+.feed-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.fi{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:13px 14px;display:flex;align-items:center;gap:10px;animation:fup .35s ease both}
+.fi:nth-child(2){animation-delay:.07s}.fi:nth-child(3){animation-delay:.14s}.fi:nth-child(4){animation-delay:.21s}
+.fi-ico{font-size:17px;flex-shrink:0}.fi-body{flex:1}
+.fi-body strong{display:block;font-size:12.5px;font-weight:700;margin-bottom:1px}.fi-body span{font-size:11.5px;color:var(--m)}
+.fi-tag{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 7px;border-radius:20px;flex-shrink:0}
+.tr{background:rgba(239,68,68,.14);color:#f87171}.tg{background:rgba(13,148,136,.11);color:#2dd4bf}.tb{background:rgba(79,142,247,.11);color:var(--ac)}
+.countdown{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--amber);font-weight:700;margin-top:6px}
+
+/* CONCIERGE */
+.chat-area{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;overflow-y:auto;max-height:180px;-webkit-overflow-scrolling:touch}
+.chat-area::-webkit-scrollbar{display:none}
+.msg{padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.5;animation:fup .3s ease both;max-width:90%}
+.msg.ai{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.09));border:1px solid rgba(79,142,247,.18);align-self:flex-start}
+.msg.user{background:rgba(255,255,255,.06);border:1px solid var(--b);align-self:flex-end;text-align:right}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pb{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 11px;font-size:11.5px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;transition:background .15s;line-height:1.35;min-height:44px;display:flex;align-items:center}
+.pb:active{background:var(--sh)}
+
+/* QR */
+.qr-loc{background:linear-gradient(135deg,rgba(79,142,247,.11),rgba(124,106,247,.07));border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px}
+.qr-loc-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:4px}
+.qr-loc-name{font-size:20px;font-weight:700}.qr-loc-sub{font-size:12px;color:var(--m);margin-top:3px}
+.qr-insight{background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:9px;padding:12px 13px;margin-bottom:12px;font-size:12px;line-height:1.55;color:var(--m)}
+.qr-insight strong{color:var(--t);display:block;margin-bottom:3px;font-size:13px}
+
+/* PROBLEMS */
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:8px}
+.prob-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;user-select:none;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.prob-card:active{transform:scale(.96)}.prob-card.sel{background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.45)}
+.prob-icon{font-size:22px;margin-bottom:7px}.prob-label{font-size:12.5px;font-weight:700;line-height:1.3}
+.solution-panel{background:var(--s);border:1px solid rgba(124,106,247,.28);border-radius:var(--r);padding:16px;margin-top:4px;animation:fup .3s ease}
+.sol-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac2);margin-bottom:10px}
+.sol-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.sol-block{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:9px;padding:12px}
+.sol-block h5{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.sol-block h5.cur{color:var(--m)}.sol-block h5.aih{color:var(--ac)}
+.sol-block ul{padding-left:14px;display:flex;flex-direction:column;gap:4px}
+.sol-block li{font-size:11.5px;color:var(--m);line-height:1.4}
+.proto-badge{background:linear-gradient(135deg,rgba(124,106,247,.13),rgba(79,142,247,.09));border:1px solid rgba(124,106,247,.25);border-radius:8px;padding:10px 13px;display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700}
+.proto-arr{font-size:15px;color:var(--ac2)}
+
+/* INITIATIVES & TOOLS & BRIEFS */
+.init-card,.tool-card,.brief-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:15px;cursor:pointer;margin-bottom:9px;transition:background var(--tr)}
+.init-card:active,.tool-card:active,.brief-card:active{background:var(--sh)}
+.init-header,.tool-header{display:flex;align-items:center;gap:11px}
+.init-title,.tool-name{font-size:13.5px;font-weight:700}.init-desc,.tool-use{font-size:11.5px;color:var(--m);margin-top:2px}
+.tool-brief-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(217,119,6,.12);color:var(--amber);border-radius:5px;padding:2px 6px;margin-left:7px;vertical-align:middle}
+.init-expand,.tool-expand{background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.14);border-radius:9px;padding:11px 13px;margin-top:10px;animation:fup .25s ease}
+.init-why,.tool-why{font-size:12px;color:var(--m);line-height:1.55;margin-bottom:7px}
+.init-cta{font-size:11px;font-weight:700;color:var(--ac);letter-spacing:.04em}
+.brief-vol{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.brief-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.brief-meta{display:flex;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.brief-meta span{font-size:11px;color:var(--m)}
+.brief-teaser{font-size:12px;color:var(--m);line-height:1.55;margin-bottom:10px}
+.brief-actions{display:flex;gap:7px;flex-wrap:wrap}
+.brief-btn{font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:38px}
+.brief-btn:active{background:var(--sh)}
+
+/* INTEL */
+.intel-section{margin-bottom:14px}
+.intel-section h4{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
+.intel-bar-row{display:flex;flex-direction:column;gap:7px}
+.intel-bar{display:flex;align-items:center;gap:9px}
+.intel-label{font-size:12px;font-weight:600;min-width:110px}
+.intel-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.intel-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .8s ease}
+.intel-pct{font-size:11px;color:var(--m);font-weight:700;min-width:30px;text-align:right}
+.intel-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.intel-stat{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:12px}
+.intel-stat strong{display:block;font-size:20px;font-weight:800;color:var(--ac);line-height:1}
+.intel-stat span{font-size:10.5px;color:var(--m);line-height:1.4;display:block;margin-top:4px}
+
+/* DASHBOARD */
+.dash-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(79,142,247,.09);border:1px solid rgba(79,142,247,.18);border-radius:20px;padding:5px 11px;font-size:11.5px;font-weight:700;color:var(--ac);margin:0 4px 6px 0}
+.ds{margin-bottom:14px}
+.ds h4{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:7px}
+.dash-row{display:flex;flex-wrap:wrap}
+.nit{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;width:100%;min-height:44px}
+.ni-ico{font-size:15px;flex-shrink:0}
+.social-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
+.social-card{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:11px 8px;text-align:center}
+.social-pct{font-size:18px;font-weight:800;color:var(--ac);display:block;margin-bottom:2px}
+.social-lbl{font-size:10.5px;color:var(--m);line-height:1.3}
+
+/* EXPLORE HUB */
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
+.hub-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:background var(--tr),transform .12s;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hub-card:active{background:var(--sh);transform:scale(.96)}
+.hub-icon{font-size:24px;margin-bottom:7px}.hub-label{font-size:13.5px;font-weight:700;margin-bottom:3px}.hub-sub{font-size:11px;color:var(--m)}
+
+/* NAVBAR */
+.navbar{display:none;flex-shrink:0;border-top:1px solid var(--b);padding:8px 0;justify-content:space-around;padding-bottom:calc(8px + var(--safe-bot))}
+.navbar.vis{display:flex}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;transition:color .2s;min-width:52px;min-height:44px;justify-content:center}
+.nav-btn.cur{color:var(--ac)}
+.nav-btn .ni{font-size:20px}
+
+/* FOOTER */
+.global-footer{flex-shrink:0;text-align:center;padding:6px 0 8px;border-top:1px solid rgba(255,255,255,.05)}
+.global-footer a{font-size:11px;font-weight:600;color:rgba(240,244,255,.28);text-decoration:none;letter-spacing:.04em;padding:6px 16px;display:inline-block;min-height:32px;line-height:20px}
+
+/* OFFLINE BANNER */
+.offline-banner{display:none;background:rgba(217,119,6,.1);border-bottom:1px solid rgba(217,119,6,.2);padding:7px 18px;font-size:11px;color:var(--amber);text-align:center;font-weight:600;flex-shrink:0}
+.offline-banner.vis{display:block}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div id="app">
+
+  <div class="offline-banner" id="offlineBanner">📴 You're offline — all content works without internet</div>
+
+  <div class="topbar">
+    <div class="logo-wrap">
+      <div class="logo">WFG · ATS</div>
+      <div class="exp-name">AgentX</div>
+    </div>
+    <div class="ai-pill" id="aiPill"><div class="ai-dot"></div><span id="pillTxt">Tailoring Your Experience</span></div>
+  </div>
+
+  <div class="progress-bar" id="progressBar">
+    <div class="pd" id="p1"></div><div class="pd" id="p2"></div><div class="pd" id="p3"></div>
+  </div>
+  <div class="explore-bar" id="exploreBar">
+    <span class="exp-label" id="expLabel">You've explored 0 of 7 experiences</span>
+    <div class="exp-dots" id="expDots"></div>
+  </div>
+
+  <div class="screens">
+
+    <!-- S1 WELCOME -->
+    <div class="screen active" id="s-welcome">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:13px">Executive Summit 2026</div>
+      <h1>Welcome to<br>WFG AgentX<br>by ATS</h1>
+      <p class="sub">Your personalized summit<br>companion. A few taps to start.</p>
+      <button class="btn" onclick="goTo('s-role')">Get Started <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <!-- S2 ROLE -->
+    <div class="screen" id="s-role">
+      <div class="lbl">Step 1 of 3 — Your Role</div>
+      <h2>What best describes<br>your role?</h2>
+      <p class="sub" style="margin-bottom:16px">Tap one to continue.</p>
+      <div class="cgrid">
+        <div class="tc" onclick="selectRole(this,'Agent')"><div class="ti">📋</div><div class="tl">Agent</div></div>
+        <div class="tc" onclick="selectRole(this,'Underwriter')"><div class="ti">🔍</div><div class="tl">Underwriter</div></div>
+        <div class="tc" onclick="selectRole(this,'Executive')"><div class="ti">🏢</div><div class="tl">Executive</div></div>
+        <div class="tc" onclick="selectRole(this,'Operations')"><div class="ti">⚙️</div><div class="tl">Operations</div></div>
+      </div>
+    </div>
+
+    <!-- S3 PAIN -->
+    <div class="screen" id="s-pain">
+      <div class="lbl">Step 2 of 3 — Your Challenges</div>
+      <h2>What slows you<br>down most?</h2>
+      <div class="pgrid" style="margin-bottom:7px">
+        <div class="pc" onclick="togglePain(this,'Manual work')"><div class="pi">🔄</div><div class="pl">Manual &amp; repetitive tasks</div><div class="pck">✓</div></div>
+        <div class="pc" onclick="togglePain(this,'Delays')"><div class="pi">⏱</div><div class="pl">Delays in processing</div><div class="pck">✓</div></div>
+        <div class="pc" onclick="togglePain(this,'Visibility')"><div class="pi">📊</div><div class="pl">Lack of visibility &amp; tracking</div><div class="pck">✓</div></div>
+        <div class="pc" onclick="togglePain(this,'Communication')"><div class="pi">💬</div><div class="pl">Communication gaps</div><div class="pck">✓</div></div>
+        <div class="pc" onclick="togglePain(this,'Compliance')"><div class="pi">🛡</div><div class="pl">Compliance &amp; risk concerns</div><div class="pck">✓</div></div>
+      </div>
+      <div class="snote">Select up to 2</div>
+      <button class="btn" id="painNext" style="margin-top:13px;opacity:.35;pointer-events:none" onclick="goToAnalysis()">Show My AgentX Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <!-- S4 LOADING -->
+    <div class="screen" id="s-loading">
+      <div class="lwrap">
+        <div class="lring"></div>
+        <div class="ltxt"><strong id="loadMsg">Comparing your profile with 200+ workflows…</strong><span id="loadSub">Identifying your highest-impact opportunities</span></div>
+      </div>
+    </div>
+
+    <!-- S5 SUGGESTIONS -->
+    <div class="screen" id="s-suggest">
+      <div class="lbl">Step 3 of 3 — Your Insights</div>
+      <h2>Here's what we can<br>improve for you today</h2>
+      <div class="slist" id="suggestList"></div>
+      <button class="btn" onclick="goTo('s-action')" style="animation:none">Explore Your Options <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <!-- S6 ACTION GATEWAY -->
+    <div class="screen" id="s-action">
+      <h2 style="margin-bottom:4px">What would you<br>like to explore?</h2>
+      <p class="sub" style="margin-bottom:12px">Choose where to go next.</p>
+      <div class="scrollable">
+        <div class="alist">
+          <button class="ab" onclick="navTo('s-feed')"><div class="ai-icon ibl">📡</div><div class="at"><strong>Live Event Feed</strong><span>See what's happening right now</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-explore')"><div class="ai-icon ign">🔭</div><div class="at"><strong>Explore ATS</strong><span>Initiatives, tools &amp; intelligence</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-concierge')"><div class="ai-icon ipu">🤖</div><div class="at"><strong>AI Concierge</strong><span>Get personalized guidance</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-problems')"><div class="ai-icon irs">🧪</div><div class="at"><strong>Try a Real Problem</strong><span>See how we solve real challenges</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-intel')"><div class="ai-icon iam">📈</div><div class="at"><strong>Summit Intelligence</strong><span>Live insights across the event</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-qr')"><div class="ai-icon itl">📍</div><div class="at"><strong>Scan a QR Code</strong><span>Connect to a venue touchpoint</span></div><div class="arr">›</div></button>
+          <button class="ab" onclick="navTo('s-dash')"><div class="ai-icon ipu">👤</div><div class="at"><strong>My Insights Dashboard</strong><span>Your personalized summary</span></div><div class="arr">›</div></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- S7 LIVE FEED -->
+    <div class="screen" id="s-feed">
+      <div class="lbl teal">Happening Now</div>
+      <h2>Live Event Activity</h2>
+      <div class="feed-list" id="feedList"></div>
+      <div class="countdown">⚡ Live build starting in <span id="ctime">4:52</span></div>
+    </div>
+
+    <!-- S8 EXPLORE HUB -->
+    <div class="screen" id="s-explore">
+      <div class="lbl green">Explore ATS</div>
+      <h2>ATS Innovation Hub</h2>
+      <div class="scrollable">
+        <div style="margin-bottom:14px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:9px">Choose an area</div>
+          <div class="hub-grid">
+            <div class="hub-card" onclick="navTo('s-initiatives')"><div class="hub-icon">🚀</div><div class="hub-label">ATS Initiatives</div><div class="hub-sub">Tools &amp; programs</div></div>
+            <div class="hub-card" onclick="navTo('s-tools')"><div class="hub-icon">🧰</div><div class="hub-label">AI Tools Library</div><div class="hub-sub">Featured resources</div></div>
+            <div class="hub-card" onclick="navTo('s-briefs')"><div class="hub-icon">📰</div><div class="hub-label">Intelligence Briefs</div><div class="hub-sub">ATS Brief series</div></div>
+            <div class="hub-card" onclick="navTo('s-problems')"><div class="hub-icon">🧪</div><div class="hub-label">Real Problems</div><div class="hub-sub">Live demo scenarios</div></div>
+          </div>
+        </div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:8px">Recommended for You</div>
+        <div class="alist" id="exploreRecs"></div>
+      </div>
+    </div>
+
+    <!-- S9 INITIATIVES -->
+    <div class="screen" id="s-initiatives">
+      <div class="lbl green">ATS Initiatives</div>
+      <h2>What We're Building</h2>
+      <div class="scrollable" id="initiativesList"></div>
+    </div>
+
+    <!-- S10 AI TOOLS -->
+    <div class="screen" id="s-tools">
+      <div class="lbl purple">AI Tools Library</div>
+      <h2>Tools Featured by ATS</h2>
+      <div class="scrollable" id="toolsList"></div>
+    </div>
+
+    <!-- S11 BRIEFS -->
+    <div class="screen" id="s-briefs">
+      <div class="lbl amber">ATS Intelligence Brief</div>
+      <h2>Brief Series</h2>
+      <div class="scrollable" id="briefsList"></div>
+    </div>
+
+    <!-- S12 CONCIERGE -->
+    <div class="screen" id="s-concierge">
+      <div class="lbl purple">AI Concierge</div>
+      <h2>How can I help you?</h2>
+      <div class="chat-area" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div></div>
+      <div class="prompt-grid">
+        <div class="pb" onclick="askC(this,'Where should I go next?')">📍 Where to go next?</div>
+        <div class="pb" onclick="askC(this,'Show me something relevant')">✨ Show me relevant</div>
+        <div class="pb" onclick="askC(this,'What are others exploring?')">👥 What others do</div>
+        <div class="pb" onclick="askC(this,'Find sessions for my role')">🎯 My sessions</div>
+        <div class="pb" onclick="askC(this,'Show me ATS tools for my role')">🧰 ATS tools</div>
+        <div class="pb" onclick="askC(this,'Which ATS initiative is most relevant?')">🚀 Top initiative</div>
+        <div class="pb" onclick="askC(this,'Show me the latest Intelligence Brief')">📰 Latest brief</div>
+        <div class="pb" onclick="askC(this,'What to explore before the keynote?')">⚡ Before keynote</div>
+      </div>
+    </div>
+
+    <!-- S13 PROBLEMS -->
+    <div class="screen" id="s-problems">
+      <div class="lbl rose">Try a Real Problem</div>
+      <h2>Select a challenge<br>to solve</h2>
+      <div class="scrollable">
+        <div class="prob-grid" id="probGrid"></div>
+        <div id="solutionPanel"></div>
+      </div>
+    </div>
+
+    <!-- S14 INTEL -->
+    <div class="screen" id="s-intel">
+      <div class="lbl amber">Summit Intelligence</div>
+      <h2>Live Insights</h2>
+      <div class="scrollable">
+        <div class="intel-section"><h4>Top Challenges Today</h4><div class="intel-bar-row" id="intelBars"></div></div>
+        <div class="intel-section"><h4>Attendance Snapshot</h4>
+          <div class="intel-stat-row">
+            <div class="intel-stat"><strong>312</strong><span>Attendees checked in</span></div>
+            <div class="intel-stat"><strong>47</strong><span>Active in Demo Zone</span></div>
+            <div class="intel-stat"><strong>4</strong><span>Sessions in progress</span></div>
+            <div class="intel-stat"><strong>89%</strong><span>Completed onboarding</span></div>
+          </div>
+        </div>
+        <div class="intel-section"><h4>Most Visited Areas</h4><div class="intel-bar-row" id="visitBars"></div></div>
+      </div>
+    </div>
+
+    <!-- S15 QR -->
+    <div class="screen" id="s-qr">
+      <div class="lbl teal">QR Interaction</div>
+      <h2>You've arrived at<br>a touchpoint</h2>
+      <div class="qr-loc">
+        <div class="qr-loc-lbl">Current Location</div>
+        <div class="qr-loc-name" id="qrName">Demo Zone</div>
+        <div class="qr-loc-sub" id="qrSub">AI Workflow Demonstrations</div>
+      </div>
+      <div class="qr-insight" id="qrInsight"></div>
+      <div class="alist" id="qrActions"></div>
+    </div>
+
+    <!-- S16 DASHBOARD -->
+    <div class="screen" id="s-dash">
+      <div class="lbl amber">My Insights Dashboard</div>
+      <h2>Your Summary</h2>
+      <div class="scrollable">
+        <div class="ds"><h4>Your Profile</h4>
+          <div class="dash-row"><div class="dash-chip">👤 <span id="d-role">—</span></div></div>
+          <div class="dash-row" id="d-pains"></div>
+        </div>
+        <div class="ds"><h4>People Like You Are Doing</h4><div class="social-row" id="d-social"></div></div>
+        <div class="ds"><h4>Recommended for You</h4><div id="d-recs"></div></div>
+        <div class="ds"><h4>Recommended ATS Initiatives</h4><div id="d-inits"></div></div>
+        <div class="ds"><h4>Suggested AI Tools</h4><div id="d-tools"></div></div>
+        <div class="ds"><h4>Next Steps</h4><div id="d-nexts"></div></div>
+        <button class="btn teal-btn" id="bookBtn" onclick="bookSession()" style="margin-bottom:10px">Book a Follow-Up Session</button>
+        <button class="btn ghost" onclick="navTo('s-action')">Continue Exploring</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVBAR -->
+  <div class="navbar" id="navbar">
+    <button class="nav-btn" onclick="navTo('s-action')" id="nb-home"><div class="ni">🏠</div>Home</button>
+    <button class="nav-btn" onclick="navTo('s-feed')" id="nb-feed"><div class="ni">📡</div>Feed</button>
+    <button class="nav-btn" onclick="navTo('s-explore')" id="nb-exp"><div class="ni">🔭</div>Explore</button>
+    <button class="nav-btn" onclick="navTo('s-intel')" id="nb-intel"><div class="ni">📈</div>Intel</button>
+    <button class="nav-btn" onclick="navTo('s-dash')" id="nb-dash"><div class="ni">👤</div>Mine</button>
+  </div>
+
+  <footer class="global-footer">
+    <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">Explore more from ATS ↗</a>
+  </footer>
+
+</div>
+<script>
+// ── STATE ──
+const P={role:null,pains:[],suggestions:[],visited:new Set(),actions:[]};
+const EXPLORE_SCREENS=['s-feed','s-explore','s-concierge','s-problems','s-intel','s-qr','s-dash'];
+
+// Offline detection
+window.addEventListener('online',()=>document.getElementById('offlineBanner').classList.remove('vis'));
+window.addEventListener('offline',()=>document.getElementById('offlineBanner').classList.add('vis'));
+if(!navigator.onLine)document.getElementById('offlineBanner').classList.add('vis');
+
+const SUGG={
+  'Manual work':{icon:'⚡',text:'Automate repetitive tasks in your workflow'},
+  'Delays':{icon:'🚀',text:'Reduce turnaround time with AI-assisted tools'},
+  'Visibility':{icon:'📊',text:'Improve visibility and tracking across processes'},
+  'Communication':{icon:'🔗',text:'Close communication gaps with AI-powered routing'},
+  'Compliance':{icon:'🛡️',text:'Strengthen compliance with automated monitoring'},
+};
+const DEFS=[
+  {icon:'⚡',text:'Automate repetitive tasks in your workflow'},
+  {icon:'📊',text:'Improve visibility across your processes'},
+  {icon:'🚀',text:'Reduce turnaround time using AI-assisted tools'},
+];
+const INITIATIVES=[
+  {icon:'🤖',color:'ibl',name:'Current AI',desc:'Internal AI capability framework for WFG workflows',why:'Brings structured AI thinking into everyday operations.',cta:'See related demo'},
+  {icon:'📡',color:'itl',name:'FieldIQ',desc:'Field intelligence and agent performance analytics',why:'Gives agents and leaders real-time visibility into what\'s working.',cta:'View use case'},
+  {icon:'🔍',color:'ipu',name:'DiscoveryBot',desc:'AI-powered search and knowledge discovery tool',why:'Surfaces the right information faster — no manual digging.',cta:'See demo relevance'},
+  {icon:'📰',color:'iam',name:'ATS Intelligence Brief',desc:'Bi-weekly AI & innovation digest for WFG teams',why:'Keeps the organization current without information overload.',cta:'Read latest brief'},
+  {icon:'🛡',color:'irs',name:'Fraud AI Enablement',desc:'AI-supported fraud detection and awareness program',why:'Protects agents, clients, and the organization proactively.',cta:'Why this matters'},
+  {icon:'🚀',color:'ign',name:'Agent Workflow Modernization',desc:'End-to-end modernization of agent-facing processes',why:'Reduces friction and accelerates time-to-value for agents.',cta:'View use case'},
+];
+const TOOLS=[
+  {icon:'🔎',color:'ibl',name:'Perplexity',use:'AI-powered research and real-time answers',why:'Replaces hours of manual research with instant, sourced answers.',brief:true},
+  {icon:'📄',color:'itl',name:'DocAnalyzer',use:'Extract insights from documents automatically',why:'Eliminates manual document review — AI surfaces what matters.',brief:true},
+  {icon:'🗺',color:'iam',name:'Mapify',use:'Turn long content into visual mind maps',why:'Makes complex topics easier to understand and present.',brief:false},
+  {icon:'📖',color:'ipu',name:'Explainpaper',use:'Simplify dense reports and research papers',why:'Helps non-technical teams understand AI concepts quickly.',brief:true},
+  {icon:'🌐',color:'ign',name:'Orbital',use:'Visual data exploration and mapping tool',why:'Connects data points in ways spreadsheets can\'t.',brief:false},
+  {icon:'⚡',color:'irs',name:'ATS Workflow Engine',use:'Internal automation and routing for ATS processes',why:'Connects tools, people, and tasks without manual handoffs.',brief:false},
+];
+const BRIEFS=[
+  {vol:'Vol. 1',title:'The AI Readiness Issue',tool:'Perplexity',topic:'Phishing awareness + AI fraud',teaser:'How WFG teams can build AI fluency without technical backgrounds — plus the fraud trends you need to know now.'},
+  {vol:'Vol. 2',title:'Automation in the Field',tool:'DocAnalyzer',topic:'Document fraud & synthetic identity',teaser:'A practical look at where automation creates the most value for agents and underwriters — with real examples.'},
+  {vol:'Vol. 3',title:'The Visibility Gap',tool:'Mapify + Orbital',topic:'Data manipulation & deepfake risk',teaser:'Why most teams are working blind — and how AI dashboards and visualization tools close the gap.'},
+  {vol:'Vol. 4',title:'Building AI Habits',tool:'Explainpaper',topic:'AI-assisted fraud at scale',teaser:'The simplest ways to embed AI into daily workflows without disrupting how teams already work.'},
+];
+const PROBLEMS=[
+  {icon:'📄',label:'Manual Policy Typing',current:['Repetitive manual entry','No document parsing','High error rate'],ai:['Auto-fill from documents','Smart field detection','Error flagging'],proto:'Policy Assistant Tool'},
+  {icon:'🗂',label:'RECS Tracking',current:['Email-based tracking','No central visibility','Manual follow-ups'],ai:['Centralized dashboard','Auto-status updates','Smart reminders'],proto:'Reconciliation Portal'},
+  {icon:'🛡',label:'Fraud Detection',current:['Reactive manual checks','Delayed alerts','No risk scoring'],ai:['Real-time risk scoring','Proactive alerts','Pattern detection'],proto:'Fraud Intelligence Layer'},
+  {icon:'🚀',label:'Agent Onboarding',current:['Slow manual process','Paper-based docs','No progress tracking'],ai:['Guided digital onboarding','Auto document intake','Progress dashboard'],proto:'Smart Onboarding System'},
+  {icon:'💬',label:'Communication Gaps',current:['Back-and-forth emails','No routing logic','Lost context'],ai:['AI workflow routing','Smart message threading','Context retention'],proto:'AI Communication Hub'},
+  {icon:'📊',label:'Visibility Issues',current:['No real-time insights','Siloed data','Reactive decisions'],ai:['Live dashboards','Unified data view','Predictive alerts'],proto:'Operational Intelligence Dashboard'},
+];
+const CONCIERGE_MAP={
+  'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong>. The live build starts soon.`,
+  'Show me something relevant':r=>`For a <strong>${r.role||'professional'}</strong> focused on ${r.pains.join(' and ')||'workflow improvement'}, the <em>AI for Operational Efficiency</em> breakout at 2:30 PM is your top session.`,
+  'What are others exploring?':()=>`Right now <strong>47 attendees</strong> are in the Demo Zone. Top challenge across all profiles: <strong>Delays in Processing</strong>.`,
+  'Find sessions for my role':r=>`Found <strong>3 sessions</strong> for ${r.role||'your role'}:<br>• AI Workflow Automation — 2:30 PM<br>• Reducing Operational Delays — 3:15 PM<br>• Executive AI Briefing — 4:00 PM`,
+  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong> for document workflows, <strong>Perplexity</strong> for fast research, and the <strong>ATS Workflow Engine</strong> for automation.`,
+  'Which ATS initiative is most relevant?':r=>`Based on your profile, <strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your most relevant ATS initiative right now.`,
+  'Show me the latest Intelligence Brief':()=>`Latest: <strong>Brief Vol. 4 — "Building AI Habits"</strong>, featuring <em>Explainpaper</em> and a deep dive on AI-assisted fraud at scale.`,
+  'What to explore before the keynote?':()=>`(1) <strong>Summit Intelligence</strong> — see today's trends. (2) <strong>Try a Real Problem</strong> — preview what the live demo solves. (3) Check the <strong>Demo Zone QR</strong>.`,
+};
+const QR_LOCATIONS=[
+  {name:'Demo Zone',sub:'AI Workflow Demonstrations',insight:{title:'Trending here',body:'47 people exploring. Top topic: agent automation and reducing manual workflow time.'},actions:['See what this solves','Watch live demo','Save for later']},
+  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',insight:{title:'Did you know',body:'FieldIQ is being piloted here today. Ask the team for a 3-minute walkthrough.'},actions:['View FieldIQ overview','Connect with the ATS team','Grab a resource']},
+  {name:'Breakout Hall B',sub:'Hands-On AI Sessions',insight:{title:'Session starting soon',body:'AI for Operational Efficiency begins in 8 minutes. 31 seats remaining.'},actions:['Join current session','View session schedule','Save this session']},
+  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation Work',insight:{title:'Featured today',body:'ATS Intelligence Brief Vol. 4 is available here. Scan to read on your device.'},actions:['Read latest brief','Explore all initiatives','Learn more at ATS hub']},
+  {name:'Live Demo Station',sub:'From Problem to Prototype',insight:{title:"What's being built",body:"Today's live build: a lightweight reconciliation portal for RECS tracking — in under 20 minutes."},actions:['See the build in progress','View problem statement','Ask the builder a question']},
+];
+const NEXTS={
+  'Agent':['Book a 1:1 automation walkthrough','Join the Agent AI session at 3:15 PM','Explore the ATS Workflow Engine'],
+  'Underwriter':['See the risk automation demo','Book an underwriting AI briefing','Review Brief Vol. 2 on document fraud'],
+  'Executive':['Book executive AI briefing','Review today\'s Summit Intelligence report','Read ATS Brief Vol. 4'],
+  'Operations':['See workflow automation tools','Book an ops efficiency session','Explore FieldIQ for field visibility'],
+};
+const SOCIAL_DATA={
+  'Agent':[{pct:'71%',lbl:'Visited Demo Zone'},{pct:'54%',lbl:'Explored AI tools'},{pct:'43%',lbl:'Booked a session'}],
+  'Underwriter':[{pct:'68%',lbl:'Visited Demo Zone'},{pct:'61%',lbl:'Reviewed risk tools'},{pct:'38%',lbl:'Read a Brief'}],
+  'Executive':[{pct:'82%',lbl:'Visited Intel View'},{pct:'57%',lbl:'Joined AI briefing'},{pct:'49%',lbl:'Explored initiatives'}],
+  'Operations':[{pct:'74%',lbl:'Explored workflows'},{pct:'62%',lbl:'Visited Demo Zone'},{pct:'45%',lbl:'Tried live demo'}],
+};
+const ROLE_INITS={
+  'Agent':['Agent Workflow Modernization','Current AI'],
+  'Underwriter':['Fraud AI Enablement','Current AI'],
+  'Executive':['ATS Intelligence Brief','FieldIQ'],
+  'Operations':['Agent Workflow Modernization','FieldIQ'],
+};
+const ROLE_TOOLS={
+  'Agent':['ATS Workflow Engine','DocAnalyzer'],
+  'Underwriter':['DocAnalyzer','Perplexity'],
+  'Executive':['Perplexity','Orbital'],
+  'Operations':['ATS Workflow Engine','Mapify'],
+};
+
+// ── NAV ──
+let cur='s-welcome';
+const ONBOARDING=['s-welcome','s-role','s-pain','s-loading','s-suggest'];
+const PROG_MAP={'s-role':[1,0,0],'s-pain':[1,1,0],'s-loading':[1,1,0],'s-suggest':[1,1,1]};
+const SHOW_PILL=['s-pain','s-loading','s-suggest','s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash'];
+const SHOW_NAV=['s-action','s-feed','s-explore','s-initiatives','s-tools','s-briefs','s-concierge','s-problems','s-intel','s-qr','s-dash'];
+const NB_MAP={'s-action':'nb-home','s-feed':'nb-feed','s-explore':'nb-exp','s-initiatives':'nb-exp','s-tools':'nb-exp','s-briefs':'nb-exp','s-problems':'nb-exp','s-intel':'nb-intel','s-dash':'nb-dash'};
+
+function goTo(id){_nav(id,false);}
+function navTo(id){_nav(id,true);}
+function _nav(id,track){
+  if(id===cur)return;
+  const prev=document.getElementById(cur),next=document.getElementById(id);
+  if(!next)return;
+  prev.classList.remove('active');prev.classList.add('exit');
+  setTimeout(()=>prev.classList.remove('exit'),300);
+  next.classList.add('active');cur=id;
+  _shell(id);if(track)_trackE(id);_log(id);
+  if(id==='s-feed')_feed();
+  if(id==='s-qr')_qr();
+  if(id==='s-dash')_dash();
+  if(id==='s-problems')_problems();
+  if(id==='s-intel')_intel();
+  if(id==='s-concierge')_resetChat();
+  if(id==='s-initiatives')_initiatives();
+  if(id==='s-tools')_toolsScreen();
+  if(id==='s-briefs')_briefs();
+  if(id==='s-explore')_explore();
+}
+function _shell(id){
+  const onb=ONBOARDING.includes(id);
+  document.getElementById('progressBar').classList.toggle('vis',onb&&id!=='s-welcome'&&id!=='s-loading');
+  if(PROG_MAP[id]){const s=PROG_MAP[id];['p1','p2','p3'].forEach((pid,i)=>{const el=document.getElementById(pid);el.className='pd'+(s[i]?(i<s.reduce((a,b)=>a+b,0)-1?' dn':' act'):'');});}
+  document.getElementById('aiPill').classList.toggle('vis',SHOW_PILL.includes(id));
+  document.getElementById('pillTxt').textContent=id==='s-loading'?'Building your profile…':'Tailoring Your Experience';
+  document.getElementById('navbar').classList.toggle('vis',SHOW_NAV.includes(id));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('cur'));
+  if(NB_MAP[id])document.getElementById(NB_MAP[id])?.classList.add('cur');
+  document.getElementById('exploreBar').classList.toggle('vis',SHOW_NAV.includes(id));
+}
+function _trackE(id){
+  if(EXPLORE_SCREENS.includes(id)){
+    P.visited.add(id);const n=P.visited.size;
+    document.getElementById('expLabel').textContent=`You've explored ${n} of 7 experiences`;
+    document.querySelectorAll('.exp-dot').forEach((d,i)=>d.classList.toggle('lit',i<n));
+  }
+}
+document.getElementById('expDots').innerHTML=EXPLORE_SCREENS.map(()=>`<div class="exp-dot"></div>`).join('');
+
+// ── ONBOARDING ──
+function selectRole(el,role){
+  document.querySelectorAll('#s-role .tc').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');P.role=role;_log('role:'+role);
+  setTimeout(()=>goTo('s-pain'),260);
+}
+function togglePain(el,pain){
+  const sel=el.classList.contains('sel');
+  if(!sel&&P.pains.length>=2)return;
+  el.classList.toggle('sel',!sel);
+  P.pains=sel?P.pains.filter(p=>p!==pain):[...P.pains,pain];
+  const btn=document.getElementById('painNext');
+  btn.style.opacity=P.pains.length?'1':'.35';
+  btn.style.pointerEvents=P.pains.length?'all':'none';
+}
+function goToAnalysis(){
+  goTo('s-loading');
+  P.suggestions=P.pains.length?P.pains.map(p=>SUGG[p]).filter(Boolean):DEFS.slice(0,2);
+  if(P.suggestions.length<3)P.suggestions.push(DEFS[2]);
+  const msgs=[
+    ['Comparing your profile with 200+ workflows…','Identifying your highest-impact opportunities'],
+    ['Mapping your challenges to AI capabilities…','Matching patterns across your role and inputs'],
+    ['Almost ready…','Generating your personalized AgentX experience'],
+  ];
+  let i=0;const t=setInterval(()=>{
+    i++;if(i<msgs.length){document.getElementById('loadMsg').textContent=msgs[i][0];document.getElementById('loadSub').textContent=msgs[i][1];}
+    else{clearInterval(t);document.getElementById('suggestList').innerHTML=P.suggestions.slice(0,3).map((s,j)=>`<div class="sc" style="animation-delay:${j*.1}s"><div class="sbadge">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');goTo('s-suggest');}
+  },720);
+}
+
+// ── FEED ──
+let _fs=false,_cd;
+const FEED_DATA=[
+  {icon:'🔥',title:'47 people in the Demo Zone',sub:'Highest traffic area right now',tag:'LIVE',cls:'tr'},
+  {icon:'⚡',title:'Live build starting soon',sub:'Main stage — From Problem to Prototype',tag:'SOON',cls:'tr'},
+  {icon:'📊',title:'Top challenge today: Delays',sub:'Reported by 62% of attendees',tag:'TRENDING',cls:'tb'},
+  {icon:'✅',title:'AI for Operations breakout ended',sub:'23 attendees — avg 5-star rating',tag:'DONE',cls:'tg'},
+];
+function _feed(){
+  if(!_fs){document.getElementById('feedList').innerHTML=FEED_DATA.map((f,i)=>`<div class="fi" style="animation-delay:${i*.07}s"><div class="fi-ico">${f.icon}</div><div class="fi-body"><strong>${f.title}</strong><span>${f.sub}</span></div><div class="fi-tag ${f.cls}">${f.tag}</div></div>`).join('');_fs=true;}
+  clearInterval(_cd);let s=292;const el=document.getElementById('ctime');
+  _cd=setInterval(()=>{if(cur!=='s-feed')return;s--;if(s<=0){el.textContent='NOW';clearInterval(_cd);return;}el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
+}
+
+// ── EXPLORE ──
+function _explore(){
+  const role=P.role||'Executive';
+  const inits=(ROLE_INITS[role]||['Current AI','FieldIQ']).map(n=>{
+    const it=INITIATIVES.find(x=>x.name===n);
+    return it?`<button class="ab" onclick="navTo('s-initiatives')"><div class="ai-icon ${it.color}">${it.icon}</div><div class="at"><strong>${it.name}</strong><span>${it.desc.substring(0,40)}…</span></div><div class="arr">›</div></button>`:'';
+  }).join('');
+  document.getElementById('exploreRecs').innerHTML=inits;
+}
+
+// ── INITIATIVES ──
+function _initiatives(){
+  document.getElementById('initiativesList').innerHTML=INITIATIVES.map((it,i)=>
+    `<div class="init-card" onclick="_toggleInit(${i})">
+      <div class="init-header"><div class="ai-icon ${it.color}" style="width:34px;height:34px;font-size:16px">${it.icon}</div><div><div class="init-title">${it.name}</div><div class="init-desc">${it.desc}</div></div></div>
+      <div id="ie${i}" style="display:none"><div class="init-expand"><div class="init-why">${it.why}</div><div class="init-cta">→ ${it.cta}</div></div></div>
+    </div>`
+  ).join('');
+}
+function _toggleInit(i){
+  const el=document.getElementById('ie'+i);const vis=el.style.display==='block';
+  document.querySelectorAll('[id^="ie"]').forEach(e=>e.style.display='none');
+  if(!vis){el.style.display='block';_log('initiative:'+INITIATIVES[i].name);}
+}
+
+// ── TOOLS ──
+function _toolsScreen(){
+  document.getElementById('toolsList').innerHTML=TOOLS.map((t,i)=>
+    `<div class="tool-card" onclick="_toggleTool(${i})">
+      <div class="tool-header"><div class="ai-icon ${t.color}" style="width:32px;height:32px;font-size:15px">${t.icon}</div><div style="flex:1"><div class="tool-name">${t.name}${t.brief?'<span class="tool-brief-tag">ATS Brief</span>':''}</div><div class="tool-use">${t.use}</div></div></div>
+      <div id="te${i}" style="display:none"><div class="tool-expand"><div class="tool-why">${t.why}</div></div></div>
+    </div>`
+  ).join('');
+}
+function _toggleTool(i){
+  const el=document.getElementById('te'+i);const vis=el.style.display==='block';
+  document.querySelectorAll('[id^="te"]').forEach(e=>e.style.display='none');
+  if(!vis){el.style.display='block';_log('tool:'+TOOLS[i].name);}
+}
+
+// ── BRIEFS ──
+function _briefs(){
+  document.getElementById('briefsList').innerHTML=BRIEFS.map((b,i)=>
+    `<div class="brief-card">
+      <div class="brief-vol">${b.vol}</div><div class="brief-title">${b.title}</div>
+      <div class="brief-meta"><span>🧰 ${b.tool}</span><span>🛡 ${b.topic}</span></div>
+      <div class="brief-teaser">${b.teaser}</div>
+      <div class="brief-actions">
+        <button class="brief-btn" onclick="_bAct('${b.vol}','open')">Open Brief</button>
+        <button class="brief-btn" onclick="_bAct('${b.vol}','highlights')">Highlights</button>
+        <button class="brief-btn" onclick="navTo('s-tools')">See Tools</button>
+      </div>
+    </div>`
+  ).join('');
+}
+function _bAct(vol,a){_log('brief:'+vol+':'+a);}
+
+// ── CONCIERGE ──
+function _resetChat(){
+  document.getElementById('chatArea').innerHTML=`<div class="msg ai">Hi! I've reviewed your profile. Tap a question — no typing needed.</div>`;
+  document.querySelectorAll('.pb').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});
+}
+function askC(btn,q){
+  const area=document.getElementById('chatArea');
+  area.innerHTML+=`<div class="msg user">${q}</div>`;
+  btn.style.opacity='.4';btn.style.pointerEvents='none';
+  setTimeout(()=>{
+    const fn=CONCIERGE_MAP[q];
+    area.innerHTML+=`<div class="msg ai">${fn?fn(P):'Let me find the best option for your profile.'}</div>`;
+    area.scrollTop=area.scrollHeight;_log('concierge:'+q);
+  },650);
+}
+
+// ── PROBLEMS ──
+function _problems(){
+  document.getElementById('solutionPanel').innerHTML='';
+  document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>
+    `<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div class="prob-icon">${p.icon}</div><div class="prob-label">${p.label}</div></div>`
+  ).join('');
+}
+function _selProb(i){
+  document.querySelectorAll('.prob-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('pb'+i).classList.add('sel');
+  const p=PROBLEMS[i];
+  document.getElementById('solutionPanel').innerHTML=`
+    <div class="solution-panel">
+      <div class="sol-title">AI Solution Breakdown — ${p.label}</div>
+      <div class="sol-row">
+        <div class="sol-block"><h5 class="cur">Current State</h5><ul>${p.current.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+        <div class="sol-block"><h5 class="aih">AI Solution</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div>
+      </div>
+      <div class="proto-badge"><span class="proto-arr">→</span><span>Prototype idea: <strong>${p.proto}</strong></span></div>
+    </div>`;
+  document.getElementById('solutionPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+  _log('problem:'+p.label);
+}
+
+// ── INTEL ──
+function _intel(){
+  const C=[{label:'Delays in processing',pct:62},{label:'Manual work',pct:48},{label:'Visibility issues',pct:33},{label:'Communication gaps',pct:27},{label:'Compliance concerns',pct:19}];
+  document.getElementById('intelBars').innerHTML=C.map(c=>`<div class="intel-bar"><div class="intel-label">${c.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${c.pct}%"></div></div><div class="intel-pct">${c.pct}%</div></div>`).join('');
+  const V=[{label:'Demo Zone',pct:78},{label:'AI Concierge',pct:65},{label:'Breakout Sessions',pct:54},{label:'ATS Initiatives',pct:41}];
+  document.getElementById('visitBars').innerHTML=V.map(v=>`<div class="intel-bar"><div class="intel-label">${v.label}</div><div class="intel-track"><div class="intel-fill" style="width:0%" data-p="${v.pct}%"></div></div><div class="intel-pct">${v.pct}%</div></div>`).join('');
+  setTimeout(()=>document.querySelectorAll('.intel-fill').forEach(el=>el.style.width=el.dataset.p),80);
+}
+
+// ── QR ──
+function _qr(){
+  const loc=QR_LOCATIONS[Math.floor(Math.random()*QR_LOCATIONS.length)];
+  document.getElementById('qrName').textContent=loc.name;
+  document.getElementById('qrSub').textContent=loc.sub;
+  document.getElementById('qrInsight').innerHTML=`<strong>${loc.insight.title}</strong>${loc.insight.body}`;
+  document.getElementById('qrActions').innerHTML=loc.actions.map(a=>`<button class="ab" onclick="_qrAct(this,'${a}','${loc.name}')"><div class="ai-icon itl" style="font-size:13px">›</div><div class="at"><strong>${a}</strong><span>at ${loc.name}</span></div><div class="arr">›</div></button>`).join('');
+}
+function _qrAct(el,a,loc){el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';_log('qr:'+loc+':'+a);}
+
+// ── DASHBOARD ──
+function _dash(){
+  document.getElementById('d-role').textContent=P.role||'Not selected';
+  document.getElementById('d-pains').innerHTML=P.pains.length?P.pains.map(p=>`<div class="dash-chip">${SUGG[p]?.icon||'•'} ${p}</div>`).join(''):`<div class="dash-chip">Not selected</div>`;
+  const soc=(P.role&&SOCIAL_DATA[P.role])||SOCIAL_DATA['Executive'];
+  document.getElementById('d-social').innerHTML=soc.map(s=>`<div class="social-card"><span class="social-pct">${s.pct}</span><div class="social-lbl">${s.lbl}</div></div>`).join('');
+  document.getElementById('d-recs').innerHTML=P.suggestions.slice(0,3).map(s=>`<div class="nit"><div class="ni-ico">${s.icon}</div>${s.text}</div>`).join('');
+  const inits=(P.role&&ROLE_INITS[P.role])||['Current AI','FieldIQ'];
+  document.getElementById('d-inits').innerHTML=inits.map(n=>{const it=INITIATIVES.find(x=>x.name===n);return it?`<div class="nit"><div class="ni-ico">${it.icon}</div>${it.name} — ${it.desc.substring(0,34)}…</div>`:''}).join('');
+  const tools=(P.role&&ROLE_TOOLS[P.role])||['Perplexity','Orbital'];
+  document.getElementById('d-tools').innerHTML=tools.map(n=>{const t=TOOLS.find(x=>x.name===n);return t?`<div class="nit"><div class="ni-ico">${t.icon}</div>${t.name} — ${t.use.substring(0,34)}…</div>`:''}).join('');
+  const nexts=(P.role&&NEXTS[P.role])||NEXTS['Executive'];
+  document.getElementById('d-nexts').innerHTML=nexts.map(n=>`<div class="nit"><div class="ni-ico">→</div>${n}</div>`).join('');
+}
+function bookSession(){
+  const btn=document.getElementById('bookBtn');
+  btn.textContent='✓ Session Booked — Confirmation on its way';
+  btn.style.background='linear-gradient(135deg,#0d9488,#0f766e)';
+  btn.style.animation='none';btn.style.pointerEvents='none';
+  _log('action:book-session');
+}
+
+// ── LOG ──
+function _log(ev){
+  P.actions.push({event:ev,time:new Date().toISOString()});
+  console.log('[WFG AgentX]',{role:P.role,pains:P.pains,visited:[...P.visited],last:ev,journey:P.actions});
+}
+</script>
+</body>
+</html>
