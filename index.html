@@ -4,548 +4,704 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#080c14">
+<meta name="theme-color" content="#06090f">
 <title>WFG AgentX by ATS</title>
 <style>
 :root{
-  --bg:#080c14;--s:rgba(255,255,255,.045);--sh:rgba(255,255,255,.08);
-  --b:rgba(255,255,255,.09);--t:#f0f4ff;--m:rgba(240,244,255,.45);
-  --ac:#4f8ef7;--ac2:#7c6af7;--teal:#0d9488;--amber:#d97706;
-  --gold:#f59e0b;--rose:#e11d48;
-  --glow:rgba(79,142,247,.2);--r:14px;
-  --tr:.25s cubic-bezier(.4,0,.2,1);
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bot:env(safe-area-inset-bottom,0px);
+  --bg:#06090f;--bg2:#0c1018;--bg3:#111620;
+  --s:rgba(255,255,255,.042);--sh:rgba(255,255,255,.075);
+  --b:rgba(255,255,255,.08);--bh:rgba(255,255,255,.14);
+  --t:#eef1fa;--m:rgba(238,241,250,.46);--dim:rgba(238,241,250,.28);
+  --ac:#5b8ff9;--ac2:#8b74f7;--ac-s:rgba(91,143,249,.18);
+  --teal:#14b8a6;--teal-s:rgba(20,184,166,.15);
+  --amber:#f59e0b;--amber-s:rgba(245,158,11,.14);
+  --rose:#f43f5e;--rose-s:rgba(244,63,94,.11);
+  --green:#22c55e;--green-s:rgba(34,197,94,.12);
+  --gold:#f59e0b;--gold-s:rgba(245,158,11,.13);
+  --r:13px;--tr:.22s cubic-bezier(.4,0,.2,1);
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;height:-webkit-fill-available;width:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation}
-.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
-.o1{width:380px;height:380px;background:radial-gradient(circle,rgba(79,142,247,.09) 0%,transparent 70%);top:-120px;left:-80px}
-.o2{width:300px;height:300px;background:radial-gradient(circle,rgba(124,106,247,.07) 0%,transparent 70%);bottom:-60px;right:-60px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:var(--bg);color:var(--t);overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation;font-size:14px;line-height:1.5}
 
-#app{position:relative;z-index:1;height:100%;height:-webkit-fill-available;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;padding:0 20px;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
+.glow-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.go1{width:480px;height:480px;background:radial-gradient(circle,rgba(91,143,249,.07) 0%,transparent 65%);top:-160px;left:-120px}
+.go2{width:360px;height:360px;background:radial-gradient(circle,rgba(139,116,247,.055) 0%,transparent 65%);bottom:-80px;right:-100px}
+
+#app{position:relative;z-index:1;height:100%;height:-webkit-fill-available;width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column;padding:0 18px;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
 
 /* TOP BAR */
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;flex-shrink:0}
-.brand .sup{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
-.brand .name{font-size:15px;font-weight:800;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.pts-pill{display:none;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:800;color:var(--gold);cursor:pointer}
-.pts-pill.vis{display:flex}
-.pts-pill:active{transform:scale(.95)}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;flex-shrink:0;min-height:46px}
+.brand{display:flex;flex-direction:column;gap:1px}
+.brand-sup{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.brand-name{font-size:16px;font-weight:700;letter-spacing:-.4px;background:linear-gradient(110deg,var(--ac) 0%,var(--ac2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.pts-chip{display:none;align-items:center;gap:6px;background:var(--gold-s);border:1px solid rgba(245,158,11,.25);border-radius:24px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--gold);cursor:pointer;letter-spacing:.01em}
+.pts-chip.vis{display:flex}
+.pts-chip:active{transform:scale(.96)}
+.pts-chip svg{width:13px;height:13px;flex-shrink:0}
 
 /* SCREENS */
 .screens{flex:1;position:relative;overflow:hidden;min-height:0}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 0 8px;opacity:0;transform:translateX(30px);pointer-events:none;transition:opacity var(--tr),transform var(--tr)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 0 8px;opacity:0;transform:translateX(28px);pointer-events:none;transition:opacity var(--tr),transform var(--tr)}
 .screen.active{opacity:1;transform:translateX(0);pointer-events:all}
-.screen.exit{opacity:0;transform:translateX(-30px)}
+.screen.exit{opacity:0;transform:translateX(-28px)}
 .scroll{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;padding-bottom:4px}
 .scroll::-webkit-scrollbar{display:none}
 
 /* TYPE */
-.eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:10px}
-.eyebrow.teal{color:var(--teal)}.eyebrow.amber{color:var(--amber)}.eyebrow.purple{color:var(--ac2)}.eyebrow.gold{color:var(--gold)}.eyebrow.rose{color:var(--rose)}.eyebrow.green{color:#22c55e}
-h1{font-size:clamp(28px,7vw,36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px}
-h2{font-size:clamp(22px,5.5vw,28px);font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-bottom:8px}
-.sub{font-size:14px;color:var(--m);line-height:1.65;margin-bottom:24px}
-.sec-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:10px}
+.ey{font-size:9.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ac);margin-bottom:11px;display:flex;align-items:center;gap:6px}
+.ey.teal{color:var(--teal)}.ey.amber{color:var(--amber)}.ey.purple{color:var(--ac2)}.ey.gold{color:var(--gold)}.ey.rose{color:var(--rose)}.ey.green{color:var(--green)}
+.ey svg{width:11px;height:11px;opacity:.8}
+h1{font-size:clamp(28px,7vw,36px);font-weight:700;letter-spacing:-.6px;line-height:1.12;margin-bottom:10px}
+h2{font-size:clamp(20px,5vw,26px);font-weight:700;letter-spacing:-.4px;line-height:1.18;margin-bottom:8px}
+.sub{font-size:13.5px;color:var(--m);line-height:1.68;margin-bottom:22px}
+.slbl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
 
 /* BUTTONS */
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--r);padding:17px;cursor:pointer;box-shadow:0 0 28px var(--glow);animation:glow 2.5s infinite;width:100%;min-height:54px;transition:transform .12s}
-.btn:active{transform:scale(.97)}
-.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);box-shadow:none;animation:none;font-size:14px;padding:14px;min-height:48px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);color:#fff;font-size:15px;font-weight:600;border:none;border-radius:var(--r);padding:16px 20px;cursor:pointer;width:100%;min-height:52px;transition:transform .12s,opacity .12s;letter-spacing:-.1px}
+.btn:active{transform:scale(.97);opacity:.92}
+.btn.ghost{background:none;border:1px solid var(--b);color:var(--m);font-size:13.5px;padding:13px;min-height:46px}
 .btn.ghost:active{background:var(--sh);color:var(--t)}
-.btn.teal{background:linear-gradient(135deg,var(--teal),#0f766e);animation:none}
-.btn.gold{background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;animation:none}
-.btn.sm{font-size:14px;padding:13px;min-height:46px}
-@keyframes glow{0%,100%{box-shadow:0 0 28px var(--glow)}50%{box-shadow:0 0 44px rgba(79,142,247,.36)}}
-
-/* CARDS */
-.card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:10px;cursor:pointer;transition:background var(--tr),transform .12s}
-.card:active{background:var(--sh);transform:scale(.98)}
-.card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
-.card.done{border-color:rgba(34,197,94,.3)}
-.card.gold-border{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.04)}
+.btn.teal{background:linear-gradient(135deg,var(--teal) 0%,#0f766e 100%)}
+.btn.gold-b{background:linear-gradient(135deg,var(--gold) 0%,#fbbf24 100%);color:#1a1000}
+.btn.sm{font-size:13.5px;padding:12px;min-height:44px}
+.btn svg{width:16px;height:16px;flex-shrink:0}
 
 /* ROLE GRID */
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.role-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:22px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:20px}
+.role-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:20px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
 .role-card:active{transform:scale(.95)}
-.role-card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
-.role-card .ico{font-size:26px;margin-bottom:8px}
-.role-card .lbl{font-size:14px;font-weight:700}
-
-/* ROW ITEMS */
-.row-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:background var(--tr),transform .12s;width:100%;color:var(--t);min-height:60px;margin-bottom:9px}
-.row-item:active{background:var(--sh);transform:scale(.98)}
-.row-item .ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.ibl{background:rgba(79,142,247,.14)}.ipu{background:rgba(124,106,247,.14)}.itl{background:rgba(13,148,136,.14)}.iam{background:rgba(217,119,6,.14)}.irs{background:rgba(225,29,72,.11)}.ign{background:rgba(34,197,94,.12)}.igd{background:rgba(245,158,11,.14)}
-.row-item .body{flex:1;text-align:left}
-.row-item .body strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
-.row-item .body span{font-size:12px;color:var(--m)}
-.row-item .arr{color:var(--m);font-size:18px;flex-shrink:0}
-.row-item .pts-tag{font-size:10px;font-weight:800;background:rgba(245,158,11,.14);color:var(--gold);border-radius:5px;padding:2px 7px;margin-right:4px;white-space:nowrap}
+.role-card.sel{background:var(--ac-s);border-color:rgba(91,143,249,.45)}
+.role-card svg{width:26px;height:26px;color:var(--ac)}
+.role-card .lbl{font-size:13.5px;font-weight:600;letter-spacing:-.1px}
 
 /* PAIN */
-.pain-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all var(--tr);margin-bottom:9px;min-height:54px}
+.pain-item{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all var(--tr);margin-bottom:8px;min-height:52px}
 .pain-item:active{transform:scale(.98)}
-.pain-item.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
-.pain-item .pi{font-size:18px;flex-shrink:0}
-.pain-item .pl{font-size:14px;font-weight:600;flex:1}
-.pain-item .ck{width:20px;height:20px;border-radius:50%;border:2px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+.pain-item.sel{background:var(--ac-s);border-color:rgba(91,143,249,.45)}
+.pain-item svg.pi{width:18px;height:18px;flex-shrink:0;color:var(--m)}
+.pain-item.sel svg.pi{color:var(--ac)}
+.pain-item .pl{font-size:13.5px;font-weight:500;flex:1}
+.ck{width:19px;height:19px;border-radius:50%;border:1.5px solid var(--b);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.ck svg{width:9px;height:9px;opacity:0;transition:opacity .15s}
 .pain-item.sel .ck{background:var(--ac);border-color:var(--ac)}
+.pain-item.sel .ck svg{opacity:1}
 
 /* LOADER */
-.loader-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:30px 0}
-.ring{width:64px;height:64px;border-radius:50%;border:3px solid rgba(79,142,247,.12);border-top-color:var(--ac);animation:spin .9s linear infinite;position:relative}
-.ring::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px solid rgba(124,106,247,.15);border-bottom-color:var(--ac2);animation:spin 1.4s linear infinite reverse}
+.ring{width:56px;height:56px;border-radius:50%;border:2.5px solid rgba(91,143,249,.15);border-top-color:var(--ac);animation:spin .85s linear infinite;position:relative}
+.ring::after{content:"";position:absolute;inset:6px;border-radius:50%;border:2px solid rgba(139,116,247,.12);border-bottom-color:var(--ac2);animation:spin 1.3s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loader-txt{font-size:14px;color:var(--m);text-align:center;line-height:1.65}
-.loader-txt strong{display:block;font-size:16px;font-weight:700;color:var(--t);margin-bottom:5px}
 
 /* SUGGEST */
-.suggest-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;display:flex;align-items:flex-start;gap:12px;animation:fup .4s ease both;margin-bottom:10px}
-.suggest-item:nth-child(2){animation-delay:.08s}.suggest-item:nth-child(3){animation-delay:.16s}
-@keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.sicon{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:14px}
-.stxt{font-size:13.5px;font-weight:600;line-height:1.5;padding-top:5px}
+.si{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:15px;display:flex;align-items:flex-start;gap:12px;animation:fup .4s ease both;margin-bottom:9px}
+.si:nth-child(2){animation-delay:.07s}.si:nth-child(3){animation-delay:.14s}
+@keyframes fup{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.si-dot{width:28px;height:28px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center}
+.si-dot svg{width:14px;height:14px;color:#fff}
 
-/* LIVE FEED */
-.feed-item{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;animation:fup .35s ease both;margin-bottom:9px}
-.fi-body{flex:1}.fi-body strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px}.fi-body span{font-size:12px;color:var(--m)}
-.fi-tag{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;flex-shrink:0}
-.tag-live{background:rgba(239,68,68,.14);color:#f87171}
-.tag-trend{background:rgba(79,142,247,.12);color:var(--ac)}
-.tag-done{background:rgba(13,148,136,.1);color:#2dd4bf}
-.countdown{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--amber);font-weight:700;margin-top:8px}
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.stat-card{background:var(--bg2);border:1px solid var(--b);border-radius:11px;padding:12px 8px;text-align:center}
+.stat-card .sv{font-size:18px;font-weight:700;color:var(--ac);line-height:1.1;margin-bottom:3px;letter-spacing:-.5px}
+.stat-card .sl{font-size:10px;color:var(--dim);line-height:1.3;font-weight:500}
+.stat-card.gold .sv{color:var(--gold)}
+
+/* SCHEDULE */
+.sched-date{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--dim);margin-bottom:14px;text-align:center;text-transform:uppercase}
+.sched-item{display:flex;gap:12px;margin-bottom:11px;align-items:flex-start}
+.sched-time{font-size:11.5px;font-weight:600;color:var(--ac);min-width:66px;padding-top:3px;flex-shrink:0;letter-spacing:-.1px}
+.sched-body{flex:1;background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:11px 13px}
+.sched-title{font-size:13px;font-weight:600;margin-bottom:2px;letter-spacing:-.1px}
+.sched-loc{font-size:11.5px;color:var(--dim);display:flex;align-items:center;gap:4px}
+.sched-loc svg{width:10px;height:10px;flex-shrink:0}
+.sched-now{border-color:rgba(20,184,166,.38);background:rgba(20,184,166,.06)}
+.sched-now .sched-title{color:var(--teal)}
+.sched-now-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-s);border-radius:4px;padding:2px 6px;margin-bottom:4px}
+
+/* ROW ITEMS */
+.ri{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:13px;transition:background var(--tr),transform .12s;width:100%;color:var(--t);min-height:58px;margin-bottom:8px}
+.ri:active{background:var(--sh);transform:scale(.98)}
+.ri-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ri-ico svg{width:17px;height:17px}
+.ic-bl{background:rgba(91,143,249,.13)}.ic-bl svg{color:var(--ac)}
+.ic-pu{background:rgba(139,116,247,.13)}.ic-pu svg{color:var(--ac2)}
+.ic-tl{background:var(--teal-s)}.ic-tl svg{color:var(--teal)}
+.ic-am{background:var(--amber-s)}.ic-am svg{color:var(--amber)}
+.ic-rs{background:var(--rose-s)}.ic-rs svg{color:var(--rose)}
+.ic-gn{background:var(--green-s)}.ic-gn svg{color:var(--green)}
+.ic-gd{background:var(--gold-s)}.ic-gd svg{color:var(--gold)}
+.ri-body{flex:1;text-align:left}
+.ri-body strong{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px;letter-spacing:-.1px}
+.ri-body span{font-size:12px;color:var(--dim)}
+.ri-arr{width:16px;height:16px;color:var(--dim);flex-shrink:0}
 
 /* CONCIERGE */
-.chat-wrap{display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:190px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.chat-wrap{display:flex;flex-direction:column;gap:7px;overflow-y:auto;max-height:185px;margin-bottom:13px;-webkit-overflow-scrolling:touch}
 .chat-wrap::-webkit-scrollbar{display:none}
-.msg{padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;animation:fup .3s ease;max-width:88%}
-.msg.ai{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.08));border:1px solid rgba(79,142,247,.17);align-self:flex-start}
-.msg.user{background:rgba(255,255,255,.06);border:1px solid var(--b);align-self:flex-end}
-.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.q-btn{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px;font-size:12px;font-weight:600;color:var(--t);cursor:pointer;text-align:left;line-height:1.35;min-height:44px;display:flex;align-items:center;transition:background .15s}
-.q-btn:active{background:var(--sh)}
+.msg{padding:11px 14px;border-radius:11px;font-size:13px;line-height:1.55;animation:fup .28s ease;max-width:88%}
+.msg.ai{background:rgba(91,143,249,.09);border:1px solid rgba(91,143,249,.16);align-self:flex-start}
+.msg.user{background:rgba(255,255,255,.055);border:1px solid var(--b);align-self:flex-end}
+.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.qb{background:var(--bg2);border:1px solid var(--b);border-radius:9px;padding:11px 12px;font-size:12px;font-weight:500;color:var(--t);cursor:pointer;text-align:left;line-height:1.35;min-height:44px;display:flex;align-items:center;transition:background .14s}
+.qb:active{background:var(--sh)}
 
 /* PROBLEMS */
-.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-.prob-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.prob-card:active{transform:scale(.96)}.prob-card.sel{background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.45)}
-.sol-panel{background:var(--s);border:1px solid rgba(124,106,247,.25);border-radius:var(--r);padding:16px;animation:fup .25s ease}
-.sol-cols{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}
-.sol-col{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:9px;padding:12px}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.prob-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:16px 10px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.prob-card:active{transform:scale(.96)}
+.prob-card.sel{background:rgba(139,116,247,.1);border-color:rgba(139,116,247,.42)}
+.prob-card svg{width:22px;height:22px;color:var(--ac2)}
+.prob-card .pc-lbl{font-size:12px;font-weight:600;line-height:1.3}
+.sol-panel{background:var(--bg2);border:1px solid rgba(139,116,247,.22);border-radius:var(--r);padding:15px;animation:fup .22s ease}
+.sol-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.sol-col{background:var(--s);border:1px solid var(--b);border-radius:9px;padding:11px}
 .sol-col h5{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
-.sol-col ul{padding-left:14px;display:flex;flex-direction:column;gap:5px}
-.sol-col li{font-size:12px;color:var(--m);line-height:1.4}
+.sol-col h5.cur{color:var(--dim)}.sol-col h5.ai{color:var(--ac)}
+.sol-col ul{padding-left:13px;display:flex;flex-direction:column;gap:4px}
+.sol-col li{font-size:11.5px;color:var(--m);line-height:1.4}
 
-/* INTEL BARS */
-.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.bar-lbl{font-size:12px;font-weight:600;min-width:100px}
-.bar-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .8s ease}
-.bar-pct{font-size:11px;color:var(--m);font-weight:700;min-width:28px;text-align:right}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
-.stat-box{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px}
-.stat-box strong{display:block;font-size:22px;font-weight:800;color:var(--ac);line-height:1;margin-bottom:4px}
-.stat-box span{font-size:11px;color:var(--m)}
+/* INTEL */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.bar-lbl{font-size:12px;font-weight:500;min-width:96px}
+.bar-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .85s ease}
+.bar-pct{font-size:11px;color:var(--dim);font-weight:600;min-width:28px;text-align:right}
+.istat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.istat{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px}
+.istat strong{display:block;font-size:21px;font-weight:700;color:var(--ac);line-height:1;margin-bottom:4px;letter-spacing:-.5px}
+.istat span{font-size:11px;color:var(--dim)}
 
 /* ACTIVITIES */
-.act-cards{display:flex;flex-direction:column;gap:9px}
-.act-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:16px;cursor:pointer;transition:all var(--tr)}
-.act-card:active{background:var(--sh)}
-.act-card-head{display:flex;align-items:center;gap:12px}
-.act-ico{font-size:22px;flex-shrink:0;width:40px;text-align:center}
+.act-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all var(--tr);margin-bottom:8px;display:flex;align-items:center;gap:13px;min-height:64px}
+.act-card:active{background:var(--sh);transform:scale(.98)}
+.act-card.done{border-color:rgba(34,197,94,.25)}
+.act-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--ac-s)}
+.act-ico svg{width:17px;height:17px;color:var(--ac)}
 .act-info{flex:1}
-.act-name{font-size:14px;font-weight:700;margin-bottom:2px}
-.act-desc{font-size:12px;color:var(--m)}
-.act-pts{font-size:11px;font-weight:800;color:var(--gold);background:rgba(245,158,11,.12);border-radius:5px;padding:3px 8px;flex-shrink:0}
-.act-expand{margin-top:14px;padding-top:14px;border-top:1px solid var(--b);animation:fup .22s ease}
+.act-name{font-size:13.5px;font-weight:600;margin-bottom:2px;letter-spacing:-.1px;display:flex;align-items:center;gap:6px}
+.act-done-badge{font-size:10px;font-weight:700;color:var(--green);background:var(--green-s);border-radius:4px;padding:1px 6px}
+.act-desc{font-size:12px;color:var(--dim)}
+.act-pts{font-size:11px;font-weight:700;color:var(--gold);background:var(--gold-s);border-radius:5px;padding:3px 8px;flex-shrink:0}
 
-/* HUNT STEPS */
-.hunt-step{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s);border:1px solid var(--b);border-radius:10px;margin-bottom:8px}
-.hunt-step.active{border-color:rgba(13,148,136,.45);background:rgba(13,148,136,.05)}
-.hunt-step.done{border-color:rgba(34,197,94,.3)}
-.step-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+/* GAMES */
+.game-timer{text-align:center;font-size:30px;font-weight:700;color:var(--ac);margin-bottom:2px;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.game-timer.warn{color:var(--amber)}.game-timer.danger{color:var(--rose)}
+.sc-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}
+.sc-opt{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px;cursor:pointer;font-size:13.5px;font-weight:600;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;transition:all .14s;letter-spacing:-.1px}
+.sc-opt:active{transform:scale(.96)}
+.sc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.42);color:#86efac}
+.sc-opt.wrong{background:rgba(244,63,94,.09);border-color:rgba(244,63,94,.38);color:#fca5a5}
+.scramble-word{font-size:34px;font-weight:700;letter-spacing:.08em;text-align:center;color:var(--ac);margin-bottom:14px;font-variant-numeric:tabular-nums}
+.ws-cell{width:27px;height:27px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;user-select:none;transition:background .13s}
+.ws-cell.sel{background:rgba(91,143,249,.28);border-color:rgba(91,143,249,.55)}
+.ws-cell.found{background:rgba(34,197,94,.2);border-color:rgba(34,197,94,.45);color:#86efac}
+.ws-words{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px}
+.ws-word{font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;background:rgba(255,255,255,.065);color:var(--m);transition:all .18s}
+.ws-word.found{background:rgba(34,197,94,.12);color:#86efac;text-decoration:line-through}
+.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px}
+.bingo-cell{background:var(--bg2);border:1px solid var(--b);border-radius:7px;padding:7px 4px;cursor:pointer;text-align:center;font-size:9.5px;font-weight:500;line-height:1.3;min-height:50px;display:flex;align-items:center;justify-content:center;transition:all .13s;user-select:none}
+.bingo-cell:active{transform:scale(.94)}
+.bingo-cell.marked{background:rgba(91,143,249,.18);border-color:rgba(91,143,249,.42);color:var(--ac);font-weight:600}
+.bingo-cell.free{background:linear-gradient(135deg,rgba(91,143,249,.18),rgba(139,116,247,.18));border-color:rgba(91,143,249,.38)}
+.bingo-hdr{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px}
+.bingo-hcell{text-align:center;font-size:13px;font-weight:700;color:var(--ac);letter-spacing:.05em}
+.game-result{text-align:center;padding:24px 0;animation:fup .3s ease}
+.gr-pts{font-size:30px;font-weight:700;color:var(--gold);margin-bottom:6px;letter-spacing:-.8px}
+.gr-msg{font-size:13.5px;color:var(--m);line-height:1.6;margin-bottom:20px}
+
+/* PROMPT CHALLENGE */
+.pc-cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.pc-cat{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;cursor:pointer;text-align:center;transition:all var(--tr);min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.pc-cat:active{transform:scale(.96)}
+.pc-cat.done{border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.04)}
+.pc-cat svg{width:20px;height:20px}
+.pc-cat .pc-nm{font-size:13px;font-weight:600;letter-spacing:-.1px}
+.pc-cat .pc-st{font-size:10px;color:var(--dim)}
+.pc-cat.done .pc-st{color:#86efac}
+.pc-q-task{background:rgba(91,143,249,.07);border:1px solid rgba(91,143,249,.17);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.qt-lbl{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ac);margin-bottom:6px}
+.qt-txt{font-size:13.5px;line-height:1.6;font-weight:500}
+.pc-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.pc-opt{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:all .18s;min-height:50px}
+.pc-opt:active{transform:scale(.98)}
+.pc-opt.correct{background:rgba(34,197,94,.09);border-color:rgba(34,197,94,.38)}
+.pc-opt.wrong{background:rgba(244,63,94,.07);border-color:rgba(244,63,94,.32)}
+.pc-opt.disabled{pointer-events:none}
+.pc-opt-lbl{font-size:12px;font-weight:700;color:var(--ac);flex-shrink:0;width:17px}
+.pc-opt-txt{font-size:12.5px;line-height:1.45;font-weight:400}
+.pc-feedback{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px;font-size:12.5px;line-height:1.65;color:var(--m);animation:fup .22s ease}
+.pc-feedback strong{color:var(--t);display:block;margin-bottom:5px;font-weight:600}
+
+/* HUNT */
+.hunt-step{display:flex;align-items:flex-start;gap:11px;padding:13px;background:var(--bg2);border:1px solid var(--b);border-radius:10px;margin-bottom:7px}
+.hunt-step.active{border-color:rgba(20,184,166,.38);background:rgba(20,184,166,.05)}
+.hunt-step.done{border-color:rgba(34,197,94,.25)}
+.step-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0}
 .hunt-step.active .step-num{background:var(--teal);color:#fff}
-.hunt-step.done .step-num{background:#22c55e;color:#fff}
-.step-title{font-size:13px;font-weight:700;margin-bottom:4px}
-.step-clue{font-size:12px;color:var(--m);line-height:1.5}
-
-/* PROFILE */
-.profile-banner{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:20px;margin-bottom:14px;text-align:center}
-.pts-big{font-size:52px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-2px}
-.pts-sub{font-size:11px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-.mini-stat{background:rgba(0,0,0,.2);border-radius:9px;padding:10px 6px;text-align:center}
-.mini-stat strong{display:block;font-size:18px;font-weight:800}
-.mini-stat span{font-size:10px;color:var(--m)}
-.act-list{display:flex;flex-direction:column;gap:8px}
-.act-row{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
-.act-row.done{border-color:rgba(34,197,94,.28)}
-.act-chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-.act-row.done .act-chk{background:#22c55e;border-color:#22c55e;color:#fff}
-.act-row-name{flex:1;font-size:13px;font-weight:600}
-.act-row-pts{font-size:11px;font-weight:800;color:var(--gold)}
-.lb{display:flex;flex-direction:column;gap:7px}
-.lb-row{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
-.lb-row.me{background:rgba(79,142,247,.07);border-color:rgba(79,142,247,.28)}
-.lb-rank{font-size:15px;font-weight:900;min-width:22px;color:var(--m)}
-.lb-row:nth-child(1) .lb-rank{color:var(--gold)}
-.lb-row:nth-child(2) .lb-rank{color:#9ca3af}
-.lb-row:nth-child(3) .lb-rank{color:#d97706}
-.lb-name{flex:1;font-size:13px;font-weight:700}
-.lb-pts{font-size:13px;font-weight:800;color:var(--gold)}
-
-/* QR SCREEN */
-.qr-loc-card{background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:14px}
-.qr-loc-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:5px}
-.qr-loc-name{font-size:22px;font-weight:700;margin-bottom:3px}
-.qr-loc-sub{font-size:12px;color:var(--m)}
-.qr-note{background:rgba(124,106,247,.07);border:1px solid rgba(124,106,247,.18);border-radius:10px;padding:13px;margin-bottom:14px;font-size:13px;line-height:1.55;color:var(--m)}
-.qr-note strong{color:var(--t);display:block;margin-bottom:3px}
-
-/* TEAM CARDS */
-.team-card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:10px;transition:all var(--tr)}
-.team-card.scanned{border-color:rgba(245,158,11,.4)}
-.team-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.t-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.t-name{font-size:16px;font-weight:800;margin-bottom:2px}
-.t-role{font-size:12px;color:var(--m)}
-.t-topic{font-size:12px;color:var(--m);line-height:1.5;margin-bottom:12px;font-style:italic}
-.t-foot{display:flex;align-items:center;justify-content:space-between}
-.t-pts{font-size:13px;font-weight:800;color:var(--gold)}
-.t-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;border:none;cursor:pointer;min-height:36px}
-.t-btn.done{background:rgba(34,197,94,.14);color:#86efac;border:1px solid rgba(34,197,94,.25)}
-
-/* BOOK */
-.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.sel-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px}
-.sel-card:active{transform:scale(.96)}
-.sel-card.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
-.sel-card .s-ico{font-size:20px}
-.sel-card .s-lbl{font-size:12.5px;font-weight:700;line-height:1.3}
-.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
-.t-slot{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:11px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;min-height:42px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.t-slot:active{transform:scale(.95)}
-.t-slot.sel{background:rgba(79,142,247,.1);border-color:rgba(99,160,255,.5)}
-.t-slot.taken{opacity:.3;pointer-events:none;text-decoration:line-through}
-.confirm-card{background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(34,197,94,.06));border:1px solid rgba(13,148,136,.28);border-radius:var(--r);padding:24px;text-align:center;animation:fup .3s ease}
-.confirm-card h3{font-size:20px;font-weight:800;color:#34d399;margin-bottom:8px}
-.confirm-card p{font-size:13px;color:var(--m);line-height:1.65}
+.hunt-step.done .step-num{background:var(--green);color:#fff}
 
 /* AVATAR */
-.av-preview{background:linear-gradient(135deg,rgba(124,106,247,.09),rgba(79,142,247,.06));border:2px dashed rgba(124,106,247,.28);border-radius:var(--r);padding:30px;text-align:center;margin-bottom:16px}
-.av-circle{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.2),rgba(79,142,247,.15));border:2px solid rgba(124,106,247,.3);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:34px}
+.av-preview{background:linear-gradient(135deg,rgba(139,116,247,.08),rgba(91,143,249,.05));border:1.5px dashed rgba(139,116,247,.25);border-radius:var(--r);padding:26px;text-align:center;margin-bottom:14px}
+.av-circle{width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,rgba(139,116,247,.18),rgba(91,143,249,.14));border:1.5px solid rgba(139,116,247,.28);margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.av-circle svg{width:34px;height:34px;color:var(--ac2)}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}
+.scard{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px;cursor:pointer;text-align:center;transition:all .18s;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.scard:active{transform:scale(.95)}
+.scard.sel{background:rgba(139,116,247,.1);border-color:rgba(139,116,247,.45)}
+.scard svg{width:20px;height:20px;color:var(--ac2)}
+.scard-name{font-size:12.5px;font-weight:600;letter-spacing:-.1px}
 
-/* PROMPTS */
-.prompt-card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:15px;margin-bottom:9px}
-.prompt-card.featured{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.04)}
-.prompt-text{font-size:13.5px;font-weight:600;line-height:1.55;margin-bottom:10px}
-.prompt-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.role-tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:5px;background:rgba(79,142,247,.11);color:var(--ac)}
-.p-pts{font-size:10px;font-weight:800;color:var(--gold);margin-left:auto}
-.prompt-btns{display:flex;gap:7px;margin-top:10px}
-.p-btn{font-size:12px;font-weight:700;padding:7px 12px;border-radius:7px;border:1px solid var(--b);background:rgba(255,255,255,.04);color:var(--t);cursor:pointer;min-height:34px}
-.p-btn:active{background:var(--sh)}
+/* TEAM */
+.team-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:16px;margin-bottom:9px}
+.team-card.scanned{border-color:rgba(245,158,11,.32)}
+.t-top{display:flex;align-items:center;gap:13px;margin-bottom:11px}
+.t-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.t-av svg{width:20px;height:20px;color:#fff}
+.t-name{font-size:15px;font-weight:700;margin-bottom:2px;letter-spacing:-.2px}
+.t-role{font-size:11.5px;color:var(--dim)}
+.t-topic{font-size:12px;color:var(--m);line-height:1.5;margin-bottom:11px;font-style:italic}
+.t-foot{display:flex;align-items:center;justify-content:space-between}
+.t-pts{font-size:13px;font-weight:700;color:var(--gold)}
+.t-btn{font-size:12px;font-weight:600;padding:7px 15px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;border:none;cursor:pointer;min-height:34px;display:flex;align-items:center;gap:5px}
+.t-btn svg{width:12px;height:12px}
+.t-btn.done{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.22)}
+
+/* BOOK */
+.sel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.sel-card{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:7px;min-height:72px;justify-content:center}
+.sel-card:active{transform:scale(.95)}
+.sel-card.sel{background:var(--ac-s);border-color:rgba(91,143,249,.42)}
+.sel-card svg{width:18px;height:18px;color:var(--ac)}
+.sel-card .s-lbl{font-size:12.5px;font-weight:600;line-height:1.3;letter-spacing:-.1px}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.t-slot{background:var(--bg2);border:1px solid var(--b);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;min-height:40px;display:flex;align-items:center;justify-content:center;transition:all .18s;letter-spacing:-.1px}
+.t-slot:active{transform:scale(.95)}
+.t-slot.sel{background:var(--ac-s);border-color:rgba(91,143,249,.42)}
+.t-slot.taken{opacity:.28;pointer-events:none;text-decoration:line-through}
+
+/* PROFILE */
+.prof-banner{background:linear-gradient(135deg,rgba(91,143,249,.09),rgba(139,116,247,.06));border:1px solid rgba(91,143,249,.18);border-radius:var(--r);padding:20px;margin-bottom:13px;text-align:center}
+.pts-big{font-size:50px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.pts-sub{font-size:10.5px;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:.09em;margin-top:4px}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
+.mstat{background:rgba(0,0,0,.22);border-radius:9px;padding:10px 6px;text-align:center}
+.mstat strong{display:block;font-size:17px;font-weight:700;letter-spacing:-.3px}
+.mstat span{font-size:10px;color:var(--dim)}
+.arow{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.arow.done{border-color:rgba(34,197,94,.24)}
+.achk{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--b);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.achk svg{width:9px;height:9px;color:#fff;opacity:0}
+.arow.done .achk{background:var(--green);border-color:var(--green)}
+.arow.done .achk svg{opacity:1}
+.lbr{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.lbr.me{background:var(--ac-s);border-color:rgba(91,143,249,.26)}
+.lbrk{font-size:14px;font-weight:700;min-width:22px;color:var(--dim)}
+.lbr:nth-child(1) .lbrk{color:var(--gold)}
+.lbr:nth-child(2) .lbrk{color:rgba(200,200,200,.6)}
+.lbr:nth-child(3) .lbrk{color:var(--amber)}
+
+.iexp{background:rgba(91,143,249,.05);border:1px solid rgba(91,143,249,.12);border-radius:9px;padding:11px 13px;margin-bottom:8px;font-size:12.5px;color:var(--m);line-height:1.6;animation:fup .2s ease;display:none}
+
+.qr-loc{background:linear-gradient(135deg,rgba(91,143,249,.09),rgba(139,116,247,.05));border:1px solid rgba(91,143,249,.18);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:13px}
+.qr-note{background:rgba(139,116,247,.06);border:1px solid rgba(139,116,247,.16);border-radius:9px;padding:12px;margin-bottom:13px;font-size:12.5px;line-height:1.55;color:var(--m)}
+.qr-note strong{color:var(--t);display:block;margin-bottom:3px;font-weight:600}
 
 /* NAVBAR */
 .navbar{display:none;flex-shrink:0;border-top:1px solid var(--b);padding:8px 0;justify-content:space-around;padding-bottom:calc(8px + var(--safe-bot))}
 .navbar.vis{display:flex}
-.nb{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--m);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;transition:color .2s;min-width:60px;min-height:44px;justify-content:center}
+.nb{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dim);font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;transition:color .18s;min-width:58px;min-height:44px;justify-content:center}
 .nb.cur{color:var(--ac)}
-.nb .ni{font-size:22px}
+.nb svg{width:20px;height:20px;transition:color .18s}
 
-/* FOOTER */
 .footer{flex-shrink:0;text-align:center;padding:5px 0 7px;border-top:1px solid rgba(255,255,255,.05)}
-.footer a{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(79,142,247,.09),rgba(124,106,247,.06));border:1px solid rgba(79,142,247,.2);border-radius:20px;padding:7px 16px;font-size:11px;font-weight:700;color:var(--ac);text-decoration:none;transition:all .2s}
+.footer a{display:inline-flex;align-items:center;gap:6px;background:rgba(91,143,249,.08);border:1px solid rgba(91,143,249,.18);border-radius:20px;padding:7px 15px;font-size:11px;font-weight:600;color:var(--ac);text-decoration:none;letter-spacing:.01em}
 .footer a:active{transform:scale(.97)}
+.footer a svg{width:11px;height:11px}
 
-/* BOT FAB */
-.fab{position:fixed;bottom:calc(76px + var(--safe-bot));right:16px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(124,106,247,.85),rgba(79,142,247,.85));border:1px solid rgba(124,106,247,.4);display:none;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 18px rgba(124,106,247,.28);z-index:100;transition:transform .12s}
+.fab{position:fixed;bottom:calc(74px + var(--safe-bot));right:15px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(139,116,247,.82),rgba(91,143,249,.82));border:1px solid rgba(139,116,247,.36);display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(139,116,247,.22);z-index:100;transition:transform .12s;cursor:pointer}
 .fab.vis{display:flex}
 .fab:active{transform:scale(.9)}
+.fab svg{width:18px;height:18px;color:#fff}
 
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s}
 .overlay.vis{opacity:1;pointer-events:all}
-.sheet{background:#0d1219;border:1px solid var(--b);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + var(--safe-bot));width:100%;max-width:430px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sheet{background:#0e1521;border:1px solid var(--b);border-radius:18px 18px 0 0;padding:18px 20px calc(18px + var(--safe-bot));width:100%;max-width:430px;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1)}
 .overlay.vis .sheet{transform:translateY(0)}
-.handle{width:36px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto 16px}
-.sheet-title{font-size:16px;font-weight:800;margin-bottom:8px}
-.sheet-body{font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px}
-.sheet-close{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:14px;font-weight:700;padding:13px;cursor:pointer;min-height:46px}
+.handle{width:34px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto 16px}
 
-/* TOAST */
-.toast{position:fixed;top:calc(72px + var(--safe-top));right:16px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;font-size:12px;font-weight:800;border-radius:20px;padding:8px 14px;z-index:300;opacity:0;transform:translateY(-6px) scale(.92);transition:all .28s;pointer-events:none}
+.toast{position:fixed;top:calc(70px + var(--safe-top));right:15px;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#1a1000;font-size:12px;font-weight:700;border-radius:20px;padding:7px 13px;z-index:300;opacity:0;transform:translateY(-5px) scale(.93);transition:all .26s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0) scale(1)}
-
-/* UTILS */
-.gap{height:10px}
 .divider{height:1px;background:var(--b);margin:14px 0}
+.gap{height:10px}
 </style>
 </head>
 <body>
-<div class="orb o1"></div><div class="orb o2"></div>
+<div class="noise"></div>
+<div class="glow-orb go1"></div><div class="glow-orb go2"></div>
 <div id="app">
 
 <div class="topbar">
-  <div class="brand">
-    <div class="sup">WFG · ATS</div>
-    <div class="name">AgentX</div>
+  <div class="brand"><div class="brand-sup">WFG · ATS</div><div class="brand-name">AgentX</div></div>
+  <div class="pts-chip" id="ptsPill" onclick="navTo('s-profile')">
+    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6" fill="currentColor"/></svg>
+    <span id="ptsVal">0</span> pts
   </div>
-  <div class="pts-pill" id="ptsPill" onclick="navTo('s-profile')">⭐ <span id="ptsVal">0</span> pts</div>
 </div>
 
 <div class="screens">
 
-  <!-- WELCOME -->
-  <div class="screen active" id="s-welcome">
-    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-      <div class="eyebrow">Executive Summit 2026</div>
-      <h1>Welcome to<br>WFG AgentX</h1>
-      <p class="sub">Your personalized summit companion.<br>Earn points. Explore. Connect.</p>
-      <button class="btn" onclick="goTo('s-role')">Get Started →</button>
+<!-- WELCOME -->
+<div class="screen active" id="s-welcome">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <div class="ey">
+      <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 3.5v2.5l1.5 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Executive Summit 2026
+    </div>
+    <h1>Welcome to<br>WFG AgentX</h1>
+    <p class="sub">Your personalized summit companion.<br>Earn points. Explore. Connect.</p>
+    <button class="btn" onclick="goTo('s-role')">
+      Get Started
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ROLE -->
+<div class="screen" id="s-role">
+  <div class="ey">Step 1 of 3</div>
+  <h2>Your role?</h2>
+  <div class="role-grid">
+    <div class="role-card" onclick="pickRole(this,'Agent')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M9 12h6M9 15h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="lbl">Agent</div>
+    </div>
+    <div class="role-card" onclick="pickRole(this,'Underwriter')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="lbl">Underwriter</div>
+    </div>
+    <div class="role-card" onclick="pickRole(this,'Executive')">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 8h5M8 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="lbl">Executive</div>
+    </div>
+    <div class="role-card" onclick="pickRole(this,'Operations')">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <div class="lbl">Operations</div>
     </div>
   </div>
+</div>
 
-  <!-- ROLE -->
-  <div class="screen" id="s-role">
-    <div class="eyebrow">Step 1 of 3</div>
-    <h2>Your role?</h2>
-    <div class="role-grid">
-      <div class="role-card" onclick="pickRole(this,'Agent')"><div class="ico">📋</div><div class="lbl">Agent</div></div>
-      <div class="role-card" onclick="pickRole(this,'Underwriter')"><div class="ico">🔍</div><div class="lbl">Underwriter</div></div>
-      <div class="role-card" onclick="pickRole(this,'Executive')"><div class="ico">🏢</div><div class="lbl">Executive</div></div>
-      <div class="role-card" onclick="pickRole(this,'Operations')"><div class="ico">⚙️</div><div class="lbl">Operations</div></div>
+<!-- PAIN -->
+<div class="screen" id="s-pain">
+  <div class="ey">Step 2 of 3</div>
+  <h2>Biggest challenge?</h2>
+  <div style="margin-bottom:10px">
+    <div class="pain-item" onclick="togglePain(this,'Manual work')">
+      <svg class="pi" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M4 6h8M4 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M15 13l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pl">Manual &amp; repetitive tasks</div>
+      <div class="ck"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="pain-item" onclick="togglePain(this,'Delays')">
+      <svg class="pi" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="pl">Delays in processing</div>
+      <div class="ck"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="pain-item" onclick="togglePain(this,'Visibility')">
+      <svg class="pi" viewBox="0 0 20 20" fill="none"><rect x="2" y="13" width="3" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="8.5" y="9" width="3" height="9" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="15" y="5" width="3" height="13" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+      <div class="pl">Lack of visibility</div>
+      <div class="ck"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="pain-item" onclick="togglePain(this,'Communication')">
+      <svg class="pi" viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 2V6a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 9h6M7 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <div class="pl">Communication gaps</div>
+      <div class="ck"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="pain-item" onclick="togglePain(this,'Compliance')">
+      <svg class="pi" viewBox="0 0 20 20" fill="none"><path d="M10 2l7 3v5c0 4-3.5 7-7 8-3.5-1-7-4-7-8V5l7-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pl">Compliance &amp; risk</div>
+      <div class="ck"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
   </div>
+  <div style="font-size:11px;color:var(--dim);text-align:center;margin-bottom:14px">Select up to 2</div>
+  <button class="btn" id="painBtn" style="opacity:.35;pointer-events:none" onclick="startAnalysis()">
+    Continue
+    <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
 
-  <!-- PAIN -->
-  <div class="screen" id="s-pain">
-    <div class="eyebrow">Step 2 of 3</div>
-    <h2>Biggest challenge?</h2>
-    <div id="painList" style="margin-bottom:10px">
-      <div class="pain-item" onclick="togglePain(this,'Manual work')"><div class="pi">🔄</div><div class="pl">Manual &amp; repetitive tasks</div><div class="ck">✓</div></div>
-      <div class="pain-item" onclick="togglePain(this,'Delays')"><div class="pi">⏱</div><div class="pl">Delays in processing</div><div class="ck">✓</div></div>
-      <div class="pain-item" onclick="togglePain(this,'Visibility')"><div class="pi">📊</div><div class="pl">Lack of visibility</div><div class="ck">✓</div></div>
-      <div class="pain-item" onclick="togglePain(this,'Communication')"><div class="pi">💬</div><div class="pl">Communication gaps</div><div class="ck">✓</div></div>
-      <div class="pain-item" onclick="togglePain(this,'Compliance')"><div class="pi">🛡</div><div class="pl">Compliance &amp; risk</div><div class="ck">✓</div></div>
-    </div>
-    <div style="font-size:11px;color:var(--m);text-align:center;margin-bottom:14px">Select up to 2</div>
-    <button class="btn" id="painBtn" style="opacity:.35;pointer-events:none" onclick="startAnalysis()">Continue →</button>
-  </div>
-
-  <!-- LOADING -->
-  <div class="screen" id="s-loading">
-    <div class="loader-wrap" style="flex:1;justify-content:center">
-      <div class="ring"></div>
-      <div class="loader-txt"><strong id="loadMsg">Analyzing your profile…</strong><span id="loadSub">Matching with 200+ workflows</span></div>
+<!-- LOADING -->
+<div class="screen" id="s-loading">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px">
+    <div class="ring"></div>
+    <div style="text-align:center">
+      <div style="font-size:15px;font-weight:600;margin-bottom:5px;letter-spacing:-.2px" id="loadMsg">Analyzing your profile…</div>
+      <div style="font-size:13px;color:var(--m)" id="loadSub">Matching with 200+ workflows</div>
     </div>
   </div>
+</div>
 
-  <!-- SUGGEST -->
-  <div class="screen" id="s-suggest">
-    <div class="eyebrow">Step 3 of 3</div>
-    <h2>Your opportunities</h2>
-    <div id="suggestList" style="margin:16px 0 20px"></div>
-    <button class="btn" onclick="finishOnboarding()" style="animation:none">Enter AgentX →</button>
+<!-- SUGGEST -->
+<div class="screen" id="s-suggest">
+  <div class="ey">Step 3 of 3</div>
+  <h2>Your opportunities</h2>
+  <div id="suggestList" style="margin:16px 0 20px"></div>
+  <button class="btn" onclick="finishOnboarding()" style="animation:none">
+    Enter AgentX
+    <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="s-home">
+  <div class="scroll">
+    <div class="ey gold">
+      <svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 7.5,4.5 11,4.5 8.3,7 9.3,11 6,8.8 2.7,11 3.7,7 1,4.5 4.5,4.5" fill="currentColor"/></svg>
+      My Progress
+    </div>
+    <div class="stat-row" id="homeStats"></div>
+    <div class="divider"></div>
+    <div class="slbl">Today's Schedule</div>
+    <div id="schedList"></div>
+    <div class="divider"></div>
+    <div class="slbl">Quick Access</div>
+    <button class="ri" onclick="navTo('s-concierge')">
+      <div class="ri-ico ic-pu"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="5" r="2" fill="currentColor" opacity=".6"/></svg></div>
+      <div class="ri-body"><strong>AI Concierge</strong><span>Ask anything, get guidance</span></div>
+      <svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="ri" onclick="navTo('s-qr')">
+      <div class="ri-ico ic-tl"><svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="12" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5" opacity=".4"/><rect x="3.5" y="3.5" width="3" height="3" rx=".4" fill="currentColor"/><rect x="13.5" y="3.5" width="3" height="3" rx=".4" fill="currentColor"/><rect x="3.5" y="13.5" width="3" height="3" rx=".4" fill="currentColor"/></svg></div>
+      <div class="ri-body"><strong>Scan a QR Code</strong><span>Check in to earn points</span></div>
+      <svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
+</div>
 
-  <!-- HOME -->
-  <div class="screen" id="s-home">
-    <div class="scroll">
-      <div class="eyebrow teal">Happening Now</div>
-      <div id="feedList"></div>
-      <div class="countdown" id="countdown">⚡ Live build in <span id="ctime">4:52</span></div>
-      <div class="divider"></div>
-      <div class="sec-label">Quick Actions</div>
-      <button class="row-item" onclick="navTo('s-concierge')"><div class="ico ipu">🤖</div><div class="body"><strong>AI Concierge</strong><span>Ask anything, get guidance</span></div><div class="arr">›</div></button>
-      <button class="row-item" onclick="navTo('s-qr')"><div class="ico itl">📷</div><div class="body"><strong>Scan a QR Code</strong><span>Check in to earn points</span></div><div class="arr">›</div></button>
-      <button class="row-item" onclick="navTo('s-intel')"><div class="ico iam">📈</div><div class="body"><strong>Summit Intelligence</strong><span>Live insights &amp; trends</span></div><div class="arr">›</div></button>
+<!-- EXPLORE ATS -->
+<div class="screen" id="s-explore">
+  <div class="scroll">
+    <div class="ey green"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3v3l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Explore ATS</div>
+    <h2 style="margin-bottom:16px">ATS at the Summit</h2>
+    <div class="slbl">Initiatives</div><div id="initList"></div>
+    <div class="slbl" style="margin-top:6px">AI Tools</div><div id="toolList"></div>
+    <div class="slbl" style="margin-top:6px">Intelligence Briefs</div><div id="briefList"></div>
+    <div class="slbl" style="margin-top:6px">Deep Dives</div>
+    <button class="ri" onclick="navTo('s-problems')">
+      <div class="ri-ico ic-rs"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.5"/><path d="M10 8v4M10 14v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="ri-body"><strong>Real Problems</strong><span>See AI solve live challenges</span></div>
+      <svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="ri" onclick="navTo('s-intel')">
+      <div class="ri-ico ic-am"><svg viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ri-body"><strong>Summit Intelligence</strong><span>Attendee insights &amp; trends</span></div>
+      <svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="ri" onclick="navTo('s-concierge')">
+      <div class="ri-ico ic-pu"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="ri-body"><strong>AI Concierge</strong><span>Get personalized guidance</span></div>
+      <svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- CONCIERGE -->
+<div class="screen" id="s-concierge">
+  <div class="ey purple"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 11c0-2.2 2.2-4 5-4s5 1.8 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>AI Concierge</div>
+  <h2>How can I help?</h2>
+  <div class="chat-wrap" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question to get started.</div></div>
+  <div class="q-grid">
+    <div class="qb" onclick="askC(this,'Where should I go next?')">Where to next?</div>
+    <div class="qb" onclick="askC(this,'What are others exploring?')">What's popular?</div>
+    <div class="qb" onclick="askC(this,'Show me tools for my role')">Tools for me</div>
+    <div class="qb" onclick="askC(this,'Top ATS initiative for me')">Top initiative</div>
+    <div class="qb" onclick="askC(this,'Sessions for my role')">My sessions</div>
+    <div class="qb" onclick="askC(this,'Before the keynote?')">Before keynote</div>
+  </div>
+</div>
+
+<!-- PROBLEMS -->
+<div class="screen" id="s-problems">
+  <div class="ey rose"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1a5 5 0 100 10A5 5 0 006 1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 4v3M6 8.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Real Problems</div>
+  <h2>Pick a challenge</h2>
+  <div class="scroll"><div class="prob-grid" id="probGrid"></div><div id="solPanel"></div></div>
+</div>
+
+<!-- INTEL -->
+<div class="screen" id="s-intel">
+  <div class="ey amber"><svg viewBox="0 0 12 12" fill="none"><path d="M1 9l3-4 2.5 2.5L9 3l2 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Summit Intelligence</div>
+  <h2>Insights</h2>
+  <div class="scroll">
+    <div class="istat-grid"><div class="istat"><strong>312</strong><span>Checked in</span></div><div class="istat"><strong>47</strong><span>In Demo Zone</span></div><div class="istat"><strong>4</strong><span>Sessions today</span></div><div class="istat"><strong>89%</strong><span>Onboarded</span></div></div>
+    <div class="slbl">Top Challenges</div>
+    <div id="intelBars"></div>
+  </div>
+</div>
+
+<!-- QR -->
+<div class="screen" id="s-qr">
+  <div class="ey teal"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="4" height="4" rx=".6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="1" width="4" height="4" rx=".6" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="7" width="4" height="4" rx=".6" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="2" width="2" height="2" rx=".2" fill="currentColor"/><rect x="8" y="2" width="2" height="2" rx=".2" fill="currentColor"/><rect x="2" y="8" width="2" height="2" rx=".2" fill="currentColor"/><rect x="8" y="8" width="3" height="1.2" rx=".3" fill="currentColor"/><rect x="8" y="10" width="3" height="1.2" rx=".3" fill="currentColor"/><rect x="10" y="8" width="1.2" height="3.2" rx=".3" fill="currentColor"/></svg>QR Check-In</div>
+  <h2>You've arrived</h2>
+  <div class="qr-loc" id="qrLoc">
+    <div style="font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:5px">Current Location</div>
+    <div style="font-size:21px;font-weight:700;margin-bottom:3px;letter-spacing:-.4px" id="qrName">Demo Zone</div>
+    <div style="font-size:12px;color:var(--dim)" id="qrSub">AI Workflow Demonstrations</div>
+  </div>
+  <div class="qr-note" id="qrNote"></div>
+  <div id="qrActions"></div>
+</div>
+
+<!-- ACTIVITIES -->
+<div class="screen" id="s-activities">
+  <div class="scroll">
+    <div class="ey gold"><svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 7.5,4.5 11,4.5 8.3,7 9.3,11 6,8.8 2.7,11 3.7,7 1,4.5 4.5,4.5" fill="currentColor"/></svg>Activities</div>
+    <h2 style="margin-bottom:16px">Explore &amp; Earn</h2>
+    <div id="actCards"></div>
+  </div>
+</div>
+
+<!-- HUNT -->
+<div class="screen" id="s-hunt">
+  <div class="ey teal"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L5.5 2l2.5 5 2-3 1 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Treasure Hunt</div>
+  <h2>Follow the Clues</h2>
+  <div class="scroll" id="huntContent"></div>
+</div>
+
+<!-- AVATAR -->
+<div class="screen" id="s-avatar">
+  <div class="ey purple"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4.5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 10.5c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Avatar Studio</div>
+  <h2>Your AgentX Look</h2>
+  <div class="scroll" id="avatarContent"></div>
+</div>
+
+<!-- GAMES HUB -->
+<div class="screen" id="s-games">
+  <div class="ey purple"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="3" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5h1.5M4.75 5.75v1.5M7.5 6.5h1M8 5.75v.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Games</div>
+  <h2>Play &amp; Earn</h2>
+  <div class="scroll" id="gamesHub"></div>
+</div>
+
+<!-- GAME PLAY -->
+<div class="screen" id="s-gameplay">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
+    <div class="ey purple" style="margin-bottom:0" id="gpTitle">Crossword</div>
+    <div style="text-align:right">
+      <div class="game-timer" id="gpTimer">2:00</div>
+      <div style="font-size:10px;color:var(--dim);text-align:right">remaining</div>
     </div>
   </div>
+  <div class="scroll" id="gpContent"></div>
+</div>
 
-  <!-- EXPLORE ATS -->
-  <div class="screen" id="s-explore">
-    <div class="scroll">
-      <div class="eyebrow green">Explore ATS</div>
-      <h2 style="margin-bottom:16px">ATS at the Summit</h2>
-      <div class="sec-label">Initiatives</div>
-      <div id="initList"></div>
-      <div class="sec-label" style="margin-top:6px">AI Tools</div>
-      <div id="toolList"></div>
-      <div class="sec-label" style="margin-top:6px">Intelligence Briefs</div>
-      <div id="briefList"></div>
-      <div class="sec-label" style="margin-top:6px">Real Problems</div>
-      <button class="row-item" onclick="navTo('s-problems')"><div class="ico irs">🧪</div><div class="body"><strong>Try a Real Problem</strong><span>See AI solve live challenges</span></div><div class="arr">›</div></button>
-      <button class="row-item" onclick="navTo('s-intel')"><div class="ico iam">📈</div><div class="body"><strong>Summit Intelligence</strong><span>Live attendee insights</span></div><div class="arr">›</div></button>
-    </div>
+<!-- PROMPT CHALLENGE -->
+<div class="screen" id="s-prompts">
+  <div class="ey"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 4.5c0-1 .7-1.5 1.5-1.5s1.5.7 1.5 1.5c0 1-1.5 1.5-1.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="6" cy="9" r=".6" fill="currentColor"/></svg>Prompt Challenge</div>
+  <h2>Prompt Mastery</h2>
+  <div class="scroll" id="promptsHub"></div>
+</div>
+
+<!-- PROMPT QUESTION -->
+<div class="screen" id="s-promptq">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0">
+    <div class="ey" style="margin-bottom:0" id="pqCat">Agent</div>
+    <div style="font-size:11px;color:var(--dim);font-weight:600" id="pqPts">0 pts earned</div>
   </div>
+  <div class="scroll" id="pqContent"></div>
+</div>
 
-  <!-- CONCIERGE -->
-  <div class="screen" id="s-concierge">
-    <div class="eyebrow purple">AI Concierge</div>
-    <h2>How can I help?</h2>
-    <div class="chat-wrap" id="chatArea"><div class="msg ai">Hi! I've reviewed your profile. Tap a question to get started.</div></div>
-    <div class="q-grid">
-      <div class="q-btn" onclick="askC(this,'Where should I go next?')">📍 Where to next?</div>
-      <div class="q-btn" onclick="askC(this,'What are others exploring?')">👥 What's trending?</div>
-      <div class="q-btn" onclick="askC(this,'Show me ATS tools for my role')">🧰 Tools for me</div>
-      <div class="q-btn" onclick="askC(this,'Which ATS initiative is most relevant?')">🚀 Top initiative</div>
-      <div class="q-btn" onclick="askC(this,'Find sessions for my role')">🎯 My sessions</div>
-      <div class="q-btn" onclick="askC(this,'What to explore before the keynote?')">⚡ Before keynote</div>
-    </div>
-  </div>
+<!-- GOLDEN POINTS -->
+<div class="screen" id="s-golden">
+  <div class="ey gold"><svg viewBox="0 0 12 12" fill="none"><polygon points="6,1 7.5,4.5 11,4.5 8.3,7 9.3,11 6,8.8 2.7,11 3.7,7 1,4.5 4.5,4.5" fill="currentColor"/></svg>Golden Points</div>
+  <h2>Meet the ATS Team</h2>
+  <p style="font-size:13px;color:var(--m);margin-bottom:16px">Scan each team member's QR for exclusive points.</p>
+  <div class="scroll" id="goldenContent"></div>
+</div>
 
-  <!-- PROBLEMS -->
-  <div class="screen" id="s-problems">
-    <div class="eyebrow rose">Real Problems</div>
-    <h2>Pick a challenge</h2>
-    <div class="scroll">
-      <div class="prob-grid" id="probGrid"></div>
-      <div id="solPanel"></div>
-    </div>
-  </div>
+<!-- TOUCHPOINTS -->
+<div class="screen" id="s-touchpoints">
+  <div class="ey teal"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1a3.5 3.5 0 00-3.5 3.5C2.5 7.5 6 11 6 11s3.5-3.5 3.5-6.5A3.5 3.5 0 006 1z" stroke="currentColor" stroke-width="1.3"/><circle cx="6" cy="4.5" r="1.2" fill="currentColor"/></svg>Touchpoints</div>
+  <h2>Venue Check-Ins</h2>
+  <div class="scroll" id="tpContent"></div>
+</div>
 
-  <!-- INTEL -->
-  <div class="screen" id="s-intel">
-    <div class="eyebrow amber">Summit Intelligence</div>
-    <h2>Live Insights</h2>
-    <div class="scroll">
-      <div class="stat-grid">
-        <div class="stat-box"><strong>312</strong><span>Checked in</span></div>
-        <div class="stat-box"><strong>47</strong><span>In Demo Zone</span></div>
-        <div class="stat-box"><strong>4</strong><span>Sessions live</span></div>
-        <div class="stat-box"><strong>89%</strong><span>Onboarded</span></div>
+<!-- BOOK -->
+<div class="screen" id="s-book">
+  <div class="ey teal"><svg viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M8 1v2M4 1v2M1.5 5h9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Book with ATS</div>
+  <h2>1:1 MVP Session</h2>
+  <div class="scroll" id="bookContent"></div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="s-profile">
+  <div class="scroll">
+    <div class="ey amber"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>My Profile</div>
+    <div class="prof-banner">
+      <div class="pts-big" id="profPts">0</div>
+      <div class="pts-sub">AgentX Points</div>
+      <div class="mini-stats">
+        <div class="mstat"><strong id="profDone">0</strong><span>Done</span></div>
+        <div class="mstat"><strong id="profTeam">0/4</strong><span>Team Met</span></div>
+        <div class="mstat"><strong id="profRank">#3</strong><span>Rank</span></div>
       </div>
-      <div class="sec-label">Top Challenges Today</div>
-      <div id="intelBars"></div>
-      <div class="sec-label" style="margin-top:4px">Most Visited Areas</div>
-      <div id="visitBars"></div>
     </div>
+    <div class="slbl">Activities</div>
+    <div id="profActs"></div>
+    <div class="divider"></div>
+    <div class="slbl">Leaderboard</div>
+    <div id="profLb"></div>
+    <div class="gap"></div>
+    <button class="btn teal sm" onclick="navTo('s-book')" style="margin-bottom:9px">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 1.5v3M5.5 1.5v3M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Book a 1:1 ATS Session
+    </button>
+    <button class="btn ghost sm" onclick="navTo('s-activities')">Explore Activities</button>
+    <div class="gap"></div>
   </div>
-
-  <!-- QR -->
-  <div class="screen" id="s-qr">
-    <div class="eyebrow teal">QR Check-In</div>
-    <h2>You've arrived</h2>
-    <div class="qr-loc-card">
-      <div class="qr-loc-label">Current Location</div>
-      <div class="qr-loc-name" id="qrName">Demo Zone</div>
-      <div class="qr-loc-sub" id="qrSub">AI Workflow Demonstrations</div>
-    </div>
-    <div class="qr-note" id="qrNote"></div>
-    <div id="qrActions"></div>
-  </div>
-
-  <!-- ACTIVITIES -->
-  <div class="screen" id="s-activities">
-    <div class="scroll">
-      <div class="eyebrow gold">Activities</div>
-      <h2 style="margin-bottom:16px">Explore &amp; Earn</h2>
-      <div class="act-cards" id="actCards"></div>
-    </div>
-  </div>
-
-  <!-- TREASURE HUNT -->
-  <div class="screen" id="s-hunt">
-    <div class="eyebrow teal">🗺️ Treasure Hunt</div>
-    <h2>Follow the Clues</h2>
-    <div class="scroll" id="huntContent"></div>
-  </div>
-
-  <!-- AVATAR -->
-  <div class="screen" id="s-avatar">
-    <div class="eyebrow purple">🎨 Avatar Studio</div>
-    <h2>Your AgentX Look</h2>
-    <div class="scroll" id="avatarContent"></div>
-  </div>
-
-  <!-- GAMES -->
-  <div class="screen" id="s-games">
-    <div class="eyebrow purple">🎮 Games</div>
-    <h2>Play &amp; Earn</h2>
-    <div class="scroll" id="gamesContent"></div>
-  </div>
-
-  <!-- PROMPTS -->
-  <div class="screen" id="s-prompts">
-    <div class="eyebrow">💡 Best Prompts</div>
-    <h2>AI Prompt Library</h2>
-    <div class="scroll" id="promptsContent"></div>
-  </div>
-
-  <!-- GOLDEN POINTS -->
-  <div class="screen" id="s-golden">
-    <div class="eyebrow gold">⭐ Golden Points</div>
-    <h2>Meet the ATS Team</h2>
-    <p class="sub" style="margin-bottom:14px">Scan each team member's QR for exclusive points.</p>
-    <div class="scroll" id="goldenContent"></div>
-  </div>
-
-  <!-- BOOK -->
-  <div class="screen" id="s-book">
-    <div class="eyebrow teal">📅 Book with ATS</div>
-    <h2>1:1 MVP Session</h2>
-    <div class="scroll" id="bookContent"></div>
-  </div>
-
-  <!-- PROFILE -->
-  <div class="screen" id="s-profile">
-    <div class="scroll">
-      <div class="eyebrow amber">My Profile</div>
-      <div class="profile-banner">
-        <div class="pts-big" id="profPts">0</div>
-        <div class="pts-sub">AgentX Points</div>
-        <div class="mini-stats">
-          <div class="mini-stat"><strong id="profDone">0</strong><span>Done</span></div>
-          <div class="mini-stat"><strong id="profTeam">0/4</strong><span>Team Met</span></div>
-          <div class="mini-stat"><strong id="profRank">#3</strong><span>Rank</span></div>
-        </div>
-      </div>
-      <div class="sec-label">Activities</div>
-      <div class="act-list" id="profActs"></div>
-      <div class="divider"></div>
-      <div class="sec-label">Leaderboard</div>
-      <div class="lb" id="profLb"></div>
-      <div class="gap"></div>
-      <button class="btn teal sm" onclick="navTo('s-book')" style="margin-bottom:9px;animation:none">Book a 1:1 ATS Session</button>
-      <button class="btn ghost sm" onclick="navTo('s-activities')">Explore Activities</button>
-      <div class="gap"></div>
-    </div>
-  </div>
+</div>
 
 </div>
 
 <!-- NAVBAR -->
 <div class="navbar" id="navbar">
-  <button class="nb" id="nb-home" onclick="navTo('s-home')"><div class="ni">🏠</div>Home</button>
-  <button class="nb" id="nb-explore" onclick="navTo('s-explore')"><div class="ni">🔭</div>Explore</button>
-  <button class="nb" id="nb-activities" onclick="navTo('s-activities')"><div class="ni">⚡</div>Activities</button>
-  <button class="nb" id="nb-profile" onclick="navTo('s-profile')"><div class="ni">👤</div>Profile</button>
+  <button class="nb" id="nb-home" onclick="navTo('s-home')">
+    <svg viewBox="0 0 22 22" fill="none"><path d="M3 10.5L11 3l8 7.5V19a1 1 0 01-1 1H14v-5H8v5H4a1 1 0 01-1-1V10.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    Home
+  </button>
+  <button class="nb" id="nb-explore" onclick="navTo('s-explore')">
+    <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M14 8l-2.5 5.5L6 16l2.5-5.5L14 8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    Explore
+  </button>
+  <button class="nb" id="nb-activities" onclick="navTo('s-activities')">
+    <svg viewBox="0 0 22 22" fill="none"><polygon points="11,2 13.5,8 20,8 14.8,12.5 16.8,19 11,15 5.2,19 7.2,12.5 2,8 8.5,8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    Activities
+  </button>
+  <button class="nb" id="nb-profile" onclick="navTo('s-profile')">
+    <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 19c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Profile
+  </button>
 </div>
 
 <footer class="footer">
-  <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">🚀 ATS Innovation Hub ↗</a>
+  <a href="https://atsteam-wfg.github.io/" target="_blank" rel="noopener noreferrer">
+    ATS Innovation Hub
+    <svg viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H4M10 1v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </footer>
 </div>
 
-<!-- BOT FAB -->
-<div class="fab" id="botFab" onclick="openModal('botModal')">🤖</div>
+<div class="fab" id="botFab" onclick="openModal()">
+  <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 8.5h6M7 11.5h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+</div>
 
-<!-- BOT MODAL -->
-<div class="overlay" id="botModal" onclick="if(event.target===this)closeModal('botModal')">
+<div class="overlay" id="botModal" onclick="if(event.target===this)closeModal()">
   <div class="sheet">
     <div class="handle"></div>
-    <div class="sheet-title">🤖 ATS DiscoveryBot</div>
-    <div class="sheet-body">DiscoveryBot integration coming soon. This assistant will help you search knowledge and surface relevant ATS content — powered by ATS's AI platform.</div>
-    <button class="sheet-close" onclick="closeModal('botModal')">Got it</button>
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px">ATS DiscoveryBot</div>
+    <div style="font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px">DiscoveryBot integration coming soon. This assistant will help you search knowledge and surface relevant ATS content — powered by ATS's AI platform.</div>
+    <button style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:14px;font-weight:600;padding:13px;cursor:pointer;min-height:46px" onclick="closeModal()">Got it</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -553,30 +709,39 @@ h2{font-size:clamp(22px,5.5vw,28px);font-weight:700;letter-spacing:-.3px;line-he
 const S={
   role:null,pains:[],suggestions:[],points:0,
   done:{onboarding:false,avatar:false,avatarStyle:null,booked:false,sessType:null,teamPref:null,timeSlot:null,
-    games:{},promptSubmitted:false,teamScanned:{Ryan:false,Vedant:false,Priyal:false,Anish:false},
+    games:{},promptDone:{},promptPts:0,
+    teamScanned:{Ryan:false,Vedant:false,Priyal:false,Anish:false},
     touchpoints:{},huntStep:0,huntDone:false}
 };
 
-// ── DATA ──
 const SUGG={
   'Manual work':{icon:'⚡',text:'Automate repetitive tasks in your workflow'},
-  'Delays':{icon:'🚀',text:'Reduce turnaround time with AI tools'},
-  'Visibility':{icon:'📊',text:'Improve tracking across your processes'},
-  'Communication':{icon:'🔗',text:'Close communication gaps with AI routing'},
-  'Compliance':{icon:'🛡️',text:'Strengthen compliance with automated monitoring'},
+  'Delays':{icon:'→',text:'Reduce turnaround time with AI tools'},
+  'Visibility':{icon:'◈',text:'Improve tracking across your processes'},
+  'Communication':{icon:'◎',text:'Close communication gaps with AI routing'},
+  'Compliance':{icon:'◆',text:'Strengthen compliance with automated monitoring'},
 };
+const SCHEDULE=[
+  {time:'10:00 AM',title:'Welcome & Opening Remarks',loc:'Main Stage',now:false},
+  {time:'10:45 AM',title:'Agent.3O Experience Walkthrough',loc:'Demo Zone',now:true},
+  {time:'11:30 AM',title:'AI for Agents Breakout',loc:'Room B',now:false},
+  {time:'1:00 PM', title:'Lunch & Innovation Lounge',loc:'Atrium',now:false},
+  {time:'2:00 PM', title:'Problem to Prototype Session',loc:'Main Stage',now:false},
+  {time:'3:15 PM', title:'ATS MVP Brainstorm Sessions',loc:'ATS Desk',now:false},
+  {time:'4:00 PM', title:'Closing & Next Steps',loc:'Main Stage',now:false},
+];
 const INITS=[
-  {icon:'🤖',c:'ibl',name:'Current AI',desc:'Internal AI framework for WFG workflows'},
-  {icon:'📡',c:'itl',name:'FieldIQ',desc:'Field intelligence & agent analytics'},
-  {icon:'🔍',c:'ipu',name:'DiscoveryBot',desc:'AI-powered search & knowledge discovery'},
-  {icon:'🛡',c:'irs',name:'Fraud AI',desc:'AI-supported fraud detection'},
-  {icon:'🚀',c:'ign',name:'Agent Workflow',desc:'End-to-end agent process modernization'},
+  {c:'ic-bl',name:'Current AI',desc:'Internal AI framework for WFG workflows',why:'Brings structured AI thinking into everyday operations.'},
+  {c:'ic-tl',name:'FieldIQ',desc:'Field intelligence & agent analytics',why:'Gives agents and leaders real-time visibility into what\'s working.'},
+  {c:'ic-pu',name:'DiscoveryBot',desc:'AI-powered search & knowledge discovery',why:'Surfaces the right information faster — no manual digging.'},
+  {c:'ic-rs',name:'Fraud AI',desc:'AI-supported fraud detection',why:'Protects agents, clients, and the organization proactively.'},
+  {c:'ic-gn',name:'Agent Workflow',desc:'End-to-end agent process modernization',why:'Reduces friction and accelerates time-to-value for agents.'},
 ];
 const TOOLS=[
-  {icon:'🔎',c:'ibl',name:'Perplexity',use:'AI research & real-time answers'},
-  {icon:'📄',c:'itl',name:'DocAnalyzer',use:'Auto-extract insights from documents'},
-  {icon:'📖',c:'ipu',name:'Explainpaper',use:'Simplify dense reports & research'},
-  {icon:'⚡',c:'irs',name:'ATS Workflow Engine',use:'Internal automation & routing'},
+  {c:'ic-bl',name:'Perplexity',use:'AI research & real-time answers',why:'Replaces hours of research with instant sourced answers.'},
+  {c:'ic-tl',name:'DocAnalyzer',use:'Auto-extract insights from documents',why:'Eliminates manual document review — AI surfaces what matters.'},
+  {c:'ic-pu',name:'Explainpaper',use:'Simplify dense reports & research',why:'Helps non-technical teams understand AI concepts quickly.'},
+  {c:'ic-rs',name:'ATS Workflow Engine',use:'Internal automation & routing',why:'Connects tools, people, and tasks without manual handoffs.'},
 ];
 const BRIEFS=[
   {vol:'Vol. 4',title:'Building AI Habits',teaser:'The simplest ways to embed AI into daily workflows.'},
@@ -584,34 +749,36 @@ const BRIEFS=[
   {vol:'Vol. 2',title:'Automation in the Field',teaser:'Where automation creates the most agent value.'},
 ];
 const PROBLEMS=[
-  {icon:'📄',label:'Manual Policy Entry',curr:['Manual data entry','No document parsing','High error rate'],ai:['Auto-fill from docs','Smart field detection','Error flagging'],proto:'Policy Assistant'},
-  {icon:'🗂',label:'RECS Tracking',curr:['Email-based tracking','No central view','Manual follow-up'],ai:['Central dashboard','Auto status updates','Smart reminders'],proto:'Reconciliation Portal'},
-  {icon:'🛡',label:'Fraud Detection',curr:['Reactive checks','Delayed alerts','No risk scoring'],ai:['Real-time scoring','Proactive alerts','Pattern detection'],proto:'Fraud Intelligence Layer'},
-  {icon:'🚀',label:'Agent Onboarding',curr:['Slow manual process','Paper-based docs','No tracking'],ai:['Digital onboarding','Auto doc intake','Progress dashboard'],proto:'Smart Onboarding'},
-  {icon:'💬',label:'Communication Gaps',curr:['Email back-and-forth','No routing logic','Lost context'],ai:['AI workflow routing','Smart threading','Context retention'],proto:'AI Comms Hub'},
-  {icon:'📊',label:'Visibility Issues',curr:['No live insights','Siloed data','Reactive decisions'],ai:['Live dashboards','Unified data view','Predictive alerts'],proto:'Intel Dashboard'},
+  {label:'Manual Policy Entry',curr:['Manual data entry','No document parsing','High error rate'],ai:['Auto-fill from docs','Smart field detection','Error flagging'],proto:'Policy Assistant'},
+  {label:'RECS Tracking',curr:['Email-based tracking','No central view','Manual follow-up'],ai:['Central dashboard','Auto status updates','Smart reminders'],proto:'Reconciliation Portal'},
+  {label:'Fraud Detection',curr:['Reactive checks','Delayed alerts','No risk scoring'],ai:['Real-time scoring','Proactive alerts','Pattern detection'],proto:'Fraud Intelligence Layer'},
+  {label:'Agent Onboarding',curr:['Slow manual process','Paper-based docs','No tracking'],ai:['Digital onboarding','Auto doc intake','Progress dashboard'],proto:'Smart Onboarding'},
+  {label:'Communication Gaps',curr:['Email back-and-forth','No routing logic','Lost context'],ai:['AI workflow routing','Smart threading','Context retention'],proto:'AI Comms Hub'},
+  {label:'Visibility Issues',curr:['No live insights','Siloed data','Reactive decisions'],ai:['Live dashboards','Unified data view','Predictive alerts'],proto:'Intel Dashboard'},
 ];
+const PROB_ICONS=['<svg viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>','<svg viewBox="0 0 20 20" fill="none"><rect x="2" y="6" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 6V5a2 2 0 014 0v1M6 11h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>','<svg viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.4"/><path d="M10 7v4M10 13v.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>','<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M3 17c0-3 3-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>','<svg viewBox="0 0 20 20" fill="none"><path d="M3 6h14a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 2V7a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4"/></svg>','<svg viewBox="0 0 20 20" fill="none"><path d="M3 15l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'];
 const CQ={
-  'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong> — live build starts soon.`,
-  'What are others exploring?':()=>`<strong>47 attendees</strong> are in the Demo Zone right now. Top challenge: <strong>Delays in Processing</strong>.`,
-  'Show me ATS tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong>, <strong>Perplexity</strong>, and the <strong>ATS Workflow Engine</strong>.`,
-  'Which ATS initiative is most relevant?':r=>`<strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your best match right now.`,
-  'Find sessions for my role':r=>`3 sessions for <strong>${r.role||'your role'}</strong>:<br>• AI Workflow Automation — 2:30 PM<br>• Reducing Operational Delays — 3:15 PM<br>• Executive AI Briefing — 4:00 PM`,
-  'What to explore before the keynote?':()=>`Try: <strong>Summit Intelligence</strong> for trends, <strong>Try a Real Problem</strong> for a preview, then check the <strong>Demo Zone QR</strong>.`,
+  'Where should I go next?':r=>`Based on your focus on <strong>${r.pains[0]||'efficiency'}</strong>, head to the <strong>Demo Zone</strong> — the Agent.3O walkthrough is on now.`,
+  'What are others exploring?':()=>`Most popular right now: <strong>Agent.3O Walkthrough</strong> in the Demo Zone and the <strong>ATS Initiative Wall</strong>.`,
+  'Show me tools for my role':r=>`For <strong>${r.role||'your role'}</strong>: <strong>DocAnalyzer</strong>, <strong>Perplexity</strong>, and the <strong>ATS Workflow Engine</strong> are your best matches.`,
+  'Top ATS initiative for me':r=>`<strong>${r.pains.includes('Manual work')||r.pains.includes('Delays')?'Agent Workflow Modernization':'FieldIQ'}</strong> is your best match right now.`,
+  'Sessions for my role':r=>`Sessions for <strong>${r.role||'your role'}</strong>:<br>• AI for Agents Breakout — 11:30 AM, Room B<br>• Problem to Prototype — 2:00 PM, Main Stage<br>• ATS MVP Sessions — 3:15 PM, ATS Desk`,
+  'Before the keynote?':()=>`Check in at the <strong>Demo Zone</strong>, visit the <strong>ATS Initiative Wall</strong>, then try a <strong>Prompt Challenge</strong> for quick points.`,
 };
 const QR_LOCS=[
-  {name:'Demo Zone',sub:'AI Workflow Demonstrations',note:{t:'Trending here',b:'47 people exploring. Top topic: agent automation.'},acts:['See what this solves','Watch live demo']},
-  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',note:{t:'Did you know',b:'FieldIQ is being piloted here. Ask the team for a walkthrough.'},acts:['View FieldIQ','Connect with ATS team']},
-  {name:'Breakout Hall B',sub:'Hands-On AI Sessions',note:{t:'Session starting soon',b:'AI for Operational Efficiency in 8 min. 31 seats left.'},acts:['Join session','Save for later']},
-  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation',note:{t:'Featured today',b:'ATS Brief Vol. 4 is available here. Scan to read.'},acts:['Read brief','Explore initiatives']},
-  {name:'Live Demo Station',sub:'From Problem to Prototype',note:{t:"What's being built",b:"Today's live build: a reconciliation portal in under 20 minutes."},acts:['See build','Ask the builder']},
+  {name:'Demo Zone',sub:'AI Workflow Demonstrations',note:{t:'Agent.3O is here',b:'The Agent.3O walkthrough is running right now. Explore live AI workflow demos.'},acts:['See what this solves','Get a demo walkthrough']},
+  {name:'Innovation Lounge',sub:'ATS Initiative Showcase',note:{t:'FieldIQ is live',b:'FieldIQ is being piloted here today. Ask the team for a 3-minute walkthrough.'},acts:['View FieldIQ','Talk to the ATS team']},
+  {name:'Room B',sub:'Hands-On AI Sessions',note:{t:'AI for Agents',b:'AI for Agents Breakout runs at 11:30 AM here. Grab a seat early.'},acts:['Join the session','Save this location']},
+  {name:'ATS Initiative Wall',sub:'Tools, Briefs & Innovation',note:{t:'Everything in one place',b:'All ATS initiatives, briefs, and tools are showcased on this wall.'},acts:['Explore initiatives','Read the latest brief']},
+  {name:'ATS Desk',sub:'MVP Brainstorm Sessions',note:{t:'Book your session',b:'ATS team is running 20-minute 1:1 brainstorm sessions from 3:15 PM.'},acts:['Book a session','Meet the team']},
 ];
 const TEAM=[
-  {name:'Ryan',emoji:'👨‍💼',role:'Strategy & Vision',topic:'Where is ATS headed next?',pts:50},
-  {name:'Vedant',emoji:'🧠',role:'Product & Platform',topic:'What\'s being built?',pts:50},
-  {name:'Priyal',emoji:'👩‍💻',role:'AI Workflows',topic:'See the AI logic live.',pts:50},
-  {name:'Anish',emoji:'⚙️',role:'Builder & Automation',topic:'Watch it work in real time.',pts:50},
+  {name:'Ryan',role:'Strategy & Vision',topic:'Where is ATS headed next?',pts:50},
+  {name:'Vedant',role:'Product & Platform',topic:'What\'s being built?',pts:50},
+  {name:'Priyal',role:'AI Workflows',topic:'See the AI logic live.',pts:50},
+  {name:'Anish',role:'Builder & Automation',topic:'Watch it work in real time.',pts:50},
 ];
+const TEAM_INITIALS=['R','V','P','A'];
 const HUNT_STEPS=[
   {title:'Where Visibility Becomes Insight',clue:'Find the station where raw data transforms into real-time intelligence. Look for the live screens.',pts:20},
   {title:'Where Workflows Move Faster',clue:'Go to the place where manual tasks disappear. The team is showing how AI handles what took hours.',pts:20},
@@ -619,466 +786,289 @@ const HUNT_STEPS=[
   {title:'Where Risk Becomes Intelligence',clue:'Seek the station where fraud patterns are decoded in real time. Ask about Fraud AI Enablement.',pts:20},
   {title:'The Team Solving Agent Pain Points',clue:'Find the ATS team members. Each has a unique code. Scan all four to complete your hunt.',pts:20},
 ];
-const GAMES=[
-  {icon:'🔡',name:'Title Terms Word Search',desc:'Find key title industry terms in a 12×12 grid',pts:50},
-  {icon:'📝',name:'Fraud Flags Crossword',desc:'Test your knowledge of common fraud indicators',pts:50},
-  {icon:'🔀',name:'AI Workflow Scramble',desc:'Unscramble AI and workflow terms',pts:50},
-  {icon:'🎯',name:'Summit Bingo',desc:'Check off summit moments as they happen',pts:50},
+const TOUCHPOINTS=[
+  {id:'demo',name:'Demo Zone',desc:'AI Workflow Demonstrations',pts:30},
+  {id:'ats_booth',name:'ATS Main Booth',desc:'Strategy, tools & briefings',pts:30},
+  {id:'init_wall',name:'Initiative Wall',desc:'Explore all ATS programs',pts:25},
+  {id:'lounge',name:'Innovation Lounge',desc:'FieldIQ & field intelligence',pts:25},
+  {id:'breakout',name:'Breakout Halls',desc:'Hands-on AI sessions',pts:20},
+  {id:'ats_desk',name:'ATS Desk',desc:'Book a 1:1 session here',pts:20},
 ];
-const PROMPTS=[
-  {text:'Summarize this title document and flag anything unusual',roles:['Agent','Underwriter'],pts:150,featured:true},
-  {text:'Identify risks in this closing workflow and suggest mitigations',roles:['Underwriter'],pts:150,featured:true},
-  {text:'Draft a follow-up for a delayed title issue',roles:['Agent'],pts:100},
-  {text:'Compare our manual reconciliation process vs an AI-assisted approach',roles:['Operations'],pts:125},
-  {text:'What are the top workflow bottlenecks agents face and how can AI solve them?',roles:['Agent','Executive'],pts:100},
+const SCRAMBLES=[
+  {scrambled:'L T E T I',answer:'TITLE',opts:['TITLE','LINED','TILED','LITRE']},
+  {scrambled:'D W O R E',answer:'OWNER',opts:['OWNER','ORDER','TOWER','SWORD']},
+  {scrambled:'F R D A U',answer:'FRAUD',opts:['FRAUD','GUARD','GRADU','DUFAR']},
+  {scrambled:'W S E O C R',answer:'ESCROW',opts:['ESCROW','TOWERS','COWRES','WORKER']},
+  {scrambled:'G A T E N',answer:'AGENT',opts:['AGENT','EATEN','TEGAN','NEGATE']},
 ];
+const BINGO_ITEMS=['Saw a live demo','Met an ATS team member','Heard "AI" mentioned','Attended a breakout','Scanned a QR code','Asked a question','FREE','Visited the Demo Zone','Read an ATS Brief','Saw Agent.3O','Networked with someone new','Tried the Concierge','Checked the schedule','Visited Innovation Lounge','Saw a prototype','Earned 50+ pts','Completed a game','Visited ATS Desk','Heard "workflow"','Saw FieldIQ demo','Joined a session','Used the app','Earned a golden point','Got a prompt idea','Made a connection'];
+const PROMPT_QS={
+  Agent:{task:'You want AI to summarize a long title document and flag any risk items.',opts:[{l:'A',t:'summarize this'},{l:'B',t:'summarize this doc fast'},{l:'C',t:'Summarize this title document. Highlight risk items, missing data, deadlines, and recommended next steps in bullet points.',correct:true},{l:'D',t:'what is this'},{l:'E',t:'check this file'}],why:'Option C is best because it gives the AI a clear task, a specific document type, and structured output criteria — leading to a precise, actionable response.'},
+  Sales:{task:'You need AI to draft a follow-up email to a client after a delayed closing.',opts:[{l:'A',t:'write email'},{l:'B',t:'Draft a professional follow-up email to a client explaining a title closing delay, offering a revised timeline, and reassuring them of next steps.',correct:true},{l:'C',t:'email about delay'},{l:'D',t:'write something for my client'},{l:'E',t:'closing email template'}],why:'Option B specifies the audience, the situation, the tone, and the output needed — giving the AI everything to write something genuinely useful.'},
+  Underwriting:{task:'You want AI to identify red flags in a real estate transaction file.',opts:[{l:'A',t:'check for fraud'},{l:'B',t:'Review this transaction file. Identify any red flags for fraud, inconsistencies, missing documentation, or unusual patterns. List findings with severity.',correct:true},{l:'C',t:'is this fraud'},{l:'D',t:'look at this'},{l:'E',t:'analyze file'}],why:'Option B defines the task, the scope, and the output format — making it actionable.'},
+  Operations:{task:'You want AI to compare your current manual process with an AI-assisted version.',opts:[{l:'A',t:'how to use AI'},{l:'B',t:'compare processes'},{l:'C',t:'Compare our current manual title reconciliation process vs an AI-assisted version. Show time saved, error reduction, and key workflow differences in a table.',correct:true},{l:'D',t:'what can AI do'},{l:'E',t:'AI vs manual'}],why:'Option C names the specific process, requests a structured comparison format, and lists the exact metrics needed.'},
+  Executive:{task:'You want AI to summarize today\'s summit highlights for a brief executive update.',opts:[{l:'A',t:'summarize summit'},{l:'B',t:'Write a 5-sentence executive summary of today\'s WFG summit. Include top themes, key AI tools discussed, and one recommended next step for leadership.',correct:true},{l:'C',t:'what happened today'},{l:'D',t:'summit recap'},{l:'E',t:'brief update'}],why:'Option B specifies length, audience, content categories, and output type — giving the AI a complete brief to work from.'},
+};
+const CAT_ICONS={'Agent':'<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 6V4.5a3 3 0 016 0V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>','Sales':'<svg viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>','Underwriting':'<svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M18 18l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>','Operations':'<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.9 4.9l1.8 1.8M13.3 13.3l1.8 1.8M4.9 15.1l1.8-1.8M13.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>','Executive':'<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>'};
+
+const ARR='<svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CHK='<svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 // ── POINTS ──
-function addPts(n,label){
-  S.points+=n;
-  document.getElementById('ptsVal').textContent=S.points;
-  toast('+'+n+(label?' — '+label:''));
-  log('pts:+'+n+(label?':'+label:''));
-}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function addPts(n,label){S.points+=n;document.getElementById('ptsVal').textContent=S.points;toast('+'+n+(label?' — '+label:''));log('pts:+'+n);}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 // ── NAV ──
-let cur='s-welcome';
-const NAV_SCREENS=['s-home','s-explore','s-concierge','s-problems','s-intel','s-qr','s-activities','s-hunt','s-avatar','s-games','s-prompts','s-golden','s-book','s-profile'];
-const NB_MAP={'s-home':'nb-home','s-explore':'nb-explore','s-concierge':'nb-home','s-problems':'nb-explore','s-intel':'nb-home','s-qr':'nb-home','s-activities':'nb-activities','s-hunt':'nb-activities','s-avatar':'nb-activities','s-games':'nb-activities','s-prompts':'nb-activities','s-golden':'nb-activities','s-book':'nb-profile','s-profile':'nb-profile'};
+let cur='s-welcome',gameTimer=null;
+const MAIN=['s-home','s-explore','s-concierge','s-problems','s-intel','s-qr','s-activities','s-hunt','s-avatar','s-games','s-gameplay','s-prompts','s-promptq','s-golden','s-touchpoints','s-book','s-profile'];
+const NB_MAP={'s-home':'nb-home','s-explore':'nb-explore','s-concierge':'nb-explore','s-problems':'nb-explore','s-intel':'nb-explore','s-qr':'nb-home','s-activities':'nb-activities','s-hunt':'nb-activities','s-avatar':'nb-activities','s-games':'nb-activities','s-gameplay':'nb-activities','s-prompts':'nb-activities','s-promptq':'nb-activities','s-golden':'nb-activities','s-touchpoints':'nb-activities','s-book':'nb-profile','s-profile':'nb-profile'};
 
-function goTo(id){_nav(id);}
-function navTo(id){_nav(id);}
+function goTo(id){_nav(id);}function navTo(id){_nav(id);}
 function _nav(id){
   if(id===cur)return;
+  if(gameTimer&&id!=='s-gameplay'){clearInterval(gameTimer);gameTimer=null;}
   const p=document.getElementById(cur),n=document.getElementById(id);
   if(!n)return;
   p.classList.remove('active');p.classList.add('exit');
-  setTimeout(()=>p.classList.remove('exit'),280);
+  setTimeout(()=>p.classList.remove('exit'),260);
   n.classList.add('active');cur=id;
-  const inMain=NAV_SCREENS.includes(id);
+  const inMain=MAIN.includes(id);
   document.getElementById('navbar').classList.toggle('vis',inMain);
   document.getElementById('ptsPill').classList.toggle('vis',inMain);
   document.getElementById('botFab').classList.toggle('vis',inMain);
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('cur'));
   if(NB_MAP[id])document.getElementById(NB_MAP[id])?.classList.add('cur');
-  if(id==='s-home')_home();
-  if(id==='s-explore')_explore();
-  if(id==='s-concierge')_resetChat();
-  if(id==='s-problems')_problems();
-  if(id==='s-intel')_intel();
-  if(id==='s-qr')_qr();
-  if(id==='s-activities')_activities();
-  if(id==='s-hunt')_hunt();
-  if(id==='s-avatar')_avatar();
-  if(id==='s-games')_games();
-  if(id==='s-prompts')_prompts();
-  if(id==='s-golden')_golden();
-  if(id==='s-book')_book();
-  if(id==='s-profile')_profile();
-  log('nav:'+id);
+  if(id==='s-home')_home();if(id==='s-explore')_explore();if(id==='s-concierge')_resetChat();
+  if(id==='s-problems')_problems();if(id==='s-intel')_intel();if(id==='s-qr')_qr();
+  if(id==='s-activities')_activities();if(id==='s-hunt')_hunt();if(id==='s-avatar')_avatar();
+  if(id==='s-games')_games();if(id==='s-prompts')_promptsHub();if(id==='s-golden')_golden();
+  if(id==='s-touchpoints')_tpScreen();if(id==='s-book')_book();if(id==='s-profile')_profile();
 }
 
 // ── ONBOARDING ──
-function pickRole(el,role){
-  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');S.role=role;
-  setTimeout(()=>goTo('s-pain'),240);
-}
-function togglePain(el,pain){
+function pickRole(el,r){document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');S.role=r;setTimeout(()=>goTo('s-pain'),210);}
+function togglePain(el,p){
   const on=el.classList.contains('sel');
   if(!on&&S.pains.length>=2)return;
   el.classList.toggle('sel',!on);
-  S.pains=on?S.pains.filter(p=>p!==pain):[...S.pains,pain];
-  const b=document.getElementById('painBtn');
-  b.style.opacity=S.pains.length?'1':'.35';
-  b.style.pointerEvents=S.pains.length?'all':'none';
+  S.pains=on?S.pains.filter(x=>x!==p):[...S.pains,p];
+  const b=document.getElementById('painBtn');b.style.opacity=S.pains.length?'1':'.35';b.style.pointerEvents=S.pains.length?'all':'none';
 }
 function startAnalysis(){
   goTo('s-loading');
   S.suggestions=S.pains.length?S.pains.map(p=>SUGG[p]).filter(Boolean):[SUGG['Manual work'],SUGG['Visibility'],SUGG['Delays']];
-  const msgs=[['Analyzing your profile…','Matching with 200+ workflows'],['Mapping challenges to AI capabilities…','Identifying best-fit solutions'],['Almost ready…','Generating your AgentX experience']];
-  let i=0;const t=setInterval(()=>{
-    i++;if(i<msgs.length){document.getElementById('loadMsg').textContent=msgs[i][0];document.getElementById('loadSub').textContent=msgs[i][1];}
-    else{clearInterval(t);document.getElementById('suggestList').innerHTML=S.suggestions.slice(0,3).map((s,j)=>`<div class="suggest-item" style="animation-delay:${j*.1}s"><div class="sicon">${s.icon}</div><div class="stxt">${s.text}</div></div>`).join('');goTo('s-suggest');}
-  },750);
+  const msgs=[['Analyzing your profile…','Matching with 200+ workflows'],['Mapping challenges to AI…','Identifying best-fit solutions'],['Almost ready…','Generating your experience']];
+  let i=0;const t=setInterval(()=>{i++;if(i<msgs.length){document.getElementById('loadMsg').textContent=msgs[i][0];document.getElementById('loadSub').textContent=msgs[i][1];}else{clearInterval(t);document.getElementById('suggestList').innerHTML=S.suggestions.slice(0,3).map((s,j)=>`<div class="si" style="animation-delay:${j*.08}s"><div class="si-dot"><svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="font-size:13px;font-weight:500;line-height:1.55;padding-top:4px">${s.text}</div></div>`).join('');goTo('s-suggest');}},750);
 }
-function finishOnboarding(){
-  if(!S.done.onboarding){S.done.onboarding=true;addPts(50,'Onboarding Complete');}
-  goTo('s-home');
-}
+function finishOnboarding(){if(!S.done.onboarding){S.done.onboarding=true;addPts(50,'Onboarding Complete');}goTo('s-home');}
 
 // ── HOME ──
-let _homeInit=false,_cd;
 function _home(){
-  if(!_homeInit){
-    const FEED=[
-      {ico:'🔥',t:'47 in the Demo Zone',s:'Highest traffic area right now',tag:'LIVE',cls:'tag-live'},
-      {ico:'⚡',t:'Live build starting soon',s:'Main stage — Problem to Prototype',tag:'SOON',cls:'tag-live'},
-      {ico:'📊',t:'Top challenge: Delays',s:'Reported by 62% of attendees',tag:'TRENDING',cls:'tag-trend'},
-      {ico:'✅',t:'AI for Operations ended',s:'23 attendees — avg 5-star',tag:'DONE',cls:'tag-done'},
-    ];
-    document.getElementById('feedList').innerHTML=FEED.map((f,i)=>`
-      <div class="feed-item" style="animation-delay:${i*.07}s">
-        <div style="font-size:18px;flex-shrink:0">${f.ico}</div>
-        <div class="fi-body"><strong>${f.t}</strong><span>${f.s}</span></div>
-        <div class="fi-tag ${f.cls}">${f.tag}</div>
-      </div>`).join('');
-    _homeInit=true;
-  }
-  clearInterval(_cd);let s=292;const el=document.getElementById('ctime');
-  _cd=setInterval(()=>{if(cur!=='s-home')return;s--;if(s<=0){el.textContent='NOW';clearInterval(_cd);return;}el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');},1000);
+  const td=Object.values(S.done.teamScanned).filter(Boolean).length;
+  const ac=[{d:S.done.onboarding},{d:S.done.huntDone},{d:S.done.avatar},{d:Object.keys(S.done.promptDone).length>=5},{d:Object.values(S.done.teamScanned).every(Boolean)},{d:S.done.booked}];
+  const dc=ac.filter(a=>a.d).length;
+  const lb=[{p:S.points+420},{p:S.points+285},{p:S.points,me:true},{p:Math.max(0,S.points-120)},{p:Math.max(0,S.points-200)}].sort((a,b)=>b.p-a.p);
+  const rk=lb.findIndex(r=>r.me)+1;
+  document.getElementById('homeStats').innerHTML=`<div class="stat-card gold"><div class="sv">${S.points}</div><div class="sl">Points</div></div><div class="stat-card"><div class="sv">${dc}</div><div class="sl">Done</div></div><div class="stat-card"><div class="sv">${td}/4</div><div class="sl">Team Met</div></div><div class="stat-card"><div class="sv">#${rk}</div><div class="sl">Rank</div></div>`;
+  document.getElementById('schedList').innerHTML=`<div class="sched-date">May 14, 2026 — WFG Executive Summit</div>${SCHEDULE.map(s=>`<div class="sched-item"><div class="sched-time">${s.time}</div><div class="sched-body${s.now?' sched-now':''}">${s.now?'<div class="sched-now-badge">Now</div>':''}<div class="sched-title">${s.title}</div><div class="sched-loc"><svg viewBox="0 0 10 12" fill="none"><path d="M5 1a4 4 0 00-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 00-4-4z" stroke="currentColor" stroke-width="1.2"/><circle cx="5" cy="5" r="1.2" fill="currentColor"/></svg>${s.loc}</div></div></div>`).join('')}`;
 }
 
 // ── EXPLORE ──
 function _explore(){
-  document.getElementById('initList').innerHTML=INITS.map((it,i)=>`
-    <div class="row-item" onclick="toggleExpand('init',${i},this)">
-      <div class="ico ${it.c}">${it.icon}</div>
-      <div class="body"><strong>${it.name}</strong><span>${it.desc}</span></div>
-      <div class="arr" id="initArr${i}">›</div>
-    </div>
-    <div id="initExp${i}" style="display:none;background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.12);border-radius:10px;padding:12px 14px;margin-bottom:9px;font-size:13px;color:var(--m);line-height:1.55;animation:fup .22s ease">
-      ${['Brings structured AI thinking into everyday operations.','Gives agents and leaders real-time visibility into what\'s working.','Surfaces the right information faster — no manual digging.','Protects agents, clients, and the organization proactively.','Reduces friction and accelerates time-to-value for agents.'][i]}
-    </div>`).join('');
-  document.getElementById('toolList').innerHTML=TOOLS.map((t,i)=>`
-    <div class="row-item" onclick="toggleExpand('tool',${i},this)">
-      <div class="ico ${t.c}">${t.icon}</div>
-      <div class="body"><strong>${t.name}</strong><span>${t.use}</span></div>
-      <div class="arr" id="toolArr${i}">›</div>
-    </div>
-    <div id="toolExp${i}" style="display:none;background:rgba(79,142,247,.05);border:1px solid rgba(79,142,247,.12);border-radius:10px;padding:12px 14px;margin-bottom:9px;font-size:13px;color:var(--m);line-height:1.55;animation:fup .22s ease">
-      ${['Replaces hours of research with instant sourced answers.','Eliminates manual document review — AI surfaces what matters.','Helps non-technical teams understand AI concepts quickly.','Connects tools, people, and tasks without manual handoffs.'][i]}
-    </div>`).join('');
-  document.getElementById('briefList').innerHTML=BRIEFS.map((b,i)=>`
-    <div class="card" style="margin-bottom:9px">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:4px">${b.vol}</div>
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px">${b.title}</div>
-      <div style="font-size:12px;color:var(--m)">${b.teaser}</div>
-    </div>`).join('');
+  document.getElementById('initList').innerHTML=INITS.map((it,i)=>`<button class="ri" onclick="toggleExpand('init',${i})"><div class="ri-ico ${it.c}"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div><div class="ri-body"><strong>${it.name}</strong><span>${it.desc}</span></div><svg class="ri-arr" id="initArr${i}" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="iexp" id="initExp${i}">${it.why}</div>`).join('');
+  document.getElementById('toolList').innerHTML=TOOLS.map((t,i)=>`<button class="ri" onclick="toggleExpand('tool',${i})"><div class="ri-ico ${t.c}"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="6" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M6 6V5a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div><div class="ri-body"><strong>${t.name}</strong><span>${t.use}</span></div><svg class="ri-arr" id="toolArr${i}" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="iexp" id="toolExp${i}">${t.why}</div>`).join('');
+  document.getElementById('briefList').innerHTML=BRIEFS.map(b=>`<div style="background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:13px;margin-bottom:8px"><div style="font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);margin-bottom:4px">${b.vol}</div><div style="font-size:13.5px;font-weight:600;margin-bottom:4px;letter-spacing:-.1px">${b.title}</div><div style="font-size:12px;color:var(--dim)">${b.teaser}</div></div>`).join('');
 }
-function toggleExpand(type,i,el){
-  const expId=`${type}Exp${i}`;const arrId=`${type}Arr${i}`;
-  const exp=document.getElementById(expId);const vis=exp.style.display==='block';
+function toggleExpand(type,i){
+  const eId=`${type}Exp${i}`,aId=`${type}Arr${i}`,exp=document.getElementById(eId),vis=exp.style.display==='block';
   document.querySelectorAll(`[id^="${type}Exp"]`).forEach(e=>e.style.display='none');
-  document.querySelectorAll(`[id^="${type}Arr"]`).forEach(a=>a.textContent='›');
-  if(!vis){exp.style.display='block';document.getElementById(arrId).textContent='↓';}
+  document.querySelectorAll(`[id^="${type}Arr"]`).forEach(a=>{a.innerHTML='<path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';});
+  if(!vis){exp.style.display='block';document.getElementById(aId).innerHTML='<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';}
 }
 
 // ── CONCIERGE ──
-function _resetChat(){
-  document.getElementById('chatArea').innerHTML=`<div class="msg ai">Hi! I've reviewed your profile. Tap a question to get started.</div>`;
-  document.querySelectorAll('.q-btn').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});
-}
+function _resetChat(){document.getElementById('chatArea').innerHTML='<div class="msg ai">Hi! I\'ve reviewed your profile. Tap a question to get started.</div>';document.querySelectorAll('.qb').forEach(b=>{b.style.opacity='1';b.style.pointerEvents='all';});}
 function askC(btn,q){
   const a=document.getElementById('chatArea');
-  a.innerHTML+=`<div class="msg user">${q}</div>`;
-  btn.style.opacity='.4';btn.style.pointerEvents='none';
-  setTimeout(()=>{
-    const fn=CQ[q];
-    a.innerHTML+=`<div class="msg ai">${fn?fn(S):'Let me find the best option for your profile.'}</div>`;
-    a.scrollTop=a.scrollHeight;log('concierge:'+q);
-  },600);
+  a.innerHTML+=`<div class="msg user">${q}</div>`;btn.style.opacity='.38';btn.style.pointerEvents='none';
+  setTimeout(()=>{const fn=CQ[q];a.innerHTML+=`<div class="msg ai">${fn?fn(S):'Let me find the best option for your profile.'}</div>`;a.scrollTop=a.scrollHeight;},580);
 }
 
 // ── PROBLEMS ──
 function _problems(){
   document.getElementById('solPanel').innerHTML='';
-  document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>
-    `<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div style="font-size:24px;margin-bottom:8px">${p.icon}</div><div style="font-size:12.5px;font-weight:700;line-height:1.3">${p.label}</div></div>`).join('');
+  document.getElementById('probGrid').innerHTML=PROBLEMS.map((p,i)=>`<div class="prob-card" onclick="_selProb(${i})" id="pb${i}"><div style="width:22px;height:22px;color:var(--ac2)">${PROB_ICONS[i]}</div><div class="pc-lbl">${p.label}</div></div>`).join('');
 }
 function _selProb(i){
   document.querySelectorAll('.prob-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById('pb'+i).classList.add('sel');
   const p=PROBLEMS[i];
-  document.getElementById('solPanel').innerHTML=`
-    <div class="sol-panel">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac2);margin-bottom:6px">${p.label}</div>
-      <div class="sol-cols">
-        <div class="sol-col"><h5 style="color:var(--m)">Current</h5><ul>${p.curr.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-        <div class="sol-col"><h5 style="color:var(--ac)">With AI</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div>
-      </div>
-      <div style="background:rgba(124,106,247,.08);border:1px solid rgba(124,106,247,.2);border-radius:8px;padding:10px 12px;font-size:12.5px;font-weight:700">→ Prototype: <strong>${p.proto}</strong></div>
-    </div>`;
+  document.getElementById('solPanel').innerHTML=`<div class="sol-panel"><div style="font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ac2);margin-bottom:6px">${p.label}</div><div class="sol-cols"><div class="sol-col"><h5 class="cur">Current</h5><ul>${p.curr.map(c=>`<li>${c}</li>`).join('')}</ul></div><div class="sol-col"><h5 class="ai">With AI</h5><ul>${p.ai.map(a=>`<li>${a}</li>`).join('')}</ul></div></div><div style="background:rgba(139,116,247,.07);border:1px solid rgba(139,116,247,.18);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600">Prototype: ${p.proto}</div></div>`;
   document.getElementById('solPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-  log('problem:'+p.label);
 }
 
 // ── INTEL ──
 function _intel(){
   const C=[{l:'Delays in processing',p:62},{l:'Manual work',p:48},{l:'Visibility issues',p:33},{l:'Communication gaps',p:27}];
   document.getElementById('intelBars').innerHTML=C.map(c=>`<div class="bar-row"><div class="bar-lbl">${c.l}</div><div class="bar-track"><div class="bar-fill" style="width:0%" data-p="${c.p}%"></div></div><div class="bar-pct">${c.p}%</div></div>`).join('');
-  const V=[{l:'Demo Zone',p:78},{l:'AI Concierge',p:65},{l:'Breakout Sessions',p:54},{l:'ATS Initiatives',p:41}];
-  document.getElementById('visitBars').innerHTML=V.map(v=>`<div class="bar-row"><div class="bar-lbl">${v.l}</div><div class="bar-track"><div class="bar-fill" style="width:0%" data-p="${v.p}%"></div></div><div class="bar-pct">${v.p}%</div></div>`).join('');
   setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(el=>el.style.width=el.dataset.p),80);
 }
 
 // ── QR ──
 function _qr(){
   const loc=QR_LOCS[Math.floor(Math.random()*QR_LOCS.length)];
-  document.getElementById('qrName').textContent=loc.name;
-  document.getElementById('qrSub').textContent=loc.sub;
+  document.getElementById('qrName').textContent=loc.name;document.getElementById('qrSub').textContent=loc.sub;
   document.getElementById('qrNote').innerHTML=`<strong>${loc.note.t}</strong>${loc.note.b}`;
-  document.getElementById('qrActions').innerHTML=loc.acts.map(a=>`
-    <button class="row-item" onclick="_qrAct(this,'${a}')">
-      <div class="ico itl" style="font-size:13px">›</div>
-      <div class="body"><strong>${a}</strong><span>${loc.name}</span></div>
-      <div class="arr">›</div>
-    </button>`).join('');
+  document.getElementById('qrActions').innerHTML=loc.acts.map(a=>`<button class="ri" onclick="_qrAct(this,'${a}')"><div class="ri-ico ic-tl"><svg viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="ri-body"><strong>${a}</strong><span>${loc.name}</span></div><svg class="ri-arr" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`).join('');
   const id=loc.name.toLowerCase().replace(/\s+/g,'_');
   if(!S.done.touchpoints[id]){S.done.touchpoints[id]=true;addPts(30,'Check-in: '+loc.name);}
 }
-function _qrAct(el,a){el.style.opacity='.45';el.style.pointerEvents='none';el.querySelector('.arr').textContent='✓';log('qr:'+a);}
+function _qrAct(el){el.style.opacity='.42';el.style.pointerEvents='none';el.querySelector('.ri-arr').innerHTML='<path d="M3 8l4 4 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';}
 
 // ── ACTIVITIES ──
+const ACT_DATA=[
+  {ico:'<path d="M2 10L5.5 2l2.5 5 2-3 1 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>',name:'Treasure Hunt',desc:'Follow 5 clues across the venue',pts:100,doneFn:()=>S.done.huntDone,screen:'s-hunt'},
+  {ico:'<circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 16c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',name:'Avatar Studio',desc:'Create your summit profile look',pts:75,doneFn:()=>S.done.avatar,screen:'s-avatar'},
+  {ico:'<rect x="2" y="4" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M6 9h1.5M6.75 8.25v1.5M10.5 9h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',name:'Games',desc:'Word Search, Crossword, Scramble, Bingo',pts:'50 each',doneFn:()=>Object.keys(S.done.games).length>=4,screen:'s-games'},
+  {ico:'<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5c0-1.5 1-2 2.5-2s2.5 1 2.5 2.5c0 1.5-2.5 2-2.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="13.5" r=".8" fill="currentColor"/>',name:'Prompt Challenge',desc:'5 quick MCQ prompt questions',pts:50,doneFn:()=>Object.keys(S.done.promptDone).length>=5,screen:'s-prompts'},
+  {ico:'<polygon points="9,2 11,6.5 16,6.5 12.5,9.5 13.8,14.5 9,11.5 4.2,14.5 5.5,9.5 2,6.5 7,6.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',name:'Golden Points',desc:'Scan the ATS team QR codes',pts:200,doneFn:()=>Object.values(S.done.teamScanned).every(Boolean),screen:'s-golden'},
+  {ico:'<path d="M9 2a4.5 4.5 0 00-4.5 4.5C4.5 10 9 14 9 14s4.5-4 4.5-7.5A4.5 4.5 0 009 2z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="6" r="1.5" fill="currentColor"/>',name:'Touchpoints',desc:'Check in around the venue',pts:'20–30 each',doneFn:()=>false,screen:'s-touchpoints'},
+  {ico:'<rect x="2" y="3" width="14" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M12 1.5v3M6 1.5v3M2 7h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',name:'Book with ATS',desc:'1:1 MVP brainstorm session',pts:100,doneFn:()=>S.done.booked,screen:'s-book'},
+];
 function _activities(){
-  const acts=[
-    {icon:'🗺️',name:'Treasure Hunt',desc:'Follow 5 clues across the venue',pts:100,screen:'s-hunt'},
-    {icon:'🎨',name:'Avatar Studio',desc:'Create your summit profile look',pts:75,screen:'s-avatar'},
-    {icon:'🎮',name:'Games',desc:'Industry-themed puzzles & bingo',pts:50,screen:'s-games'},
-    {icon:'💡',name:'Best Prompts',desc:'Explore & submit AI prompts',pts:150,screen:'s-prompts'},
-    {icon:'⭐',name:'Golden Points',desc:'Scan the ATS team QR codes',pts:200,screen:'s-golden'},
-    {icon:'📅',name:'Book with ATS',desc:'1:1 MVP brainstorm session',pts:100,screen:'s-book'},
-  ];
-  document.getElementById('actCards').innerHTML=acts.map(a=>`
-    <div class="act-card" onclick="navTo('${a.screen}')">
-      <div class="act-card-head">
-        <div class="act-ico">${a.icon}</div>
-        <div class="act-info"><div class="act-name">${a.name}</div><div class="act-desc">${a.desc}</div></div>
-        <div class="act-pts">+${a.pts} pts</div>
-      </div>
-    </div>`).join('');
+  document.getElementById('actCards').innerHTML=ACT_DATA.map(a=>{const done=a.doneFn();return`<div class="act-card${done?' done':''}" onclick="navTo('${a.screen}')"><div class="act-ico"><svg viewBox="0 0 18 18" fill="none" style="width:17px;height:17px;color:var(--ac)">${a.ico}</svg></div><div class="act-info"><div class="act-name">${a.name}${done?'<span class="act-done-badge">Done</span>':''}</div><div class="act-desc">${a.desc}</div></div><div class="act-pts">${done?'✓':'+'+a.pts}</div></div>`;}).join('');
 }
 
 // ── HUNT ──
 function _hunt(){
   const step=S.done.huntStep;
-  if(S.done.huntDone){
-    document.getElementById('huntContent').innerHTML=`
-      <div style="background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(13,148,136,.07));border:1px solid rgba(34,197,94,.28);border-radius:var(--r);padding:28px;text-align:center">
-        <div style="font-size:48px;margin-bottom:12px">🏆</div>
-        <div style="font-size:22px;font-weight:900;color:#34d399;margin-bottom:8px">Hunt Complete!</div>
-        <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">You uncovered all 5 clues and earned <strong style="color:var(--gold)">100 pts</strong>. Claim your reward at the ATS desk.</div>
-        <button class="btn teal sm" onclick="navTo('s-golden')" style="animation:none">Meet the ATS Team →</button>
-      </div>`;
-    return;
-  }
+  if(S.done.huntDone){document.getElementById('huntContent').innerHTML=`<div style="background:linear-gradient(135deg,rgba(34,197,94,.09),rgba(20,184,166,.06));border:1px solid rgba(34,197,94,.25);border-radius:var(--r);padding:28px;text-align:center"><div style="width:56px;height:56px;border-radius:50%;background:var(--green-s);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" fill="none" style="width:26px;height:26px;color:var(--green)"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:21px;font-weight:700;color:#34d399;margin-bottom:8px;letter-spacing:-.3px">Hunt Complete!</div><div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">You found all 5 clues and earned <strong style="color:var(--gold)">100 pts</strong>.</div><button class="btn teal sm" onclick="navTo('s-golden')">Meet the ATS Team</button></div>`;return;}
   const pct=Math.round((step/HUNT_STEPS.length)*100);
-  document.getElementById('huntContent').innerHTML=`
-    <div style="background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:12px;color:var(--m);font-weight:600">${step} of ${HUNT_STEPS.length} clues found</span>
-        <span style="font-size:12px;font-weight:800;color:var(--teal)">${step*20} pts earned</span>
-      </div>
-      <div style="height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;width:${pct}%;transition:width .5s"></div></div>
-    </div>
-    ${HUNT_STEPS.map((s,i)=>`
-      <div class="hunt-step${i===step?' active':i<step?' done':''}">
-        <div class="step-num">${i<step?'✓':i+1}</div>
-        <div>
-          <div class="step-title">${s.title}</div>
-          ${i<=step?`<div class="step-clue">${s.clue}</div><div style="font-size:10px;font-weight:800;color:var(--gold);margin-top:5px">+${s.pts} pts</div>`:'<div class="step-clue" style="filter:blur(3px);user-select:none">Unlock by reaching this step.</div>'}
-        </div>
-      </div>`).join('')}
-    <div style="height:12px"></div>
-    ${step<HUNT_STEPS.length?`<button class="btn teal sm" onclick="advanceHunt()" style="animation:none">📷 Scan Next QR Code</button>`:''}`;
+  document.getElementById('huntContent').innerHTML=`<div style="background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:13px;margin-bottom:13px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:12px;color:var(--dim);font-weight:500">${step} of ${HUNT_STEPS.length} found</span><span style="font-size:12px;font-weight:700;color:var(--teal)">${step*20} pts</span></div><div style="height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;width:${pct}%;transition:width .5s"></div></div></div>${HUNT_STEPS.map((s,i)=>`<div class="hunt-step${i===step?' active':i<step?' done':''}"><div class="step-num">${i<step?CHK:i+1}</div><div><div style="font-size:13px;font-weight:600;margin-bottom:4px;letter-spacing:-.1px">${s.title}</div>${i<=step?`<div style="font-size:12px;color:var(--m);line-height:1.5">${s.clue}</div><div style="font-size:10px;font-weight:700;color:var(--gold);margin-top:5px">+${s.pts} pts</div>`:'<div style="font-size:12px;color:var(--dim);filter:blur(3px);user-select:none">Reach this step to unlock.</div>'}</div></div>`).join('')}<div style="height:12px"></div>${step<HUNT_STEPS.length?`<button class="btn teal sm" onclick="advanceHunt()"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx=".7" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx=".7" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx=".7" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="9" width="5" height="5" rx=".7" stroke="currentColor" stroke-width="1.4" opacity=".4"/></svg>Scan Next QR Code</button>`:''}`;
 }
-function advanceHunt(){
-  const s=HUNT_STEPS[S.done.huntStep];
-  addPts(s.pts,'Hunt: '+s.title);
-  S.done.huntStep++;
-  if(S.done.huntStep>=HUNT_STEPS.length&&!S.done.huntDone){S.done.huntDone=true;}
-  log('hunt:step:'+S.done.huntStep);_hunt();
-}
+function advanceHunt(){const s=HUNT_STEPS[S.done.huntStep];addPts(s.pts,'Hunt: '+s.title);S.done.huntStep++;if(S.done.huntStep>=HUNT_STEPS.length&&!S.done.huntDone)S.done.huntDone=true;_hunt();}
 
 // ── AVATAR ──
-let _avState=0;
-function _avatar(){_avState=S.done.avatar?3:0;_renderAv();}
-function _renderAv(){
-  const styles=[{id:'exec',icon:'💼',name:'Executive Agent'},{id:'closer',icon:'🔑',name:'Modern Closer'},{id:'uw',icon:'📋',name:'Future Underwriter'},{id:'innov',icon:'🚀',name:'Title Innovator'}];
+let _avS=0;
+const STYLES=[{id:'exec',name:'Executive Agent'},{id:'closer',name:'Modern Closer'},{id:'uw',name:'Future Underwriter'},{id:'innov',name:'Title Innovator'}];
+const STYLE_ICONS=['<rect x="3" y="6" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 6V4.5a3 3 0 016 0V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>','<path d="M3 14l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>','<circle cx="9" cy="8" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M2 16c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>','<circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 2v2M9 15v2M2 9h2M15 9h2M4.6 4.6l1.4 1.4M12 12l1.4 1.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>'];
+function _avatar(){_avS=S.done.avatar?3:0;_rAv();}
+function _rAv(){
   const c=document.getElementById('avatarContent');
-  if(_avState===0){
-    c.innerHTML=`
-      <div style="font-size:13px;color:var(--m);line-height:1.65;margin-bottom:16px">Create your summit avatar. Powered by <strong style="color:var(--t)">Nano Banana</strong> — integration coming post-summit.</div>
-      <div class="av-preview"><div class="av-circle">🧑</div><div style="font-size:13px;color:var(--m)">Your avatar will appear here</div></div>
-      <button class="btn sm" onclick="_avState=1;_renderAv()" style="animation:none">📷 Take Selfie (Demo)</button>`;
-  } else if(_avState===1){
-    c.innerHTML=`
-      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,106,247,.2))">📸</div><div style="font-size:13px;color:var(--m)">Choose your style</div></div>
-      <div class="sel-grid">${styles.map(s=>`<div class="sel-card${S.done.avatarStyle===s.id?' sel':''}" onclick="S.done.avatarStyle='${s.id}';_renderAv()"><div class="s-ico">${s.icon}</div><div class="s-lbl">${s.name}</div></div>`).join('')}</div>
-      <button class="btn sm" style="animation:none;opacity:${S.done.avatarStyle?'1':'.35'};pointer-events:${S.done.avatarStyle?'all':'none'}" onclick="_avState=2;_renderAv()">✨ Generate Avatar</button>`;
-  } else if(_avState===2){
-    const st=styles.find(x=>x.id===S.done.avatarStyle)||styles[0];
-    c.innerHTML=`
-      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:36px">${st.icon}</div><div style="font-size:14px;font-weight:700;margin-bottom:3px">${st.name}</div><div style="font-size:11.5px;color:var(--m)">Summit Edition · WFG AgentX 2026</div></div>
-      <button class="btn sm" onclick="_finalAv()" style="animation:none;margin-bottom:8px">🖨️ Print at ATS Desk</button>
-      <button class="btn ghost sm" onclick="_finalAv()">💾 Save to Profile</button>`;
-  } else {
-    const st=styles.find(x=>x.id===S.done.avatarStyle)||styles[0];
-    c.innerHTML=`
-      <div class="av-preview"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac);font-size:36px">${st.icon}</div><div style="font-size:14px;font-weight:700;margin-bottom:3px">${st.name}</div><div style="font-size:12px;color:#34d399;margin-top:2px">✓ Saved to Profile — +75 pts</div></div>
-      <button class="btn ghost sm" onclick="_avState=0;S.done.avatar=false;S.done.avatarStyle=null;_renderAv()">Redo Avatar</button>`;
-  }
+  if(_avS===0){c.innerHTML=`<div style="font-size:13px;color:var(--m);line-height:1.65;margin-bottom:14px">Create your summit avatar. Powered by <strong style="color:var(--t)">Nano Banana</strong> — integration coming post-summit.</div><div class="av-preview"><div class="av-circle"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M5 27c0-6 4.9-10 11-10s11 4 11 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="font-size:12.5px;color:var(--dim)">Your avatar will appear here</div></div><button class="btn sm" onclick="_avS=1;_rAv()"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="4" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 4l1-2h4l1 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Take Selfie</button>`;}
+  else if(_avS===1){c.innerHTML=`<div class="av-preview" style="border-color:rgba(139,116,247,.35)"><div class="av-circle" style="background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(139,116,247,.18))"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M5 27c0-6 4.9-10 11-10s11 4 11 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="22" cy="8" r="3" fill="currentColor" opacity=".4"/></svg></div><div style="font-size:12.5px;color:var(--dim)">Choose your style</div></div><div class="style-grid">${STYLES.map((s,i)=>`<div class="scard${S.done.avatarStyle===s.id?' sel':''}" onclick="S.done.avatarStyle='${s.id}';_rAv()"><svg viewBox="0 0 18 18" fill="none" style="width:20px;height:20px;color:var(--ac2)">${STYLE_ICONS[i]}</svg><div class="scard-name">${s.name}</div></div>`).join('')}</div><button class="btn sm" style="opacity:${S.done.avatarStyle?'1':'.35'};pointer-events:${S.done.avatarStyle?'all':'none'}" onclick="_avS=2;_rAv()">Generate Avatar</button>`;}
+  else if(_avS===2){const st=STYLES.find(x=>x.id===S.done.avatarStyle)||STYLES[0];c.innerHTML=`<div class="av-preview" style="border-style:solid;border-color:rgba(139,116,247,.35)"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac)"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="5" stroke="rgba(255,255,255,.9)" stroke-width="1.6"/><path d="M5 27c0-6 4.9-10 11-10s11 4 11 10" stroke="rgba(255,255,255,.9)" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="font-size:13.5px;font-weight:600;margin-bottom:3px;letter-spacing:-.1px">${st.name}</div><div style="font-size:11.5px;color:var(--dim)">Summit Edition · WFG AgentX 2026</div></div><button class="btn sm" onclick="_fAv()" style="margin-bottom:8px">Print at ATS Desk</button><button class="btn ghost sm" onclick="_fAv()">Save to Profile</button>`;}
+  else{const st=STYLES.find(x=>x.id===S.done.avatarStyle)||STYLES[0];c.innerHTML=`<div class="av-preview" style="border-style:solid;border-color:rgba(139,116,247,.35)"><div class="av-circle" style="background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:var(--ac)"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="5" stroke="rgba(255,255,255,.9)" stroke-width="1.6"/><path d="M5 27c0-6 4.9-10 11-10s11 4 11 10" stroke="rgba(255,255,255,.9)" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="font-size:13.5px;font-weight:600;margin-bottom:3px;letter-spacing:-.1px">${st.name}</div><div style="font-size:12px;color:var(--green);margin-top:2px">Saved to Profile · +75 pts</div></div><button class="btn ghost sm" onclick="_avS=0;S.done.avatar=false;S.done.avatarStyle=null;_rAv()">Redo Avatar</button>`;}
 }
-function _finalAv(){
-  if(!S.done.avatar){S.done.avatar=true;addPts(75,'Avatar Created');}
-  _avState=3;_renderAv();log('avatar:complete');
-}
+function _fAv(){if(!S.done.avatar){S.done.avatar=true;addPts(75,'Avatar Created');}_avS=3;_rAv();}
 
 // ── GAMES ──
-function _games(){
-  document.getElementById('gamesContent').innerHTML=`
-    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px">Industry-themed games. Earn points for each one you play.</div>
-    ${GAMES.map((g,i)=>`
-      <div class="act-card" id="gc${i}" onclick="toggleGame(${i})">
-        <div class="act-card-head">
-          <div class="act-ico">${g.icon}</div>
-          <div class="act-info"><div class="act-name">${g.name}</div><div class="act-desc">${g.desc}</div></div>
-          <div class="act-pts">${S.done.games[g.name]?'✓':'+'+g.pts}</div>
-        </div>
-        <div id="gexp${i}" style="display:none" class="act-expand">
-          <button class="btn teal sm" onclick="event.stopPropagation();playGame(${i})" style="animation:none">${S.done.games[g.name]?'✓ Played':'▶ Play Now (+'+g.pts+' pts)'}</button>
-        </div>
-      </div>`).join('')}`;
-}
-function toggleGame(i){
-  const el=document.getElementById('gexp'+i);const vis=el.style.display==='block';
-  document.querySelectorAll('[id^="gexp"]').forEach(e=>e.style.display='none');
-  if(!vis)el.style.display='block';
-  log('game:expand:'+GAMES[i].name);
-}
-function playGame(i){
-  const g=GAMES[i];
-  if(!S.done.games[g.name]){S.done.games[g.name]=true;addPts(g.pts,'Game: '+g.name);}
-  log('game:play:'+g.name);_games();
-}
+const GAME_LIST=[
+  {id:'crossword',name:'Crossword',desc:'Title industry terms — match clues to answers'},
+  {id:'wordsearch',name:'Word Search',desc:'Find 8 title terms hidden in the grid'},
+  {id:'scramble',name:'Scramble',desc:'Unscramble 5 title industry words'},
+  {id:'bingo',name:'Bingo',desc:'Check off summit moments for a line'},
+];
+const GAME_ICONS=['<path d="M2 5h14M2 9h10M2 13h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>','<rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 9h8M9 5v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>','<path d="M3 12L8 7l3 3 4-5 3 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>','<rect x="2" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="11" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/>'];
+function _games(){document.getElementById('gamesHub').innerHTML=`<div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:13px">Each game has a 2-minute timer. Finish and earn points.</div>${GAME_LIST.map((g,i)=>`<div class="act-card${S.done.games[g.id]?' done':''}" onclick="${S.done.games[g.id]?'':  `launchGame('${g.id}')`}"><div class="act-ico"><svg viewBox="0 0 18 18" fill="none" style="width:17px;height:17px;color:var(--ac)">${GAME_ICONS[i]}</svg></div><div class="act-info"><div class="act-name">${g.name}${S.done.games[g.id]?'<span class="act-done-badge">Done</span>':''}</div><div class="act-desc">${g.desc}</div></div><div class="act-pts">${S.done.games[g.id]?'✓':'+50 pts'}</div></div>`).join('')}`;};
 
-// ── PROMPTS ──
-function _prompts(){
-  document.getElementById('promptsContent').innerHTML=`
-    <div style="background:linear-gradient(135deg,rgba(79,142,247,.07),rgba(124,106,247,.04));border:1px solid rgba(79,142,247,.18);border-radius:var(--r);padding:16px;margin-bottom:16px">
-      <div style="font-size:13.5px;font-weight:700;margin-bottom:4px">Submit Your Best Prompt</div>
-      <div style="font-size:12px;color:var(--m);margin-bottom:12px">Highest point value. Help ATS understand what you're solving.</div>
-      <button class="btn gold sm" id="submitBtn" onclick="submitPrompt()" style="animation:none">${S.done.promptSubmitted?'✓ Submitted':'✉️ Submit a Prompt (+150 pts)'}</button>
-    </div>
-    <div class="sec-label">Prompt Ideas</div>
-    ${PROMPTS.map((p,i)=>`
-      <div class="prompt-card${p.featured?' featured':''}">
-        <div class="prompt-text">"${p.text}"</div>
-        <div class="prompt-foot">
-          ${p.roles.map(r=>`<span class="role-tag">${r}</span>`).join('')}
-          <span class="p-pts">+${p.pts} pts</span>
-        </div>
-        <div class="prompt-btns">
-          <button class="p-btn" onclick="usePrompt(this)">▶ Try</button>
-          <button class="p-btn" onclick="savePrompt(this)">💾 Save</button>
-        </div>
-      </div>`).join('')}`;
+let currentGame=null;
+function launchGame(id){currentGame=id;document.getElementById('gpTitle').textContent={crossword:'Crossword',wordsearch:'Word Search',scramble:'Scramble',bingo:'Bingo'}[id];navTo('s-gameplay');startGameTimer(120);if(id==='crossword')renderCrossword();else if(id==='wordsearch')renderWordSearch();else if(id==='scramble')renderScramble();else renderBingo();}
+function startGameTimer(secs){
+  if(gameTimer)clearInterval(gameTimer);let s=secs;const el=document.getElementById('gpTimer');el.className='game-timer';
+  function tick(){el.textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;if(s<=30)el.className='game-timer warn';if(s<=10)el.className='game-timer danger';if(s<=0){clearInterval(gameTimer);gameTimer=null;autoFinishGame();}s--;}
+  tick();gameTimer=setInterval(tick,1000);
 }
-function submitPrompt(){
-  if(!S.done.promptSubmitted){S.done.promptSubmitted=true;addPts(150,'Prompt Submitted');}
-  const b=document.getElementById('submitBtn');
-  if(b){b.textContent='✓ Submitted';b.style.background='rgba(34,197,94,.15)';b.style.color='#86efac';}
+function autoFinishGame(){if(currentGame&&!S.done.games[currentGame]){S.done.games[currentGame]=true;addPts(50,'Game: '+currentGame);}showGameResult('Time\'s up! You still earned full points.');}
+function finishGame(msg){if(gameTimer){clearInterval(gameTimer);gameTimer=null;}if(currentGame&&!S.done.games[currentGame]){S.done.games[currentGame]=true;addPts(50,'Game: '+currentGame);}showGameResult(msg||'Great work!');}
+function showGameResult(msg){document.getElementById('gpContent').innerHTML=`<div class="game-result"><div style="width:56px;height:56px;border-radius:50%;background:var(--gold-s);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" fill="none" style="width:26px;height:26px;color:var(--gold)"><polygon points="12,2 15.1,9 22,9.3 17,14.1 18.5,21 12,17.5 5.5,21 7,14.1 2,9.3 8.9,9" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><div class="gr-pts">+50 pts</div><div class="gr-msg">${msg}</div><button class="btn teal sm" onclick="navTo('s-games')">Back to Games</button></div>`;document.getElementById('gpTimer').textContent='Done';document.getElementById('gpTimer').className='game-timer';}
+
+function renderCrossword(){
+  const clues=[{n:1,d:'Across',c:'Legal ownership document (5)',a:'TITLE'},{n:1,d:'Down',c:'Formal transfer document (4)',a:'DEED'},{n:2,d:'Across',c:'Financial charge on property (4)',a:'LIEN'},{n:3,d:'Across',c:'Deceptive act (5)',a:'FRAUD'},{n:4,d:'Down',c:'Third-party holding account (6)',a:'ESCROW'},{n:5,d:'Across',c:'Risk term (4)',a:'RISK'}];
+  let answered=0;window._cw={clues,sel:null,answered:0};
+  document.getElementById('gpContent').innerHTML=`<div style="font-size:12px;color:var(--m);margin-bottom:11px;line-height:1.6">Tap a clue, then tap the correct answer.</div><div id="cwClues">${clues.map((cl,i)=>`<div id="cwq${i}" style="background:var(--bg2);border:1px solid var(--b);border-radius:9px;padding:11px 13px;margin-bottom:7px;cursor:pointer;transition:border-color .15s" onclick="selCwClue(${i})"><div style="font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ac);margin-bottom:3px">${cl.n} ${cl.d}</div><div style="font-size:13px;font-weight:500">${cl.c}</div></div>`).join('')}</div><div id="cwSel" style="background:rgba(91,143,249,.07);border:1px solid rgba(91,143,249,.16);border-radius:9px;padding:11px 13px;margin:10px 0;font-size:13px;color:var(--m);min-height:42px">Tap a clue above first</div><div class="sc-opts">${clues.map(cl=>`<div class="sc-opt" id="cwop_${cl.a}" onclick="answerCw('${cl.a}',this)">${cl.a}</div>`).join('')}</div><button class="btn ghost sm" onclick="finishGame('Crossword complete!')" style="margin-top:4px">Finish &amp; Claim Points</button>`;
 }
-function usePrompt(el){el.textContent='✓ Tried';el.style.color='#34d399';addPts(25,'Prompt Used');log('prompt:used');}
-function savePrompt(el){el.textContent='✓ Saved';el.style.color='var(--ac)';log('prompt:saved');}
+function selCwClue(i){document.querySelectorAll('[id^="cwq"]').forEach(el=>el.style.borderColor='var(--b)');document.getElementById('cwq'+i).style.borderColor='rgba(91,143,249,.45)';window._cw.sel=i;document.getElementById('cwSel').innerHTML=`<strong style="color:var(--t)">${window._cw.clues[i].n} ${window._cw.clues[i].d}:</strong> ${window._cw.clues[i].c}`;}
+function answerCw(word,el){if(window._cw.sel===null)return;const cl=window._cw.clues[window._cw.sel];if(word===cl.a){el.classList.add('correct');el.style.pointerEvents='none';document.getElementById('cwq'+window._cw.sel).style.opacity='.45';document.getElementById('cwq'+window._cw.sel).style.pointerEvents='none';window._cw.answered++;if(window._cw.answered>=window._cw.clues.length)finishGame('Crossword complete! Perfect score!');}else{el.classList.add('wrong');setTimeout(()=>el.classList.remove('wrong'),550);}window._cw.sel=null;document.getElementById('cwSel').innerHTML='Tap a clue above first';}
+
+function renderWordSearch(){
+  const words=['TITLE','DEED','LIEN','ESCROW','AGENT','FRAUD','RISK','CLOSE'],size=9;
+  const grid=Array.from({length:size},()=>Array(size).fill(''));
+  const placements=[];
+  function place(w,r,c,d){const cells=[];for(let i=0;i<w.length;i++){const rr=d==='H'?r:r+i,cc=d==='H'?c+i:c;if(rr>=size||cc>=size||grid[rr][cc]&&grid[rr][cc]!==w[i])return false;cells.push([rr,cc]);}cells.forEach(([rr,cc],i)=>{grid[rr][cc]=w[i];});placements.push({word:w,cells});return true;}
+  [['TITLE',0,0,'H'],['DEED',0,6,'V'],['LIEN',2,1,'H'],['ESCROW',1,5,'V'],['AGENT',5,0,'H'],['FRAUD',3,7,'V'],['RISK',6,4,'H'],['CLOSE',8,1,'H']].forEach(([w,r,c,d])=>place(w,r,c,d));
+  const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(!grid[r][c])grid[r][c]=L[Math.floor(Math.random()*26)];
+  window._ws={size,placements,found:new Set(),sel:[]};
+  document.getElementById('gpContent').innerHTML=`<div class="ws-words" id="wsWords">${words.map(w=>`<div class="ws-word" id="wsw_${w}">${w}</div>`).join('')}</div><div style="display:grid;grid-template-columns:repeat(${size},27px);gap:3px;justify-content:center;margin-bottom:13px" id="wsGrid">${grid.flatMap((row,r)=>row.map((ch,c)=>`<div class="ws-cell" id="wsc${r*size+c}" onclick="wsClick(${r},${c})">${ch}</div>`)).join('')}</div><button class="btn ghost sm" onclick="finishGame('Word Search done!')">Finish &amp; Claim Points</button>`;
+}
+function wsClick(r,c){const{size,placements,found,sel}=window._ws;const idx=r*size+c;const el=document.getElementById('wsc'+idx);const ai=sel.findIndex(s=>s[0]===r&&s[1]===c);if(ai>=0){el.classList.remove('sel');sel.splice(ai,1);return;}el.classList.add('sel');sel.push([r,c]);for(const p of placements){if(found.has(p.word))continue;if(p.cells.length===sel.length&&p.cells.every(([pr,pc])=>sel.some(([sr,sc])=>sr===pr&&sc===pc))&&sel.every(([sr,sc])=>p.cells.some(([pr,pc])=>sr===pr&&sc===pc))){found.add(p.word);p.cells.forEach(([rr,cc])=>{const e=document.getElementById('wsc'+(rr*size+cc));e.classList.remove('sel');e.classList.add('found');});const we=document.getElementById('wsw_'+p.word);if(we)we.classList.add('found');window._ws.sel=[];if(found.size>=placements.length)finishGame('All words found! Amazing!');return;}}if(sel.length>=8){sel.forEach(([rr,cc])=>document.getElementById('wsc'+(rr*size+cc)).classList.remove('sel'));window._ws.sel=[];}}
+
+let _scI=0,_scC=0;
+function renderScramble(){_scI=0;_scC=0;renderScrambleQ();}
+function renderScrambleQ(){if(_scI>=SCRAMBLES.length){finishGame(`Scramble done! ${_scC}/${SCRAMBLES.length} correct.`);return;}const q=SCRAMBLES[_scI];document.getElementById('gpContent').innerHTML=`<div style="font-size:12.5px;color:var(--m);margin-bottom:8px;text-align:center">Question ${_scI+1} of ${SCRAMBLES.length} — unscramble this:</div><div class="scramble-word">${q.scrambled}</div><div class="sc-opts">${q.opts.map(o=>`<div class="sc-opt" onclick="answerSc('${o}',this,'${q.answer}')">${o}</div>`).join('')}</div>`;}
+function answerSc(ans,el,correct){document.querySelectorAll('.sc-opt').forEach(e=>e.style.pointerEvents='none');if(ans===correct){el.classList.add('correct');_scC++;}else{el.classList.add('wrong');document.querySelectorAll('.sc-opt').forEach(e=>{if(e.textContent===correct)e.classList.add('correct');});}setTimeout(()=>{_scI++;renderScrambleQ();},850);}
+
+let _bM=new Set();
+function renderBingo(){const items=[...BINGO_ITEMS].sort(()=>Math.random()-.5).slice(0,24);items.splice(12,0,'FREE');_bM=new Set([12]);window._bItems=items;window._bLines=[[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];renderBingoGrid();}
+function renderBingoGrid(){const hasBingo=window._bLines.some(l=>l.every(i=>_bM.has(i)));document.getElementById('gpContent').innerHTML=`<div class="bingo-hdr"><div class="bingo-hcell">B</div><div class="bingo-hcell">I</div><div class="bingo-hcell">N</div><div class="bingo-hcell">G</div><div class="bingo-hcell">O</div></div><div class="bingo-grid">${window._bItems.map((it,i)=>`<div class="bingo-cell${i===12?' free':_bM.has(i)?' marked':''}" onclick="markBingo(${i})">${it}</div>`).join('')}</div>${hasBingo?'<div style="font-size:14px;font-weight:700;text-align:center;color:var(--green);margin-bottom:10px">BINGO! You got a line!</div>':'<div style="font-size:12px;color:var(--dim);text-align:center;margin-bottom:10px">Tap items as they happen</div>'}<button class="btn${hasBingo?' teal':' ghost'} sm" onclick="finishGame('Bingo complete!')">Finish &amp; Claim Points</button>`;}
+function markBingo(i){if(i===12)return;_bM.has(i)?_bM.delete(i):_bM.add(i);renderBingoGrid();}
+
+// ── PROMPTS HUB ──
+function _promptsHub(){
+  const cats=Object.keys(PROMPT_QS);
+  document.getElementById('promptsHub').innerHTML=`<div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px">5 quick questions — one per category. Tap the best prompt. No typing. <strong style="color:var(--gold)">Max 50 pts.</strong></div><div class="pc-cats">${cats.map(cat=>{const done=S.done.promptDone[cat];return`<div class="pc-cat${done?' done':''}" onclick="${done?'':  `startPromptQ('${cat}')`}"><div style="width:20px;height:20px;color:${done?'var(--green)':'var(--ac)'}">${CAT_ICONS[cat]}</div><div class="pc-nm">${cat}</div><div class="pc-st">${done?`${S.done.promptDone[cat]} pts earned`:'Tap to start'}</div></div>`;}).join('')}</div><div style="background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;margin-top:8px"><span>Total Prompt pts</span><span style="color:var(--gold)">${S.done.promptPts} / 50</span></div>`;
+}
+function startPromptQ(cat){document.getElementById('pqCat').textContent=cat;document.getElementById('pqPts').textContent=(S.done.promptDone[cat]||0)+' pts earned';window._pqCat=cat;window._pqDone=false;renderPromptQ(cat);navTo('s-promptq');}
+function renderPromptQ(cat){const q=PROMPT_QS[cat];document.getElementById('pqContent').innerHTML=`<div class="pc-q-task"><div class="qt-lbl">Your Task</div><div class="qt-txt">${q.task}</div></div><div style="font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:9px">Which is the best prompt for this task?</div><div class="pc-opts">${q.opts.map(o=>`<div class="pc-opt" id="pqo_${o.l}" onclick="answerPrompt('${o.l}',${!!o.correct})"><div class="pc-opt-lbl">${o.l}</div><div class="pc-opt-txt">${o.t}</div></div>`).join('')}</div><div id="pqFeedback"></div>`;}
+function answerPrompt(lbl,correct){
+  if(window._pqDone)return;window._pqDone=true;const cat=window._pqCat,q=PROMPT_QS[cat],pts=5+(correct?5:0);
+  S.done.promptDone[cat]=pts;S.done.promptPts+=pts;addPts(pts,'Prompt: '+cat);
+  document.querySelectorAll('.pc-opt').forEach(el=>el.classList.add('disabled'));
+  document.getElementById('pqo_'+lbl).classList.add(correct?'correct':'wrong');
+  if(!correct)q.opts.forEach(o=>{if(o.correct)document.getElementById('pqo_'+o.l).classList.add('correct');});
+  document.getElementById('pqFeedback').innerHTML=`<div class="pc-feedback"><strong>${correct?'Correct — +10 pts':'Not quite — +5 pts for trying'}</strong>${q.why}</div>`;
+  document.getElementById('pqPts').textContent=pts+' pts earned';
+  setTimeout(()=>navTo('s-prompts'),2300);
+}
 
 // ── GOLDEN ──
-function _golden(){
-  document.getElementById('goldenContent').innerHTML=TEAM.map(m=>`
-    <div class="team-card${S.done.teamScanned[m.name]?' scanned':''}">
-      <div class="team-top">
-        <div class="t-avatar">${m.emoji}</div>
-        <div><div class="t-name">${m.name}</div><div class="t-role">${m.role}</div></div>
-      </div>
-      <div class="t-topic">"${m.topic}"</div>
-      <div style="background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:10px;text-align:center;margin-bottom:12px;font-size:12px;color:var(--m)">
-        ${S.done.teamScanned[m.name]?'<span style="color:#34d399">✓ QR Scanned</span>':'[ QR Code Placeholder ]'}
-      </div>
-      <div class="t-foot">
-        <div class="t-pts">+${m.pts} pts${S.done.teamScanned[m.name]?' ✓':''}</div>
-        <button class="t-btn${S.done.teamScanned[m.name]?' done':''}" onclick="scanTeam('${m.name}')" ${S.done.teamScanned[m.name]?'disabled':''}>
-          ${S.done.teamScanned[m.name]?'✓ Scanned':'📷 Scan QR'}
-        </button>
-      </div>
-    </div>`).join('');
+function _golden(){document.getElementById('goldenContent').innerHTML=TEAM.map((m,i)=>`<div class="team-card${S.done.teamScanned[m.name]?' scanned':''}"><div class="t-top"><div class="t-av"><svg viewBox="0 0 20 20" fill="none" style="width:20px;height:20px;color:#fff"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 18c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><div><div class="t-name">${m.name}</div><div class="t-role">${m.role}</div></div></div><div class="t-topic">"${m.topic}"</div><div style="background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:10px;text-align:center;margin-bottom:11px;font-size:12px;color:var(--dim)">${S.done.teamScanned[m.name]?'<span style="color:var(--green)">QR Scanned</span>':'[ QR Code Placeholder ]'}</div><div class="t-foot"><div class="t-pts">+${m.pts} pts${S.done.teamScanned[m.name]?' ✓':''}</div><button class="t-btn${S.done.teamScanned[m.name]?' done':''}" onclick="scanTeam('${m.name}')" ${S.done.teamScanned[m.name]?'disabled':''}>${S.done.teamScanned[m.name]?'Scanned':'<svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="4" height="4" rx=".5" stroke="currentColor" stroke-width="1.1"/><rect x="7" y="1" width="4" height="4" rx=".5" stroke="currentColor" stroke-width="1.1"/><rect x="1" y="7" width="4" height="4" rx=".5" stroke="currentColor" stroke-width="1.1"/><rect x="1.6" y="1.6" width="2.8" height="2.8" rx=".2" fill="currentColor"/><rect x="7.6" y="1.6" width="2.8" height="2.8" rx=".2" fill="currentColor"/><rect x="1.6" y="7.6" width="2.8" height="2.8" rx=".2" fill="currentColor"/><rect x="7.5" y="7.5" width="4" height="1.1" rx=".3" fill="currentColor"/><rect x="7.5" y="9.4" width="4" height="1.1" rx=".3" fill="currentColor"/><rect x="9.9" y="7.5" width="1.1" height="3" rx=".3" fill="currentColor"/></svg> Scan QR'}</button></div></div>`).join('');}
+function scanTeam(name){if(S.done.teamScanned[name])return;S.done.teamScanned[name]=true;addPts(TEAM.find(x=>x.name===name).pts,'Golden: '+name);_golden();if(Object.values(S.done.teamScanned).every(Boolean))setTimeout(()=>toast('All team members scanned!'),380);}
+
+// ── TOUCHPOINTS ──
+const TP_ICONS=['<path d="M3 15l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>','<rect x="2" y="6" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/>','<rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M6 9h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>','<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/>','<path d="M2 9l7-7 7 7v7a1 1 0 01-1 1H3a1 1 0 01-1-1V9z" stroke="currentColor" stroke-width="1.4"/>','<rect x="2" y="3" width="14" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 1v3M7 1v3M2 7h14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'];
+function _tpScreen(){
+  const v=Object.keys(S.done.touchpoints).length;
+  document.getElementById('tpContent').innerHTML=`<div style="background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:13px;margin-bottom:13px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:12px;color:var(--dim);font-weight:500">${v} of ${TOUCHPOINTS.length} checked in</span><span style="font-size:12px;font-weight:700;color:var(--teal)">${v*27} pts</span></div><div style="height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--teal),#34d399);border-radius:3px;width:${Math.round((v/TOUCHPOINTS.length)*100)}%;transition:width .5s"></div></div></div>${TOUCHPOINTS.map((tp,i)=>`<div style="background:var(--bg2);border:1px solid ${S.done.touchpoints[tp.id]?'rgba(34,197,94,.28)':'var(--b)'};border-radius:var(--r);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .18s" onclick="checkInTp('${tp.id}','${tp.name}')"><div style="width:34px;height:34px;border-radius:8px;flex-shrink:0;background:${S.done.touchpoints[tp.id]?'var(--green-s)':'var(--ac-s)'};display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 18 18" fill="none" style="width:16px;height:16px;color:${S.done.touchpoints[tp.id]?'var(--green)':'var(--ac)'}">${TP_ICONS[i]}</svg></div><div style="flex:1"><div style="font-size:13.5px;font-weight:600;margin-bottom:2px;letter-spacing:-.1px">${tp.name}</div><div style="font-size:12px;color:var(--dim)">${tp.desc}</div></div><div style="font-size:11px;font-weight:700;color:${S.done.touchpoints[tp.id]?'var(--green)':'var(--gold)'}">${S.done.touchpoints[tp.id]?'✓':'+'+tp.pts}</div></div>`).join('')}`;
 }
-function scanTeam(name){
-  if(S.done.teamScanned[name])return;
-  S.done.teamScanned[name]=true;
-  const m=TEAM.find(x=>x.name===name);
-  addPts(m.pts,'Golden: '+name);
-  log('golden:'+name);_golden();
-  if(Object.values(S.done.teamScanned).every(Boolean))setTimeout(()=>toast('🏆 All team members scanned!'),400);
-}
+function checkInTp(id,name){if(S.done.touchpoints[id])return;S.done.touchpoints[id]=true;addPts(27,'Check-in: '+name);_tpScreen();}
 
 // ── BOOK ──
+const SESS_TYPES=[{i:'<path d="M3 6h14M3 10h10M3 14h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',l:'Workflow Problem'},{i:'<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',l:'AI Use Case'},{i:'<circle cx="9" cy="9" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M9 2v2M9 15v2M2 9h2M15 9h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',l:'MVP Brainstorm'},{i:'<path d="M3 14l4-5 3 3 4-6 3 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>',l:'Agent Idea'}];
 function _book(){
   const c=document.getElementById('bookContent');
-  if(S.done.booked){
-    c.innerHTML=`<div class="confirm-card"><div style="font-size:40px;margin-bottom:12px">🎉</div><h3>Session Booked!</h3><p>20-minute 1:1 confirmed.<br><br>With: <strong style="color:var(--t)">${S.done.teamPref||'ATS Team'}</strong><br>Type: <strong style="color:var(--t)">${S.done.sessType||'MVP Brainstorm'}</strong><br>Time: <strong style="color:var(--t)">${S.done.timeSlot||'10:30 AM'}</strong></p></div>`;
-    return;
-  }
-  const types=[{i:'⚙️',l:'Workflow Problem'},{i:'🤖',l:'AI Use Case'},{i:'💡',l:'MVP Brainstorm'},{i:'🚀',l:'Agent Idea'}];
+  if(S.done.booked){c.innerHTML=`<div style="background:linear-gradient(135deg,rgba(20,184,166,.09),rgba(34,197,94,.05));border:1px solid rgba(20,184,166,.25);border-radius:var(--r);padding:24px;text-align:center;animation:fup .28s ease"><div style="width:52px;height:52px;border-radius:50%;background:var(--teal-s);border:1px solid rgba(20,184,166,.28);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" fill="none" style="width:24px;height:24px;color:var(--teal)"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:19px;font-weight:700;color:#34d399;margin-bottom:8px;letter-spacing:-.3px">Session Booked!</div><div style="font-size:13px;color:var(--m);line-height:1.65">With: <strong style="color:var(--t)">${S.done.teamPref||'ATS Team'}</strong><br>Type: <strong style="color:var(--t)">${S.done.sessType||'MVP Brainstorm'}</strong><br>Time: <strong style="color:var(--t)">${S.done.timeSlot||'3:15 PM'}</strong></div></div>`;return;}
   const team=['Ryan','Vedant','Priyal','Anish','Any ATS Member'];
-  const times=['10:00 AM','10:30 AM','11:00 AM','11:30 AM','1:00 PM','1:30 PM','2:00 PM','2:30 PM'];
-  const taken=['10:00 AM','11:30 AM','2:00 PM'];
-  c.innerHTML=`
-    <div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:16px">Book a <strong style="color:var(--t)">20-minute 1:1</strong> to brainstorm a workflow, AI use case, or MVP idea. <span style="color:var(--gold)">+100 pts</span> when confirmed.</div>
-    <div class="sec-label">Session Type</div>
-    <div class="sel-grid">${types.map(t=>`<div class="sel-card${S.done.sessType===t.l?' sel':''}" onclick="S.done.sessType='${t.l}';_book()"><div class="s-ico">${t.i}</div><div class="s-lbl">${t.l}</div></div>`).join('')}</div>
-    <div class="sec-label">Preferred Team Member</div>
-    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">${team.map(t=>`<button style="background:var(--s);border:1px solid ${S.done.teamPref===t?'rgba(99,160,255,.5)':'var(--b)'};background:${S.done.teamPref===t?'rgba(79,142,247,.1)':'var(--s)'};border-radius:10px;padding:13px 16px;cursor:pointer;text-align:left;color:var(--t);font-size:13.5px;font-weight:700;width:100%;min-height:46px;transition:all .2s" onclick="S.done.teamPref='${t}';_book()">${['👨‍💼','🧠','👩‍💻','⚙️','👥'][team.indexOf(t)]} ${t}</button>`).join('')}</div>
-    <div class="sec-label">Choose a Time</div>
-    <div class="time-grid">${times.map(t=>`<div class="t-slot${taken.includes(t)?' taken':S.done.timeSlot===t?' sel':''}" onclick="${taken.includes(t)?'':`S.done.timeSlot='${t}';_book()`}">${taken.includes(t)?'Full':t}</div>`).join('')}</div>
-    <button class="btn teal sm" onclick="confirmBook()" style="animation:none;opacity:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'1':'.35'};pointer-events:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'all':'none'}">Confirm Booking → +100 pts</button>`;
+  const times=['3:15 PM','3:35 PM','3:55 PM','4:15 PM'];
+  c.innerHTML=`<div style="font-size:13px;color:var(--m);line-height:1.6;margin-bottom:14px">Book a <strong style="color:var(--t)">20-minute 1:1</strong> with ATS to brainstorm a workflow, AI use case, or MVP idea. <strong style="color:var(--gold)">+100 pts</strong> on confirm.</div><div class="slbl">Session Type</div><div class="sel-grid">${SESS_TYPES.map(t=>`<div class="sel-card${S.done.sessType===t.l?' sel':''}" onclick="S.done.sessType='${t.l}';_book()"><svg viewBox="0 0 18 18" fill="none" style="width:18px;height:18px;color:var(--ac)">${t.i}</svg><div class="s-lbl">${t.l}</div></div>`).join('')}</div><div class="slbl">Team Member</div><div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">${team.map(t=>`<button style="background:${S.done.teamPref===t?'var(--ac-s)':'var(--bg2)'};border:1px solid ${S.done.teamPref===t?'rgba(91,143,249,.42)':'var(--b)'};border-radius:10px;padding:12px 15px;cursor:pointer;color:var(--t);font-size:13.5px;font-weight:500;width:100%;min-height:44px;text-align:left;transition:all .18s;letter-spacing:-.1px" onclick="S.done.teamPref='${t}';_book()">${t}</button>`).join('')}</div><div class="slbl">Time Slot</div><div class="time-grid">${times.map(t=>`<div class="t-slot${S.done.timeSlot===t?' sel':''}" onclick="S.done.timeSlot='${t}';_book()">${t}</div>`).join('')}</div><button class="btn teal sm" onclick="confirmBook()" style="opacity:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'1':'.35'};pointer-events:${S.done.sessType&&S.done.teamPref&&S.done.timeSlot?'all':'none'}">Confirm Booking — +100 pts</button>`;
 }
-function confirmBook(){
-  if(S.done.booked)return;
-  S.done.booked=true;addPts(100,'Session Booked');log('book:confirmed');_book();
-}
+function confirmBook(){if(S.done.booked)return;S.done.booked=true;addPts(100,'Session Booked');_book();}
 
 // ── PROFILE ──
 function _profile(){
   document.getElementById('profPts').textContent=S.points;
-  const acts=[
-    {l:'Onboarding Complete',pts:50,done:S.done.onboarding},
-    {l:'Treasure Hunt Done',pts:100,done:S.done.huntDone},
-    {l:'Avatar Created',pts:75,done:S.done.avatar},
-    {l:'Prompt Submitted',pts:150,done:S.done.promptSubmitted},
-    {l:'All Team Scanned',pts:200,done:Object.values(S.done.teamScanned).every(Boolean)},
-    {l:'Session Booked',pts:100,done:S.done.booked},
-  ];
-  const done=acts.filter(a=>a.done).length;
-  const teamDone=Object.values(S.done.teamScanned).filter(Boolean).length;
-  document.getElementById('profDone').textContent=done;
-  document.getElementById('profTeam').textContent=teamDone+'/4';
-  document.getElementById('profActs').innerHTML=acts.map(a=>`
-    <div class="act-row${a.done?' done':''}">
-      <div class="act-chk">${a.done?'✓':''}</div>
-      <div class="act-row-name">${a.l}</div>
-      <div class="act-row-pts">+${a.pts}</div>
-    </div>`).join('');
+  const acts=[{l:'Onboarding Complete',pts:50,d:S.done.onboarding},{l:'Treasure Hunt Done',pts:100,d:S.done.huntDone},{l:'Avatar Created',pts:75,d:S.done.avatar},{l:'Prompt Challenge (all 5)',pts:50,d:Object.keys(S.done.promptDone).length>=5},{l:'All Team Scanned',pts:200,d:Object.values(S.done.teamScanned).every(Boolean)},{l:'Session Booked',pts:100,d:S.done.booked},{l:'All Games Played',pts:200,d:Object.keys(S.done.games).length>=4}];
+  const done=acts.filter(a=>a.d).length;const td=Object.values(S.done.teamScanned).filter(Boolean).length;
+  document.getElementById('profDone').textContent=done;document.getElementById('profTeam').textContent=td+'/4';
+  document.getElementById('profActs').innerHTML=acts.map(a=>`<div class="arow${a.d?' done':''}"><div class="achk">${a.d?CHK:''}</div><div style="flex:1;font-size:13px;font-weight:500">${a.l}</div><div style="font-size:11px;font-weight:700;color:var(--gold)">+${a.pts}</div></div>`).join('');
   const lb=[{n:'Sarah M.',p:S.points+420},{n:'James T.',p:S.points+285},{n:'You',p:S.points,me:true},{n:'Linda K.',p:Math.max(0,S.points-120)},{n:'Marcus R.',p:Math.max(0,S.points-200)}].sort((a,b)=>b.p-a.p);
-  const rank=lb.findIndex(r=>r.me)+1;
-  document.getElementById('profRank').textContent='#'+rank;
-  document.getElementById('profLb').innerHTML=lb.map((r,i)=>`
-    <div class="lb-row${r.me?' me':''}">
-      <div class="lb-rank">#${i+1}</div>
-      <div class="lb-name">${r.me?'⭐ You':r.n}</div>
-      <div class="lb-pts">${r.p}</div>
-    </div>`).join('');
+  const rank=lb.findIndex(r=>r.me)+1;document.getElementById('profRank').textContent='#'+rank;
+  document.getElementById('profLb').innerHTML=lb.map((r,i)=>`<div class="lbr${r.me?' me':''}"><div class="lbrk">#${i+1}</div><div style="flex:1;font-size:13px;font-weight:500">${r.me?'You (me)':r.n}</div><div style="font-size:13px;font-weight:700;color:var(--gold)">${r.p}</div></div>`).join('');
 }
 
-// ── MODAL ──
-function openModal(id){document.getElementById(id).classList.add('vis');}
-function closeModal(id){document.getElementById(id).classList.remove('vis');}
-
-// ── LOG ──
-function log(ev){
-  S.actions=(S.actions||[]);S.actions.push({e:ev,t:new Date().toISOString(),pts:S.points});
-  console.log('[AgentX Journey + Points]',{role:S.role,pains:S.pains,points:S.points,done:S.done,last:ev});
-}
+function openModal(){document.getElementById('botModal').classList.add('vis');}
+function closeModal(){document.getElementById('botModal').classList.remove('vis');}
+function log(ev){console.log('[AgentX Journey + Points]',{role:S.role,pains:S.pains,points:S.points,done:S.done,last:ev});}
 </script>
 </body>
 </html>
